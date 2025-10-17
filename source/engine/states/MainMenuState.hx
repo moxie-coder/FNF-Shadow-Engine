@@ -142,9 +142,9 @@ class MainMenuState extends MusicBeatState
 					{
 						// SHADOW TODO
 						/*case 'story_mode':
-							MusicBeatState.switchState(new StoryMenuState()); */
+							MusicBeatState.switchState(new StoryMenuState());
 						case 'freeplay':
-							MusicBeatState.switchState(new FreeplayState());
+							MusicBeatState.switchState(new FreeplayState()); */
 						#if MODS_ALLOWED
 						case 'mods':
 							MusicBeatState.switchState(new ModsMenuState());
