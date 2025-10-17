@@ -99,7 +99,7 @@
 	<haxedef name="HXCPP_CATCH_SEGV" />
 	
 	<!-- Do whatever you want I'm tired uninstall and install everytime -->
-	<certificate path="key.keystore" password="nullfunni" alias="null" alias-password="nullfunni" if="android" unless="debug" />
+	<certificate path="key.keystore" password="fnfshadow" alias="fnfse" alias-password="fnfshadow" if="android" unless="debug" />
 
 	<!-- Category Type for Apple Systems -->
 	<config:ios category_type="public.app-category.music-games" />
