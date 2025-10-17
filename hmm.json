@@ -1,0 +1,70 @@
+{
+  "dependencies": [
+    {
+      "name": "lime",
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/HomuHomu83-haxelibs/lime"
+    },
+    {
+      "name": "openfl",
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/HorrorPackage/openfl"
+    },
+    {
+      "name": "flixel",
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/HorrorPackage/flixel"
+    },
+    {
+      "name": "flixel-addons",
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/HorrorPackage/flixel-addons"
+    },
+    {
+      "name": "flixel-ui",
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/HorrorPackage/flixel-ui"
+    },
+    {
+      "name": "hxcpp",
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/HomuHomu833/hxcpp"
+    },
+    {
+      "name": "SScript",
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/HomuHomu833-haxelibs/SScript"
+    },
+    {
+      "name": "hxdiscord_rpc",
+      "type": "haxelib",
+      "version": "1.3.0"
+    },
+    {
+      "name": "linc_luajit",
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/HomuHomu833-haxelibs/linc_luajit"
+    },
+    {
+      "name": "hxgamemode",
+      "type": "haxelib",
+      "version": null
+    }
+  ]
+}
