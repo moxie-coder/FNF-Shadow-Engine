@@ -1,0 +1,3 @@
+- Finish Story Mode
+- Finish Freeplay
+- Add support for 1.0 charts
