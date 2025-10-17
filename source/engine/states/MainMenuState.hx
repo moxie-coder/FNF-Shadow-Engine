@@ -142,9 +142,9 @@ class MainMenuState extends MusicBeatState
 					{
 						// SHADOW TODO
 						/*case 'story_mode':
-							MusicBeatState.switchState(new StoryMenuState());
-						case 'freeplay':
-							MusicBeatState.switchState(new FreeplayState()); */
+								MusicBeatState.switchState(new StoryMenuState());
+							case 'freeplay':
+								MusicBeatState.switchState(new FreeplayState()); */
 						#if MODS_ALLOWED
 						case 'mods':
 							MusicBeatState.switchState(new ModsMenuState());
@@ -174,11 +174,12 @@ class MainMenuState extends MusicBeatState
 					});
 				}
 			}
-		}
-		else if (controls.justPressed('debug_1') || touchPad.buttonE.justPressed)
-		{
-			selectedSomethin = true;
-			MusicBeatState.switchState(new MasterEditorMenu());
+
+			if (controls.justPressed('debug_1') || touchPad.buttonE.justPressed)
+			{
+				selectedSomethin = true;
+				MusicBeatState.switchState(new MasterEditorMenu());
+			}
 		}
 
 		super.update(elapsed);
