@@ -369,7 +369,7 @@ class LoadingState extends MusicBeatState
 				#end
 				try
 				{
-					var bitmap:BitmapData;
+					var bitmap:BitmapData = null;
 					var file:String = null;
 
 					#if MODS_ALLOWED
@@ -387,7 +387,7 @@ class LoadingState extends MusicBeatState
 					else
 					#end
 					{
-						file = Paths.getPath('images/$image.${Paths.IMAGE_EXT}', Paths.IMAGE_ASSETTYPE);
+						file = Paths.getPath('images/$image.${Paths.GPU_IMAGE_EXT}', Paths.getImageAssetType(Paths.GPU_IMAGE_EXT));
 						if (Paths.currentTrackedAssets.exists(file))
 						{
 							#if (target.threaded)
@@ -396,16 +396,30 @@ class LoadingState extends MusicBeatState
 							loaded++;
 							return;
 						}
-						else if (OpenFlAssets.exists(file, Paths.IMAGE_ASSETTYPE))
+						else if (OpenFlAssets.exists(file, Paths.getImageAssetType(Paths.GPU_IMAGE_EXT)))
 							bitmap = OpenFlAssets.getBitmapData(file);
 						else
 						{
-							trace('no such image $image exists');
-							#if (target.threaded)
-							mutex.release();
-							#end
-							loaded++;
-							return;
+							file = Paths.getPath('images/$image.${Paths.IMAGE_EXT}', Paths.getImageAssetType(Paths.IMAGE_EXT));
+							if (Paths.currentTrackedAssets.exists(file))
+							{
+								#if (target.threaded)
+								mutex.release();
+								#end
+								loaded++;
+								return;
+							}
+							else if (OpenFlAssets.exists(file, Paths.getImageAssetType(Paths.IMAGE_EXT)))
+								bitmap = OpenFlAssets.getBitmapData(file);
+							else
+							{
+								trace('no such image $image exists');
+								#if (target.threaded)
+								mutex.release();
+								#end
+								loaded++;
+								return;
+							}
 						}
 					}
 					#if (target.threaded)

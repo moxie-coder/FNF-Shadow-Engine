@@ -5,6 +5,7 @@ import backend.NoteTypesConfig;
 import shaders.RGBPalette;
 import shaders.RGBPalette.RGBShaderReference;
 import objects.StrumNote;
+import flixel.graphics.FlxGraphic;
 import flixel.math.FlxRect;
 
 using StringTools;
@@ -363,28 +364,33 @@ class Note extends FlxSprite
 		var skinPostfix:String = getNoteSkinPostfix();
 		var customSkin:String = skin + skinPostfix;
 		var path:String = PlayState.isPixelStage ? 'pixelUI/' : '';
-		if (customSkin == _lastValidChecked
-			|| Paths.fileExists('images/' + path + customSkin + '.${Paths.IMAGE_EXT}', Paths.IMAGE_ASSETTYPE))
-		{
-			skin = customSkin;
+
+		var fullPath:String = 'images/' + path + customSkin;
+
+		if (Paths.fileExists(fullPath + '.${Paths.GPU_IMAGE_EXT}', Paths.getImageAssetType(Paths.GPU_IMAGE_EXT)))
 			_lastValidChecked = customSkin;
-		}
+		if (Paths.fileExists(fullPath + '.${Paths.IMAGE_EXT}', Paths.getImageAssetType(Paths.IMAGE_EXT)))
+			_lastValidChecked = customSkin;
 		else
 			skinPostfix = '';
 
+		var graphic:FlxGraphic;
+
 		if (PlayState.isPixelStage)
 		{
+			var imgPath = 'pixelUI/' + skinPixel + (skinPostfix != '' ? skinPostfix : '');
 			if (isSustainNote)
 			{
-				var graphic = Paths.image('pixelUI/' + skinPixel + 'ENDS' + skinPostfix);
+				graphic = Paths.image(imgPath + 'ENDS');
 				loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 2));
 				originalHeight = graphic.height / 2;
 			}
 			else
 			{
-				var graphic = Paths.image('pixelUI/' + skinPixel + skinPostfix);
+				graphic = Paths.image(imgPath);
 				loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 5));
 			}
+
 			setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 			loadPixelNoteAnims();
 			antialiasing = false;
@@ -408,9 +414,8 @@ class Note extends FlxSprite
 		}
 
 		if (isSustainNote)
-		{
 			scale.y = lastScaleY;
-		}
+
 		updateHitbox();
 
 		if (animName != null)

@@ -14,9 +14,8 @@ import openfl.media.Sound;
 
 class Paths
 {
-	public static var IMAGE_EXT:String = #if ASTC "astc" #elseif ETC2 "ktx" #elseif S3TC "dds" #elseif PNG "png" #end;
-	public static var IMAGE_ASSETTYPE:AssetType = #if (ASTC || ETC2 || S3TC) AssetType.BINARY #elseif PNG AssetType.IMAGE #end;
-	public static var VIDEO_EXT:String = "mp4";
+	public static var IMAGE_EXT:String = "png";
+	public static var GPU_IMAGE_EXT:String = #if ASTC "astc" #elseif ETC2 "ktx" #elseif S3TC "dds" #end;
 	public static var LOADOLD:Bool = false;
 
 	public static function excludeAsset(key:String)
@@ -25,7 +24,11 @@ class Paths
 			dumpExclusions.push(key);
 	}
 
-	public static var dumpExclusions:Array<String> = ['assets/shared/images/bg.$IMAGE_EXT', 'assets/shared/music/freakyMenu.ogg'];
+	public static var dumpExclusions:Array<String> = [
+		'assets/shared/images/touchpad/bg.$IMAGE_EXT',
+		'assets/shared/images/touchpad/bg.$GPU_IMAGE_EXT',
+		'assets/shared/music/freakyMenu.ogg'
+	];
 
 	/// haya I love you for the base cache dump I took to the max
 	public static function clearUnusedMemory()
@@ -194,7 +197,7 @@ class Paths
 			return file;
 		}
 		#end
-		return 'assets/videos/$key.$VIDEO_EXT';
+		return 'assets/videos/$key.mp4';
 	}
 	#end
 
@@ -231,6 +234,15 @@ class Paths
 
 	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
 
+	static public function getImageAssetType(ext:String):AssetType
+	{
+		return switch (ext.toLowerCase())
+		{
+			case 'png', 'jpg', 'jpeg': AssetType.IMAGE;
+			case _: AssetType.BINARY;
+		}
+	}
+
 	static public function image(key:String, ?library:String = null):FlxGraphic
 	{
 		var bitmap:BitmapData = null;
@@ -248,14 +260,25 @@ class Paths
 		else
 		#end
 		{
-			file = getPath('images/$key.$IMAGE_EXT', IMAGE_ASSETTYPE, library);
+			file = getPath('images/$key.$GPU_IMAGE_EXT', getImageAssetType(GPU_IMAGE_EXT), library);
 			if (currentTrackedAssets.exists(file))
 			{
 				localTrackedAssets.push(file);
 				return currentTrackedAssets.get(file);
 			}
-			else if (Assets.exists(file, IMAGE_ASSETTYPE))
+			else if (Assets.exists(file, getImageAssetType(GPU_IMAGE_EXT)))
 				bitmap = Assets.getBitmapData(file);
+
+			if (Assets.exists(getPath('images/$key.$IMAGE_EXT', getImageAssetType(IMAGE_EXT), library), getImageAssetType(IMAGE_EXT)))
+			{
+				file = getPath('images/$key.$IMAGE_EXT', getImageAssetType(IMAGE_EXT), library);
+				if (currentTrackedAssets.exists(file))
+				{
+					localTrackedAssets.push(file);
+					return currentTrackedAssets.get(file);
+				}
+				bitmap = Assets.getBitmapData(file);
+			}
 		}
 
 		if (bitmap != null)
@@ -279,7 +302,10 @@ class Paths
 			else
 			#end
 			{
-				if (Assets.exists(file, IMAGE_ASSETTYPE))
+				if (Assets.exists(file, getImageAssetType(GPU_IMAGE_EXT)))
+					bitmap = Assets.getBitmapData(file);
+
+				if (Assets.exists(file, getImageAssetType(IMAGE_EXT)))
 					bitmap = Assets.getBitmapData(file);
 			}
 
@@ -506,7 +532,7 @@ class Paths
 
 	inline static public function modsVideo(key:String)
 	{
-		return modFolders('videos/' + key + '.' + VIDEO_EXT);
+		return modFolders('videos/' + key + '.mp4');
 	}
 
 	inline static public function modsSounds(path:String, key:String)
@@ -516,6 +542,10 @@ class Paths
 
 	inline static public function modsImages(key:String)
 	{
+		final gpuFile = modFolders('images/' + key + '.${Paths.GPU_IMAGE_EXT}');
+		if (FileSystem.exists(gpuFile))
+			return gpuFile;
+
 		return modFolders('images/' + key + '.${Paths.IMAGE_EXT}');
 	}
 
