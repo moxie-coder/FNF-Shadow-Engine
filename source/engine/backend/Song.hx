@@ -106,7 +106,7 @@ class Song
 		var formattedFolder:String = Paths.formatToSongPath(folder);
 		var formattedSong:String = Paths.formatToSongPath(jsonInput);
 		#if MODS_ALLOWED
-		var moddyFile:String = Paths.modsJson(formattedFolder + '/' + formattedSong);
+		var moddyFile:String = Paths.modsJson(formattedFolder + '/' + formattedSong + (jsonInput != "events" && Difficulty.getString().toLowerCase() != "normal" ? '-${Difficulty.getString().toLowerCase()}' : ''));
 		if (FileSystem.exists(moddyFile))
 		{
 			rawJson = File.getContent(moddyFile).trim();
@@ -115,13 +115,13 @@ class Song
 
 		if (rawJson == null)
 		{
-			var path:String = Paths.json(formattedFolder + '/' + formattedSong);
+			var path:String = Paths.json(formattedFolder + '/' + formattedSong + (jsonInput != "events" && Difficulty.getString().toLowerCase() != "normal" ? '-${Difficulty.getString().toLowerCase()}' : ''));
 			#if MODS_ALLOWED
 			if (FileSystem.exists(path))
 				rawJson = File.getContent(path).trim();
 			else
 			#end
-			rawJson = Assets.getText(Paths.json(formattedFolder + '/' + formattedSong)).trim();
+			rawJson = Assets.getText(Paths.json(formattedFolder + '/' + formattedSong + (jsonInput != "events" && Difficulty.getString().toLowerCase() != "normal" ? '-${Difficulty.getString().toLowerCase()}' : ''))).trim();
 		}
 
 		while (!rawJson.endsWith("}"))

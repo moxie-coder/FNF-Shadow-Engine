@@ -1,2 +1,1 @@
-- Add Editors
-- Fix issue in 1.0 Stage that GF side being broken(?)
+- Add File Load support for Editors

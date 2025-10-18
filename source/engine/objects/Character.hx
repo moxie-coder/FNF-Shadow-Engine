@@ -76,6 +76,7 @@ class Character extends FlxSprite
 	public var noAntialiasing:Bool = false;
 	public var originalFlipX:Bool = false;
 	public var editorIsPlayer:Null<Bool> = null;
+	public var isAnimateAtlas:Bool = false;
 
 	public var isMultiAtlas:Bool = false;
 

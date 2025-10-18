@@ -3523,7 +3523,10 @@ class ChartingState extends MusicBeatState
 		if ((data != null) && (data.length > 0))
 		{
 			#if mobile
-			StorageUtil.saveContent('${Paths.formatToSongPath(_song.song)}.json', data.trim());
+			var fileDialog = new lime.ui.FileDialog();
+			fileDialog.onCancel.add(() -> onSaveCancel(null));
+			fileDialog.onSave.add((path) -> onSaveComplete(null));
+			fileDialog.save(data.trim(), null, Paths.formatToSongPath(_song.song) + ".json", null, "*/*");
 			#else
 			_file = new FileReference();
 			_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);
@@ -3555,7 +3558,10 @@ class ChartingState extends MusicBeatState
 		if ((data != null) && (data.length > 0))
 		{
 			#if mobile
-			StorageUtil.saveContent("events.json", data.trim());
+			var fileDialog = new lime.ui.FileDialog();
+			fileDialog.onCancel.add(() -> onSaveCancel(null));
+			fileDialog.onSave.add((path) -> onSaveComplete(null));
+			fileDialog.save(data.trim(), null, "events.json", null, "*/*");
 			#else
 			_file = new FileReference();
 			_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);

@@ -25,6 +25,7 @@ class EditorPlayState extends MusicBeatSubstate
 
 	var playbackRate:Float = 1;
 	var vocals:FlxSound;
+	var opponentVocals:FlxSound;
 	var inst:FlxSound;
 
 	var notes:FlxTypedGroup<Note>;
@@ -260,7 +261,9 @@ class EditorPlayState extends MusicBeatSubstate
 		{
 			var timeSub:Float = Conductor.songPosition - Conductor.offset;
 			var syncTime:Float = 20 * playbackRate;
-			if (Math.abs(FlxG.sound.music.time - timeSub) > syncTime || (vocals.length > 0 && Math.abs(vocals.time - timeSub) > syncTime))
+			if (Math.abs(FlxG.sound.music.time - timeSub) > syncTime
+				|| (vocals.length > 0 && Math.abs(vocals.time - timeSub) > syncTime)
+				|| (opponentVocals.length > 0 && Math.abs(opponentVocals.time - timeSub) > syncTime))
 			{
 				resyncVocals();
 			}
@@ -318,6 +321,9 @@ class EditorPlayState extends MusicBeatSubstate
 		vocals.volume = 1;
 		vocals.time = startPos;
 		vocals.play();
+		opponentVocals.volume = 1;
+		opponentVocals.time = startPos;
+		opponentVocals.play();
 
 		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
@@ -345,12 +351,17 @@ class EditorPlayState extends MusicBeatSubstate
 		var dadVocals:String = loadCharacterFile(PlayState.SONG.player2).vocals_file;
 
 		vocals = new FlxSound();
+		opponentVocals = new FlxSound();
 		try
 		{
 			if (songData.needsVoices)
 			{
-				var playerVocals = Paths.voices(songData.song);
+				var playerVocals = Paths.voices(songData.song, (boyfriendVocals == null || boyfriendVocals.length < 1) ? 'Player' : boyfriendVocals);
 				vocals.loadEmbedded(playerVocals != null ? playerVocals : Paths.voices(songData.song));
+
+				var oppVocals = Paths.voices(songData.song, (dadVocals == null || dadVocals.length < 1) ? 'Opponent' : dadVocals);
+				if (oppVocals != null)
+					opponentVocals.loadEmbedded(oppVocals);
 			}
 		}
 		catch (e:Dynamic)
@@ -358,11 +369,14 @@ class EditorPlayState extends MusicBeatSubstate
 		}
 
 		vocals.volume = 0;
+		opponentVocals.volume = 0;
 
 		#if FLX_PITCH
 		vocals.pitch = playbackRate;
+		opponentVocals.pitch = playbackRate;
 		#end
 		FlxG.sound.list.add(vocals);
+		FlxG.sound.list.add(opponentVocals);
 
 		inst = new FlxSound().loadEmbedded(Paths.inst(songData.song));
 		FlxG.sound.list.add(inst);
@@ -534,6 +548,8 @@ class EditorPlayState extends MusicBeatSubstate
 	{
 		vocals.pause();
 		vocals.destroy();
+		opponentVocals.pause();
+		opponentVocals.destroy();
 		if (finishTimer != null)
 		{
 			finishTimer.cancel();
@@ -881,7 +897,7 @@ class EditorPlayState extends MusicBeatSubstate
 
 	function opponentNoteHit(note:Note):Void
 	{
-		if (PlayState.SONG.needsVoices)
+		if (PlayState.SONG.needsVoices && opponentVocals.length <= 0)
 			vocals.volume = 1;
 
 		var strum:StrumNote = opponentStrums.members[Std.int(Math.abs(note.noteData))];
@@ -1086,7 +1102,13 @@ class EditorPlayState extends MusicBeatSubstate
 			#if FLX_PITCH vocals.pitch = playbackRate; #end
 		}
 
+		if (Conductor.songPosition <= opponentVocals.length)
+		{
+			opponentVocals.time = Conductor.songPosition;
+			#if FLX_PITCH opponentVocals.pitch = playbackRate; #end
+		}
 		vocals.play();
+		opponentVocals.play();
 	}
 
 	function RecalculateRating(badHit:Bool = false)
