@@ -115,14 +115,13 @@ class Song
 
 		if (rawJson == null)
 		{
+			var path:String = Paths.json(formattedFolder + '/' + formattedSong);
 			#if MODS_ALLOWED
-			if (FileSystem.exists(Paths.json(formattedFolder + '/' + formattedSong)))
-				rawJson = File.getContent(Paths.json(formattedFolder + '/' + formattedSong));
-			#else
-			rawJson = Assets.getText(Paths.json(formattedFolder + '/' + formattedSong));
+			if (FileSystem.exists(path))
+				rawJson = File.getContent(path).trim();
+			else
 			#end
-
-			rawJson = rawJson.trim();
+			rawJson = Assets.getText(Paths.json(formattedFolder + '/' + formattedSong)).trim();
 		}
 
 		while (!rawJson.endsWith("}"))
