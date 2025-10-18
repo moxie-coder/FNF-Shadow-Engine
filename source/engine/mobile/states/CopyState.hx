@@ -1,4 +1,4 @@
-package states;
+package mobile.states;
 
 import states.TitleState;
 import lime.utils.Assets as LimeAssets;

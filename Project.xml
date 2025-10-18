@@ -106,7 +106,7 @@
 	<config:mac category_type="public.app-category.music-games" />
 
 	<!-- Allow Access to Engine Files in Mobile -->
-	<haxedef name="SHARE_MOBILE_FILES" if="mobile" />
+	<haxedef name="SHARE_MOBILE_FILES" if="ios" />
 
 	<!--Avoid memory leaks with for loops in HScript-->
 	<haxedef name="loop_unroll_max_cost" value="25" />
