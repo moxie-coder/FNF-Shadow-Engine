@@ -20,12 +20,6 @@ jobs:
             assetType: S3TC
             artifactName: windowsBuild-x86_64
             artifactPath: export\release\windows\bin\*
-          - name: Windows ARM64
-            os: windows-2025
-            buildArgs: "windows -arm64 -final -D HXCPP_ARM64 -D officialBuild"
-            assetType: S3TC
-            artifactName: windowsBuild-arm64
-            artifactPath: export\release\windows\bin\*
           - name: Linux x86_64
             os: ubuntu-22.04
             buildArgs: "linux -final -D officialBuild"
