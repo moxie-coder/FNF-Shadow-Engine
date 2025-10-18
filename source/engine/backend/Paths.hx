@@ -220,7 +220,7 @@ class Paths
 
 	inline static public function voices(song:String, postfix:String = null):Any
 	{
-		var songKey:String = 'songs/${formatToSongPath(song)}/Voices${LOADOLD ? "-Old" : ""}';
+		var songKey:String = 'songs/${formatToSongPath(song)}/Voices${postfix != null ? '-$postfix' : ''}${LOADOLD ? "-Old" : ""}';
 		var voices = returnSound(null, songKey);
 		return voices;
 	}

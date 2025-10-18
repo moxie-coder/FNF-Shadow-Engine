@@ -14,7 +14,6 @@ typedef SwagSong =
 
 	var player1:String;
 	var player2:String;
-	@:optional var player3:String;
 	var gfVersion:String;
 	var stage:String;
 
@@ -28,6 +27,8 @@ typedef SwagSong =
 	@:optional var playerArrowSkin:String;
 	@:optional var opponentArrowSkin:String;
 	@:optional var splashSkin:String;
+
+	@:optional var format:String;
 }
 
 class Song
@@ -44,22 +45,28 @@ class Song
 	public var gameOverSound:String;
 	public var gameOverLoop:String;
 	public var gameOverEnd:String;
-	public var disableNoteRGB:Bool = true;
+	public var disableNoteRGB:Bool = false;
 	public var speed:Float = 1;
 	public var stage:String;
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
 	public var gfVersion:String = 'gf';
 
-	private static function onLoadJson(songJson:SwagSong) // Convert old charts to newest format
+	private static function onLoadJson(songJson:Dynamic) // Convert old charts to newest format, or convert new format to old format?
 	{
+		if (songJson.format == null)
+			songJson.format = 'psych_legacy';
+
 		if (songJson.gfVersion == null)
 		{
 			songJson.gfVersion = songJson.player3;
 			songJson.player3 = null;
 		}
 
-		if (songJson.events == null)
+		if (StringTools.startsWith(songJson.format, 'psych_v1'))
+			songJson.format = 'psych_v1';
+
+		if (songJson.events == null && songJson.format == 'psych_legacy')
 		{
 			songJson.events = [];
 			for (secNum in 0...songJson.notes.length)
@@ -77,9 +84,9 @@ class Song
 						songJson.events.push([note[0], [[note[2], note[3], note[4]]]]);
 						notes.remove(note);
 						len = notes.length;
+						continue;
 					}
-					else
-						i++;
+					i++;
 				}
 			}
 		}
@@ -108,14 +115,14 @@ class Song
 
 		if (rawJson == null)
 		{
-			var path:String = Paths.json(formattedFolder + '/' + formattedSong);
-
 			#if MODS_ALLOWED
-			if (FileSystem.exists(path))
-				rawJson = File.getContent(path).trim();
-			else
+			if (FileSystem.exists(Paths.json(formattedFolder + '/' + formattedSong)))
+				rawJson = File.getContent(Paths.json(formattedFolder + '/' + formattedSong));
+			#else
+			rawJson = Assets.getText(Paths.json(formattedFolder + '/' + formattedSong));
 			#end
-			rawJson = Assets.getText(Paths.json(formattedFolder + '/' + formattedSong)).trim();
+
+			rawJson = rawJson.trim();
 		}
 
 		while (!rawJson.endsWith("}"))
@@ -141,7 +148,7 @@ class Song
 				daBpm = songData.bpm; */
 
 		var songJson:Dynamic = parseJSONshit(rawJson);
-		if (jsonInput != 'events')
+		if (!jsonInput.startsWith('events'))
 			StageData.loadDirectory(songJson);
 		onLoadJson(songJson);
 		return songJson;
@@ -149,6 +156,37 @@ class Song
 
 	public static function parseJSONshit(rawJson:String):SwagSong
 	{
-		return cast haxe.Json.parse(rawJson).song;
+		final parsed:Dynamic = haxe.Json.parse(rawJson);
+
+		if (parsed.song != null)
+		{
+			if (Std.isOfType(parsed.song, String))
+			{
+				parsed.format ??= 'psych_v1';
+				return parsed;
+			}
+
+			parsed.song.format = 'psych_legacy';
+			return parsed.song;
+		}
+
+		if (parsed.events != null)
+		{
+			return {
+				events: cast parsed.events,
+				song: "",
+				notes: [],
+				bpm: 0,
+				needsVoices: true,
+				speed: 1,
+				player1: "",
+				player2: "",
+				gfVersion: "",
+				stage: "",
+				format: 'psych_v1'
+			};
+		}
+
+		throw new haxe.Exception("No song data found, or is invalid.");
 	}
 }

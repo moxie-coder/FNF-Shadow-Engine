@@ -153,6 +153,7 @@ class PlayState extends MusicBeatState
 
 	public var camZooming:Bool = false;
 	public var camZoomingMult:Float = 1;
+	public var camZoomingFrequency:Float = 4;
 	public var camZoomingDecay:Float = 1;
 
 	private var curSong:String = "";
@@ -413,14 +414,27 @@ class PlayState extends MusicBeatState
 				new states.stages.Nothing();
 		}
 
+		new events.VSliceEvents();
+
 		if (isPixelStage)
 		{
 			introSoundsSuffix = '-pixel';
 		}
 
-		add(gfGroup);
-		add(dadGroup);
-		add(boyfriendGroup);
+		if (stageData.objects != null && stageData.objects.length > 0)
+		{
+			var list:Map<String, FlxSprite> = StageData.addObjectsToState(stageData.objects, !stageData.hide_girlfriend ? gfGroup : null, dadGroup,
+				boyfriendGroup, this);
+			for (key => spr in list)
+				if (!StageData.reservedNames.contains(key))
+					modchartSprites.set(key, cast spr);
+		}
+		else
+		{
+			add(gfGroup);
+			add(dadGroup);
+			add(boyfriendGroup);
+		}
 
 		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 		luaDebugGroup = new FlxTypedGroup<psychlua.DebugLuaText>();
@@ -1390,9 +1404,14 @@ class PlayState extends MusicBeatState
 		{
 			if (songData.needsVoices)
 			{
-				var playerVocals = Paths.voices(songData.song);
-				vocals.loadEmbedded(playerVocals != null ? playerVocals : Paths.voices(songData.song));
-				var oppVocals = Paths.voices(songData.song, (dad.vocalsFile == null || dad.vocalsFile.length < 1) ? 'Opponent' : dad.vocalsFile);
+				var playerVocals = Paths.voices(curSong, boyfriend.vocalsFile);
+				if (playerVocals == null)
+					playerVocals = Paths.voices(curSong, 'Player');
+				vocals.loadEmbedded(playerVocals ?? Paths.voices(curSong, null));
+
+				var oppVocals = Paths.voices(curSong, dad.vocalsFile);
+				if (oppVocals == null)
+					oppVocals = Paths.voices(curSong, 'Opponent');
 				if (oppVocals != null)
 					opponentVocals.loadEmbedded(oppVocals);
 			}
@@ -1439,6 +1458,8 @@ class PlayState extends MusicBeatState
 					makeEvent(event, i);
 		}
 
+		final isPsychRelease:Bool = songData.format == 'psych_v1';
+
 		for (section in noteData)
 		{
 			for (songNotes in section.sectionNotes)
@@ -1447,9 +1468,16 @@ class PlayState extends MusicBeatState
 				var daNoteData:Int = Std.int(songNotes[1] % 4);
 				var gottaHitNote:Bool = section.mustHitSection;
 
-				if (songNotes[1] > 3)
+				if (!isPsychRelease)
 				{
-					gottaHitNote = !section.mustHitSection;
+					if (songNotes[1] > 3)
+					{
+						gottaHitNote = !section.mustHitSection;
+					}
+				}
+				else
+				{
+					gottaHitNote = songNotes[1] < 4;
 				}
 
 				if (characterPlayingAsDad)
@@ -3553,6 +3581,12 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
+		if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.data.camZooms && (curBeat % camZoomingFrequency) == 0)
+		{
+			FlxG.camera.zoom += 0.015 * camZoomingMult;
+			camHUD.zoom += 0.03 * camZoomingMult;
+		}
+
 		if (generatedMusic)
 			notes.sort(FlxSort.byY, ClientPrefs.data.downScroll ? FlxSort.ASCENDING : FlxSort.DESCENDING);
 
@@ -3605,7 +3639,8 @@ class PlayState extends MusicBeatState
 			if (generatedMusic && !endingSong && !isCameraOnForcedPos)
 				moveCameraSection();
 
-			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.data.camZooms)
+			var vsliceCondition:Bool = (curBeat % camZoomingFrequency) == 0;
+			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.data.camZooms && !vsliceCondition)
 			{
 				FlxG.camera.zoom += 0.015 * camZoomingMult;
 				camHUD.zoom += 0.03 * camZoomingMult;

@@ -129,6 +129,41 @@ class ReflectionFunctions
 			}
 			return value;
 		});
+		funk.set("addToGroup", function(group:String, tag:String, ?index:Int = -1)
+		{
+			var obj:FlxSprite = LuaUtils.getObjectDirectly(tag);
+			if (obj == null || obj.destroy == null)
+			{
+				FunkinLua.luaTrace('addToGroup: Object $tag is not valid!', false, false, FlxColor.RED);
+				return;
+			}
+
+			if (['comboGroup', 'uiGroup', 'noteGroup'].contains(group))
+			{
+				PlayState.instance.add(obj);
+				return;
+			}
+
+			var groupOrArray:Dynamic = Reflect.getProperty(LuaUtils.getTargetInstance(), group);
+			if (groupOrArray == null)
+			{
+				FunkinLua.luaTrace('addToGroup: Group/Array $group is not valid!', false, false, FlxColor.RED);
+				return;
+			}
+
+			if (index < 0)
+			{
+				switch (Type.typeof(groupOrArray))
+				{
+					case TClass(Array): // Array
+						groupOrArray.push(obj);
+					default: // Group
+						groupOrArray.add(obj);
+				}
+			}
+			else
+				groupOrArray.insert(index, obj);
+		});
 		funk.set("removeFromGroup", function(obj:String, index:Int, dontDestroy:Bool = false)
 		{
 			var groupOrArray:Dynamic = Reflect.getProperty(LuaUtils.getTargetInstance(), obj);

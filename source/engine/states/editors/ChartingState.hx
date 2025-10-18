@@ -66,7 +66,7 @@ class ChartingState extends MusicBeatState
 		],
 		[
 			'Alt Idle Animation',
-			"Sets a specified suffix after the idle animation name.\nYou can use this to trigger 'idle-alt' if you set\nValue 2 to -alt\n\nValue 1: Character to set (Dad, BF or GF)\nValue 2: New suffix (Leave it blank to disable)"
+			"Sets a specified postfix after the idle animation name.\nYou can use this to trigger 'idle-alt' if you set\nValue 2 to -alt\n\nValue 1: Character to set (Dad, BF or GF)\nValue 2: New postfix (Leave it blank to disable)"
 		],
 		[
 			'Screen Shake',
@@ -84,6 +84,18 @@ class ChartingState extends MusicBeatState
 		[
 			'Play Sound',
 			"Value 1: Sound file name\nValue 2: Volume (Default: 1), ranges from 0 to 1"
+		],
+		[
+			'Set Camera Bopping',
+			"Sets how camera should bop.\nValue 1: Frequency (in beats)\nValue 2: Intensity scale (1 for default)"
+		],
+		[
+			'Zoom Camera',
+			"An attempt to emulate V-slice camera zoom.\nNot really accurate, but whatever.\n\nValue 1: Zoom length (in steps) and zoom scale.\n[separated with ',']\n\nValue 2: Zooming ease"
+		],
+		[
+			'Target Camera',
+			"Focus camera on the specific point.\nThis will also lock the camera (like Camera Follow Pos)\n\nValue1:character to focus\nValue2: separated with ',' x, y, duration, ease"
 		]
 	];
 
@@ -967,8 +979,9 @@ class ChartingState extends MusicBeatState
 			{
 				var fileName:String = file.toLowerCase().trim();
 				var wordLen:Int = 4; // length of word ".lua" and ".txt";
-				if ((#if LUA_ALLOWED fileName.endsWith('.lua') || #end#if HSCRIPT_ALLOWED (fileName.endsWith('.hx') && (wordLen = 3) == 3)
-					|| #end fileName.endsWith('.txt')) && fileName != 'readme.txt')
+				if ((#if LUA_ALLOWED fileName.endsWith('.lua')
+					|| #end#if HSCRIPT_ALLOWED (fileName.endsWith('.hx') && (wordLen = 3) == 3) || #end fileName.endsWith('.txt'))
+					&& fileName != 'readme.txt')
 				{
 					var fileToCheck:String = file.substr(0, file.length - wordLen);
 					if (!curNoteTypes.contains(fileToCheck))
