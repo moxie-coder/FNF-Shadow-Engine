@@ -65,6 +65,13 @@
       "name": "hxgamemode",
       "type": "haxelib",
       "version": null
-    }
+    },
+    {
+      "name": "hxvlc",
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/FNF-SE/hxvlc"
+    },
   ]
 }
