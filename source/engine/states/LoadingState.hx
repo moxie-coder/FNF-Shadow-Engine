@@ -66,7 +66,9 @@ class LoadingState extends MusicBeatState
 			return;
 		}
 
-		var bg = new FlxSprite().loadGraphic(Paths.image('funkay'));
+		add(new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xffcaff4d));
+
+		var bg = new FlxSprite(0, 0, Paths.image('funkay'));
 		bg.setGraphicSize(0, FlxG.height);
 		bg.updateHitbox();
 		bg.screenCenter();

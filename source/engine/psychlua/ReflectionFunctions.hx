@@ -16,6 +16,13 @@ class ReflectionFunctions
 	{
 		funk.set("getProperty", function(variable:String, ?allowMaps:Bool = false)
 		{
+			/*switch (variable)
+			{
+				case 'camFollowPos.x':
+					return PlayState.instance.camFollow.x;
+				case 'camFollowPos.y':
+					return PlayState.instance.camFollow.y;
+			}*/
 			var split:Array<String> = variable.split('.');
 			if (split.length > 1)
 				return LuaUtils.getVarInArray(LuaUtils.getPropertyLoop(split, true, true, allowMaps), split[split.length - 1], allowMaps);
@@ -23,17 +30,32 @@ class ReflectionFunctions
 		});
 		funk.set("setProperty", function(variable:String, value:Dynamic, allowMaps:Bool = false)
 		{
+			/*switch (variable)
+			{
+				case 'camFollowPos.x':
+					return PlayState.instance.camFollow.x;
+				case 'camFollowPos.y':
+					return PlayState.instance.camFollow.y;
+			}*/
 			var split:Array<String> = variable.split('.');
 			if (split.length > 1)
 			{
 				LuaUtils.setVarInArray(LuaUtils.getPropertyLoop(split, true, true, allowMaps), split[split.length - 1], value, allowMaps);
-				return true;
+				return value;
 			}
 			LuaUtils.setVarInArray(LuaUtils.getTargetInstance(), variable, value, allowMaps);
-			return true;
+			return value;
 		});
 		funk.set("getPropertyFromClass", function(classVar:String, variable:String, ?allowMaps:Bool = false)
 		{
+			if (classVar == 'ClientPrefs')
+			{
+				classVar = 'backend.ClientPrefs';
+				variable = 'data.' + variable;
+			}
+			else if (classVar == 'GameOverSubstate')
+				classVar = 'substates.GameOverSubstate';
+
 			var myClass:Dynamic = Type.resolveClass(classVar);
 			if (myClass == null)
 			{
@@ -54,6 +76,14 @@ class ReflectionFunctions
 		});
 		funk.set("setPropertyFromClass", function(classVar:String, variable:String, value:Dynamic, ?allowMaps:Bool = false)
 		{
+			if (classVar == 'ClientPrefs')
+			{
+				classVar = 'backend.ClientPrefs';
+				variable = 'data.' + variable;
+			}
+			else if (classVar == 'GameOverSubstate')
+				classVar = 'substates.GameOverSubstate';
+
 			var myClass:Dynamic = Type.resolveClass(classVar);
 			if (myClass == null)
 			{
