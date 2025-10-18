@@ -67,6 +67,11 @@
       "version": null
     },
     {
+      "name": "format",
+      "type": "haxelib",
+      "version": null
+    },
+    {
       "name": "hxvlc",
       "type": "git",
       "dir": null,
