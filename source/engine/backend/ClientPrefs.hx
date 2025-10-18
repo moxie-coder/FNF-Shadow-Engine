@@ -15,9 +15,6 @@ import states.TitleState;
 	public var controlsAlpha:Float = FlxG.onMobile ? 0.6 : 0;
 	#if mobile
 	public var screensaver:Bool = false;
-	#if android
-	public var storageType:String = "EXTERNAL_DATA";
-	#end
 	#end
 	public var hitboxType:String = "Gradient";
 	public var popUpRating:Bool = true;
