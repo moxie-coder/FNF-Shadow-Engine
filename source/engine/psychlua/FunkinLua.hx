@@ -934,7 +934,7 @@ class FunkinLua
 				FlxTransitionableState.skipNextTransOut = true;
 			}
 
-			MusicBeatState.switchState(new states.FreeplayState.FreeplaySelectState());
+			MusicBeatState.switchState(new states.FreeplayState());
 
 			#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
 

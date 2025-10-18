@@ -20,7 +20,6 @@ import openfl.events.KeyboardEvent;
 import cutscenes.CutsceneHandler;
 import cutscenes.DialogueBoxPsych;
 import states.editors.ChartingState;
-import states.FreeplayState.FreeplaySelectState;
 import substates.PauseSubState;
 import substates.GameOverSubstate;
 #if !flash
@@ -2640,13 +2639,7 @@ class PlayState extends MusicBeatState
 			Mods.loadTopMod();
 			#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
 
-			switch (SONG.song)
-			{
-				case 'Tutorial':
-					MusicBeatState.switchState(new FreeplaySelectState());
-				default:
-					MusicBeatState.switchState(new FreeplayState());
-			}
+			MusicBeatState.switchState(new FreeplayState());
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			changedDifficulty = false;
 			transitioning = true;

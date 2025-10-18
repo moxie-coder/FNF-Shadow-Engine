@@ -12,8 +12,7 @@ import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import shaders.ColorSwap;
-// SHADOW TODO
-//import states.StoryMenuState;
+import states.StoryMenuState;
 import states.MainMenuState;
 
 typedef TitleData =
@@ -93,11 +92,10 @@ class TitleState extends MusicBeatState
 			MobileData.init();
 		}
 
-		// SHADOW TODO
-		/*if (FlxG.save.data.weekCompleted != null)
+		if (FlxG.save.data.weekCompleted != null)
 		{
 			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
-		}*/
+		}
 
 		FlxG.mouse.visible = false;
 		if (FlxG.save.data.flashing == null && !FlashingState.leftState)

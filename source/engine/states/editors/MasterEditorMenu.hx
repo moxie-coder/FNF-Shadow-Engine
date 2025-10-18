@@ -105,8 +105,7 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
 			}
 			FlxG.sound.music.volume = 0;
-			// SHADOW TODO
-			//FreeplayState.destroyFreeplayVocals();
+			FreeplayState.destroyFreeplayVocals();
 		}
 		
 		var bullShit:Int = 0;

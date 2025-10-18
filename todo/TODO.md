@@ -1,3 +1,1 @@
-- Finish Story Mode
-- Finish Freeplay
 - Add Editors

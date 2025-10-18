@@ -6,7 +6,6 @@ import objects.Character;
 import flixel.FlxObject;
 import flixel.FlxSubState;
 import states.FreeplayState;
-import states.FreeplayState.FreeplaySelectState;
 
 class GameOverSubstate extends MusicBeatSubstate
 {
@@ -106,13 +105,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.chartingMode = false;
 
 			Mods.loadTopMod();
-			switch (PlayState.SONG.song)
-			{
-				case 'Tutorial':
-					MusicBeatState.switchState(new FreeplaySelectState());
-				default:
-					MusicBeatState.switchState(new FreeplayState());
-			}
+			MusicBeatState.switchState(new FreeplayState());
 
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			PlayState.instance.callOnScripts('onGameOverConfirm', [false]);
