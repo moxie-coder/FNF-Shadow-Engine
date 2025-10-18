@@ -69,7 +69,7 @@ jobs:
           sed -i '' '/<section if="android">/,/<\/section>/d' $(haxelib libpath flixel)/include.xml
 
       - name: Compile
-        run: haxelib run lime build -eval ${{ inputs.buildArgs }} -D ${{ inputs.assetType }}
+        run: haxelib run lime build ${{ inputs.buildArgs }} -D ${{ inputs.assetType }}
 
       - name: Make IPA
         if: inputs.name == 'iOS'
