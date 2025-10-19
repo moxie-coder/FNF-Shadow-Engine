@@ -5,7 +5,7 @@ A highly modified Psych Engine 0.7.3.
 Ready to be source-modded.
 
 ## Differences Between The Original
-- Uses Our Lime and HXCPP forks
+- Uses Our [Lime](https://github.com/HomuHomu833-haxelibs/lime) and [HXCPP](https://github.com/HomuHomu833-haxelibs/hxcpp) forks
 - Uses Latest Haxe
 - Uses CNE FPS Counter and Some Code From [P-Slice](https://github.com/Psych-Slice/P-Slice), [Leather Engine (RIP)](https://github.com/Vortex2Oblivion/LeatherEngine) and [REDACTED]
 - Mobile Support (duh)
