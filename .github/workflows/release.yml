@@ -143,17 +143,6 @@ jobs:
           cd /home/runner/windowsBuild-x86_64
           zip -r "/home/runner/${{ env.PROJECT_NAME }}-S3TC-windows-x86_64.zip" .
 
-      - name: Download Windows ARM64 Build
-        uses: actions/download-artifact@main
-        with:
-          name: windowsBuild-arm64-ASTC
-          path: /home/runner/windowsBuild-arm64
-
-      - name: Zip Windows ARM64 Build For Release
-        run: |
-          cd /home/runner/windowsBuild-arm64
-          zip -r "/home/runner/${{ env.PROJECT_NAME }}-ASTC-windows-arm64.zip" .
-
       - name: Publish The Release
         uses: softprops/action-gh-release@v2
         with:
