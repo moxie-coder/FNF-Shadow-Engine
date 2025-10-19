@@ -696,8 +696,8 @@ class PlayState extends MusicBeatState
 		addTouchPadCamera(false);
 		mobileControls.instance.forEachAlive((button) ->
 		{
-			if (touchPad.buttonP != null)			
-					button.deadZones.push(touchPad.buttonP);
+			if (touchPad.buttonP != null)
+				button.deadZones.push(touchPad.buttonP);
 		});
 
 		super.create();

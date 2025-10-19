@@ -67,15 +67,12 @@ class OptionsState extends MusicBeatState
 		bg.screenCenter();
 		add(bg);
 
-		if (controls.mobileC)
-		{
-			tipText = new FlxText(150, FlxG.height - 24, 0, 'Press ' + #if mobile 'C' #else 'CTRL' #end + ' to Go Mobile Controls Menu', 16);
-			tipText.setFormat("VCR OSD Mono", 17, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			tipText.borderSize = 1.25;
-			tipText.scrollFactor.set();
-			tipText.antialiasing = ClientPrefs.data.antialiasing;
-			add(tipText);
-		}
+		tipText = new FlxText(150, FlxG.height - #if android 40 #else 24 #end, 0, 'Press ${controls.mobileC ? #if android 'X' #else 'C' #end : 'CTRL'} to Go Mobile Controls Menu' #if android + '\nPress ${controls.mobileC ? 'Y' : 'SHIFT'} to Open DATA Folder' #end, 16);
+		tipText.setFormat("VCR OSD Mono", 17, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		tipText.borderSize = 1.25;
+		tipText.scrollFactor.set();
+		tipText.antialiasing = ClientPrefs.data.antialiasing;
+		add(tipText);
 
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
@@ -96,7 +93,7 @@ class OptionsState extends MusicBeatState
 		changeSelection();
 		ClientPrefs.saveSettings();
 
-		addTouchPad("UP_DOWN", "A_B_C");
+		addTouchPad("UP_DOWN", #if android "A_B_X_Y" #else "A_B_C" #end);
 
 		#if (target.threaded)
 		Thread.create(() ->
@@ -126,7 +123,7 @@ class OptionsState extends MusicBeatState
 		ClientPrefs.loadPrefs();
 		controls.isInSubstate = false;
 		removeTouchPad();
-		addTouchPad("UP_DOWN", "A_B_C");
+		addTouchPad("UP_DOWN", "A_B_X_Y");
 		persistentUpdate = true;
 	}
 
@@ -147,11 +144,16 @@ class OptionsState extends MusicBeatState
 				changeSelection(1);
 			}
 
-			if ((touchPad.buttonC.justPressed || FlxG.keys.justPressed.CONTROL) && controls.mobileC)
+			if ((#if android touchPad.buttonX.justPressed #else touchPad.buttonC.justPressed #end || FlxG.keys.justPressed.CONTROL) && controls.mobileC)
 			{
 				persistentUpdate = false;
 				openSubState(new MobileControlSelectSubState());
 			}
+
+			#if android
+			if (touchPad.buttonY.justPressed || FlxG.keys.justPressed.SHIFT)
+				android.Tools.openDataFolder();
+			#end
 
 			if (controls.BACK)
 			{

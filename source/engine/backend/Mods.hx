@@ -188,7 +188,7 @@ class Mods
 		#if MODS_ALLOWED
 		try
 		{
-			for (mod in CoolUtil.coolTextFile(#if android StorageUtil.getExternalStorageDirectory() + #else Sys.getCwd() + #end 'modsList.txt'))
+			for (mod in CoolUtil.coolTextFile(#if mobiile Sys.getCwd() + #end 'modsList.txt'))
 			{
 				// trace('Mod: $mod');
 				if (mod.trim().length < 1)
@@ -218,7 +218,7 @@ class Mods
 		var added:Array<String> = [];
 		try
 		{
-			for (mod in CoolUtil.coolTextFile(#if android StorageUtil.getExternalStorageDirectory() + #else Sys.getCwd() + #end 'modsList.txt'))
+			for (mod in CoolUtil.coolTextFile(#if mobile Sys.getCwd() + #end 'modsList.txt'))
 			{
 				var dat:Array<String> = mod.split("|");
 				var folder:String = dat[0];

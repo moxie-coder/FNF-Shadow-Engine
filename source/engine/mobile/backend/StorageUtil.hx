@@ -12,7 +12,7 @@ class StorageUtil
 
 	public static function saveContent(fileName:String, fileData:String, ?alert:Bool = true):Void
 	{
-		final folder:String = #if android StorageUtil.getExternalStorageDirectory() + #else Sys.getCwd() + #end 'saves/';
+		final folder:String = Sys.getCwd() + 'saves/';
 
 		try
 		{
@@ -31,10 +31,6 @@ class StorageUtil
 	}
 
 	#if android
-	// always force path due to haxe
-	public static function getExternalStorageDirectory():String
-		return '/sdcard/.ShadowEngine/';
-
 	public static function requestPermissions():Void
 	{
 		if (AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU)
@@ -65,17 +61,6 @@ class StorageUtil
 		catch (e:Dynamic)
 		{
 			CoolUtil.showPopUp('Please create directory to\n' + StorageUtil.getStorageDirectory() + '\nPress OK to close the game', 'Error!');
-			lime.system.System.exit(1);
-		}
-
-		try
-		{
-			if (!FileSystem.exists(StorageUtil.getExternalStorageDirectory() + 'mods'))
-				FileSystem.createDirectory(StorageUtil.getExternalStorageDirectory() + 'mods');
-		}
-		catch (e:Dynamic)
-		{
-			CoolUtil.showPopUp('Please create directory to\n' + StorageUtil.getExternalStorageDirectory() + '\nPress OK to close the game', 'Error!');
 			lime.system.System.exit(1);
 		}
 	}

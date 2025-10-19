@@ -89,8 +89,7 @@ class CopyState extends MusicBeatState
 				if (failedFiles.length > 0)
 				{
 					CoolUtil.showPopUp(failedFiles.join('\n'), 'Failed To Copy ${failedFiles.length} File.');
-					final folder:String = #if android StorageUtil.getExternalStorageDirectory() + #else Sys.getCwd() + #end
-					'logs/';
+					final folder:String = Sys.getCwd() + 'logs/';
 					if (!FileSystem.exists(folder))
 						FileSystem.createDirectory(folder);
 					File.saveContent(folder + Date.now().toString().replace(' ', '-').replace(':', "'") + '-CopyState' + '.txt', failedFilesStack.join('\n'));
@@ -129,14 +128,7 @@ class CopyState extends MusicBeatState
 						createContentFromInternal(file);
 					else
 					{
-						var path:String = '';
-						#if android
-						if (file.startsWith('mods/'))
-							path = StorageUtil.getExternalStorageDirectory() + file;
-						else
-						#end
-						path = file;
-						File.saveBytes(path, getFileBytes(getFile(file)));
+						File.saveBytes(file, getFileBytes(getFile(file)));
 					}
 				}
 				else
@@ -157,10 +149,6 @@ class CopyState extends MusicBeatState
 	{
 		var fileName = Path.withoutDirectory(file);
 		var directory = Path.directory(file);
-		#if android
-		if (fileName.startsWith('mods/'))
-			directory = StorageUtil.getExternalStorageDirectory() + directory;
-		#end
 		try
 		{
 			var fileData:String = OpenFLAssets.getText(getFile(file));
@@ -212,12 +200,6 @@ class CopyState extends MusicBeatState
 		var mods = locatedFiles.filter(folder -> folder.startsWith('mods/'));
 		locatedFiles = assets.concat(mods);
 		locatedFiles = locatedFiles.filter(file -> !FileSystem.exists(file));
-		#if android
-		for (file in locatedFiles)
-			if (file.startsWith('mods/'))
-				locatedFiles = locatedFiles.filter(file -> !FileSystem.exists(StorageUtil.getExternalStorageDirectory() + file));
-		#end
-
 		var filesToRemove:Array<String> = [];
 
 		for (file in locatedFiles)
