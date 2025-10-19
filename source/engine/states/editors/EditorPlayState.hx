@@ -135,14 +135,10 @@ class EditorPlayState extends MusicBeatSubstate
 		add(dataTxt);
 
 		var daButton:String;
-		#if android
-		daButton = "BACK";
-		#else
 		if (controls.mobileC)
-			daButton = "X";
+			daButton = "P";
 		else
 			daButton = "ESC";
-		#end
 
 		var tipText:FlxText = new FlxText(10, FlxG.height - 24, 0, 'Press ' + daButton + ' to Go Back to Chart Editor', 16);
 		tipText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -161,23 +157,20 @@ class EditorPlayState extends MusicBeatSubstate
 		DiscordClient.changePresence('Playtesting on Chart Editor', PlayState.SONG.song, null, true, songLength);
 		#end
 
-		#if !android
-		addTouchPad("NONE", "P");
-		addTouchPadCamera(false);
-		#end
-
 		addMobileControls(false);
 		mobileControls.instance.visible = true;
 		mobileControls.onButtonDown.add(onButtonPress);
 		mobileControls.onButtonUp.add(onButtonRelease);
+
+		addTouchPad("NONE", "P");
+		addTouchPadCamera(false);
 
 		RecalculateRating();
 	}
 
 	override function update(elapsed:Float)
 	{
-		if (#if !android touchPad.buttonP.justPressed
-			|| #end FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justPressed.BACK #end)
+		if (touchPad.buttonP.justPressed || FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justPressed.BACK #end)
 		{
 			mobileControls.instance.visible = false;
 			endSong();
@@ -833,6 +826,9 @@ class EditorPlayState extends MusicBeatSubstate
 
 	private function onButtonPress(button:TouchButton):Void
 	{
+		if (button.IDs.filter(id -> id.toString().startsWith("EXTRA")).length > 0)
+			return;
+
 		var buttonCode:Int = (button.IDs[0].toString().startsWith('NOTE')) ? button.IDs[0] : button.IDs[1];
 		if (button.justPressed)
 			keyPressed(buttonCode);
@@ -840,6 +836,9 @@ class EditorPlayState extends MusicBeatSubstate
 
 	private function onButtonRelease(button:TouchButton):Void
 	{
+		if (button.IDs.filter(id -> id.toString().startsWith("EXTRA")).length > 0)
+			return;
+
 		var buttonCode:Int = (button.IDs[0].toString().startsWith('NOTE')) ? button.IDs[0] : button.IDs[1];
 		if (buttonCode > -1)
 			keyReleased(buttonCode);
