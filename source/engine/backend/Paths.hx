@@ -15,7 +15,7 @@ import openfl.media.Sound;
 class Paths
 {
 	public static var IMAGE_EXT:String = "png";
-	public static var GPU_IMAGE_EXT:String = #if ASTC "astc" #elseif ETC2 "ktx" #elseif S3TC "dds" #end;
+	public static var GPU_IMAGE_EXT:String = #if ASTC "astc" #elseif ETC2 "ktx" #elseif S3TC "dds" #else IMAGE_EXT #end;
 	public static var LOADOLD:Bool = false;
 
 	public static function excludeAsset(key:String)
