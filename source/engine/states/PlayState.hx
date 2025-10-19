@@ -1319,6 +1319,7 @@ class PlayState extends MusicBeatState
 			opponentVocals.time = time;
 			#if FLX_PITCH
 			vocals.pitch = playbackRate;
+			opponentVocals.pitch = playbackRate;
 			#end
 		}
 		vocals.play();
@@ -1792,6 +1793,8 @@ class PlayState extends MusicBeatState
 			return;
 
 		trace('resynced vocals at ' + Math.floor(Conductor.songPosition));
+		vocals.pause();
+		opponentVocals.pause();
 
 		FlxG.sound.music.play();
 		#if FLX_PITCH FlxG.sound.music.pitch = playbackRate; #end
@@ -1854,6 +1857,8 @@ class PlayState extends MusicBeatState
 		{
 			if (controls.justPressed('debug_1'))
 				openChartEditor();
+			else if (controls.justPressed('debug_2'))
+				openCharacterEditor();
 		}
 
 		if (healthBar.bounds.max != null && health > healthBar.bounds.max)
@@ -2132,6 +2137,17 @@ class PlayState extends MusicBeatState
 		#end
 
 		MusicBeatState.switchState(new ChartingState());
+	}
+
+	public function openCharacterEditor()
+	{
+		FlxG.camera.followLerp = 0;
+		persistentUpdate = false;
+		paused = true;
+		if (FlxG.sound.music != null)
+			FlxG.sound.music.stop();
+		#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
+		MusicBeatState.switchState(new CharacterEditorState(SONG.player2));
 	}
 
 	public var isDead:Bool = false; // Don't mess with this on Lua!!!
@@ -3142,11 +3158,11 @@ class PlayState extends MusicBeatState
 		for (key in keysArray)
 		{
 			holdArray.push(controls.pressed(key));
-			if (controls.controllerMode)
-			{
-				pressArray.push(controls.justPressed(key));
-				releaseArray.push(controls.justReleased(key));
-			}
+			/*if (controls.controllerMode)
+				{ */
+			pressArray.push(controls.justPressed(key));
+			releaseArray.push(controls.justReleased(key));
+			// }
 		}
 
 		for (i in 0...pressArray.length)
@@ -3407,6 +3423,19 @@ class PlayState extends MusicBeatState
 			return;
 		if (cpuControlled && note.ignoreNote)
 			return;
+
+		if (!note.noMissAnimation)
+		{
+			switch (note.noteType)
+			{
+				case 'Hurt Note': // Hurt note
+					if (boyfriend.animOffsets.exists('hurt'))
+					{
+						boyfriend.playAnim('hurt', true);
+						boyfriend.specialAnim = true;
+					}
+			}
+		}
 
 		var isSus:Bool = note.isSustainNote; // GET OUT OF MY HEAD, GET OUT OF MY HEAD, GET OUT OF MY HEAD
 		var leData:Int = Math.round(Math.abs(note.noteData));
