@@ -42,10 +42,12 @@
 	<!-- Assets -->
 	<assets path="assets/embed" embed="true" />
 	<assets path="assets/fonts" embed="true" />
-	<assets path="assets/shared" embed="true" unless="ASTC || ETC2 || NOEMBED" />
-	<assets path="assets/shared" if="ASTC || ETC2 || NOEMBED" />
-	<assets path="images-astc" rename="assets/shared/images" if="ASTC" />
-	<assets path="images-ktx" rename="assets/shared/images" if="ETC2" />
+	<assets path="assets/shared" embed="true" unless="NOEMBED" />
+	<assets path="assets/shared" if="NOEMBED" />
+	<assets path="images-astc" rename="assets/shared/images" embed="true" if="ASTC" unless="NOEMBED" />
+	<assets path="images-astc" rename="assets/shared/images" if="ASTC NOEMBED" />
+	<assets path="images-ktx" rename="assets/shared/images" embed="true" if="ETC2" unless="NOEMBED" />
+	<assets path="images-ktx" rename="assets/shared/images" if="ETC2 NOEMBED" />
 	<assets path="images-dds" rename="assets/shared/images" embed="true" if="S3TC" unless="NOEMBED" />
 	<assets path="images-dds" rename="assets/shared/images" if="S3TC NOEMBED" />
 	<assets path="images-png" rename="assets/shared/images" embed="true" if="PNG" unless="NOEMBED" />
