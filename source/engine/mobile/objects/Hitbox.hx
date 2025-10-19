@@ -105,13 +105,13 @@ class Hitbox extends MobileInputManager implements IMobileControls
 		hint.statusIndicatorType = NONE;
 		hint.loadGraphic(createHintGraphic(Width, Height));
 
-		hint.label = new FlxSprite();
+		/*hint.label = new FlxSprite();
 		hint.labelStatusDiff = (ClientPrefs.data.hitboxType != "Hidden") ? ClientPrefs.data.controlsAlpha : 0.00001;
-		hint.label.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035)));
+		hint.label.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), true));
 		if (ClientPrefs.data.hitboxPos)
 			hint.label.offset.y -= (hint.height - hint.label.height) / 2;
 		else
-			hint.label.offset.y += (hint.height - hint.label.height) / 2;
+			hint.label.offset.y += (hint.height - hint.label.height) / 2;*/
 
 		if (ClientPrefs.data.hitboxType != "Hidden")
 		{
