@@ -2390,9 +2390,9 @@ class ChartingState extends MusicBeatState
 			+ "\nSection: "
 			+ curSec
 			+ "\n\nBeat: "
-			+ Std.string(curDecBeat).substring(0, 4)
+			+ Std.string(Math.floor(curDecBeat * 10) / 10)
 			+ "\n\nStep: "
-			+ curStep
+			+ Std.string(Math.floor(curDecStep * 10) / 10)
 			+ "\n\nBeat Snap: "
 			+ quantization
 			+ "th";
