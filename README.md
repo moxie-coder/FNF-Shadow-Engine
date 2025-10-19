@@ -7,7 +7,7 @@ Ready to be source-modded.
 ## Differences Between The Original
 - Uses Our Lime and HXCPP forks
 - Uses Latest Haxe
-- Uses CNE FPS Counter and Some Code From P-Slice, Leather Engine (RIP) and [REDACTED]
+- Uses CNE FPS Counter and Some Code From [P-Slice](https://github.com/Psych-Slice/P-Slice), [Leather Engine (RIP)](https://github.com/Vortex2Oblivion/LeatherEngine) and [REDACTED]
 - Mobile Support (duh)
 - Applies OpenAL Soft Config For Better Audio
 - Slightly More Accurate FPS
