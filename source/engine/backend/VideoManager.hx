@@ -27,7 +27,7 @@ class VideoManager extends Video
 	public var onVideoEnd:FlxSignal;
 	public var onVideoStart:FlxSignal;
 
-	public function new(#if (hxCodec >= "3.0.0" && hxCodec) ?autoDispose:Bool = true #elseif hxvlc?autoDispose:Bool = true, smoothing:Bool = true #end)
+	public function new(#if (hxCodec >= "3.0.0" && hxCodec) ?autoDispose:Bool = true #elseif hxvlc ?autoDispose:Bool = true, smoothing:Bool = true #end)
 	{
 		super();
 		onVideoEnd = new FlxSignal();
