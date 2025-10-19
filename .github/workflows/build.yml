@@ -54,6 +54,10 @@ jobs:
         with:
           xcode-version: '16.4'
 
+      - name: Install libVLC
+        if: inputs.name == 'Linux'
+        run: sudo apt install libvlc-dev libvlccore-dev
+
       - name: Install Libraries
         run: |
           haxelib install hmm --quiet
