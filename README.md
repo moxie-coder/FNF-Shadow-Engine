@@ -13,7 +13,7 @@ Ready to be source-modded.
 - Kade Engine Results Screen
 - Kade Engine Note Timing (man I feel old)
 - PlayState has `changeNoteSkin` for easy in-game note skin changing
-- Play as Opponent (not implemented for Gameplay Changers yet)
+- Play as Opponent
 - Stripped to only have Test song and some characters
 - VSync and Pop Up Score Option
 

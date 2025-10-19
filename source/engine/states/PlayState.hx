@@ -294,6 +294,7 @@ class PlayState extends MusicBeatState
 
 		PauseSubState.songName = null; // Reset to default
 		playbackRate = ClientPrefs.getGameplaySetting('songspeed');
+		characterPlayingAsDad = ClientPrefs.getGameplaySetting('playAsOpponent');
 
 		keysArray = ['note_left', 'note_down', 'note_up', 'note_right'];
 
@@ -327,11 +328,6 @@ class PlayState extends MusicBeatState
 
 		if (SONG == null)
 			SONG = Song.loadFromJson('tutorial');
-
-		/*if (SONG.song == 'Enraged' || SONG.song == 'Isolation' || SONG.song == 'Betalation' || SONG.song == 'Far Lost')
-				characterPlayingAsDad = true;
-			else */
-		characterPlayingAsDad = false;
 
 		Conductor.mapBPMChanges(SONG);
 		Conductor.bpm = SONG.bpm;
@@ -584,21 +580,21 @@ class PlayState extends MusicBeatState
 
 		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11), 'healthBar', function() return health, 0, 2);
 		healthBar.screenCenter(X);
-		healthBar.leftToRight = false;
-		healthBar.flipX = (!characterPlayingAsDad) ? false : true;
+		healthBar.leftToRight = characterPlayingAsDad;
+		healthBar.flipX = false;
 		healthBar.scrollFactor.set();
 		healthBar.visible = !ClientPrefs.data.hideHud;
 		healthBar.alpha = ClientPrefs.data.healthBarAlpha;
 		reloadHealthBarColors();
 		uiGroup.add(healthBar);
 
-		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
+		iconP1 = new HealthIcon(boyfriend.healthIcon, characterPlayingAsDad);
 		iconP1.y = healthBar.y - 75;
 		iconP1.visible = !ClientPrefs.data.hideHud;
 		iconP1.alpha = ClientPrefs.data.healthBarAlpha;
 		uiGroup.add(iconP1);
 
-		iconP2 = new HealthIcon(dad.healthIcon, false);
+		iconP2 = new HealthIcon(dad.healthIcon, !characterPlayingAsDad);
 		iconP2.y = healthBar.y - 75;
 		iconP2.visible = !ClientPrefs.data.hideHud;
 		iconP2.alpha = ClientPrefs.data.healthBarAlpha;
@@ -2077,8 +2073,8 @@ class PlayState extends MusicBeatState
 			healthBar.bounds.min, healthBar.bounds.max, 0, 100);
 		healthBar.percent = (newPercent != null ? newPercent : 0);
 
-		iconP1.animation.curAnim.curFrame = (healthBar.percent < 20) ? 1 : 0; // If health is under 20%, change player icon to frame 1 (losing icon), otherwise, frame 0 (normal)
-		iconP2.animation.curAnim.curFrame = (healthBar.percent > 80) ? 1 : 0; // If health is over 80%, change opponent icon to frame 1 (losing icon), otherwise, frame 0 (normal)
+		iconP1.animation.curAnim.curFrame = characterPlayingAsDad ? (healthBar.percent > 80 ? 1 : 0) : (healthBar.percent < 20 ? 1 : 0);
+		iconP2.animation.curAnim.curFrame = characterPlayingAsDad ? (healthBar.percent < 20 ? 1 : 0) : (healthBar.percent > 80 ? 1 : 0);
 		return health;
 	}
 
