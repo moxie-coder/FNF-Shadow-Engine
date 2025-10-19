@@ -15,6 +15,6 @@ Ready to be source-modded.
 - PlayState has `changeNoteSkin` for easy in-game note skin changing
 - Play as Opponent (not implemented for Gameplay Changers yet)
 - Stripped to only have Test song and some characters
-- VSync and Pop Up Scor Option
+- VSync and Pop Up Score Option
 
 Discord server: https://discord.gg/krFK9WWYHg
