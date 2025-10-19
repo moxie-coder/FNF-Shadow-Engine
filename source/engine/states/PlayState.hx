@@ -2661,6 +2661,8 @@ class PlayState extends MusicBeatState
 	public var showCombo:Bool = false;
 	public var showComboNum:Bool = true;
 	public var showRating:Bool = true;
+	public var noteTimingRating:FlxText;
+	public var noteTimingRatingTween:FlxTween;
 
 	// Stores Ratings and Combo Sprites in a group
 	public var comboGroup:FlxSpriteGroup;
@@ -2699,7 +2701,8 @@ class PlayState extends MusicBeatState
 
 	private function popUpScore(note:Note = null):Void
 	{
-		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.data.ratingOffset);
+		var noteDiffNoAbs:Float = note.strumTime - Conductor.songPosition + ClientPrefs.data.ratingOffset;
+		var noteDiff:Float = Math.abs(noteDiffNoAbs);
 		vocals.volume = 1;
 
 		if (!ClientPrefs.data.comboStacking && comboGroup.members.length > 0)
@@ -2802,6 +2805,48 @@ class PlayState extends MusicBeatState
 
 			comboSpr.updateHitbox();
 			rating.updateHitbox();
+
+			if (ClientPrefs.data.showNoteTiming && (!ClientPrefs.data.hideHud && showRating) && noteTimingRating == null)
+			{
+				add(noteTimingRating = new FlxText(0, 0, 0, "0ms"));
+			}
+			if (noteTimingRating != null)
+			{
+				switch (daRating.name)
+				{
+					case 'shit' | 'bad':
+						noteTimingRating.color = FlxColor.RED;
+					case 'good':
+						noteTimingRating.color = FlxColor.LIME;
+					case 'sick':
+						noteTimingRating.color = FlxColor.CYAN;
+				}
+				noteTimingRating.borderStyle = OUTLINE;
+				noteTimingRating.borderSize = 1;
+				noteTimingRating.borderColor = FlxColor.BLACK;
+				noteTimingRating.text = FlxMath.roundDecimal(noteDiffNoAbs / playbackRate, 3) + "ms";
+				noteTimingRating.size = 20;
+				noteTimingRating.camera = camHUD;
+				noteTimingRating.alpha = 1;
+				noteTimingRating.active = true;
+
+				if (noteTimingRatingTween != null)
+				{
+					noteTimingRatingTween.cancel();
+				}
+
+				noteTimingRating.screenCenter();
+				noteTimingRating.x = placement + ClientPrefs.data.comboOffset[0] + 100;
+				noteTimingRating.y += -ClientPrefs.data.comboOffset[1] - 80 + (comboSpr?.height ?? 0);
+				noteTimingRating.acceleration.y = 600;
+				noteTimingRating.velocity.y -= 150;
+				noteTimingRating.velocity.x += comboSpr?.velocity?.x ?? (FlxG.random.int(1, 10) * playbackRate);
+
+				noteTimingRatingTween = FlxTween.tween(noteTimingRating, {alpha: 0}, 0.2 / playbackRate, {
+					startDelay: Conductor.crochet * 0.001 / playbackRate,
+					onComplete: (t) -> noteTimingRating.active = false
+				});
+			}
 
 			var seperatedScore:Array<Int> = [];
 

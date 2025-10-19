@@ -10,10 +10,11 @@ Ready to be source-modded.
 - Uses CNE FPS Counter
 - Mobile Support (duh)
 - Linux ARM Support (FNF on Raspberry Pi baby)
-- Kade Engine Results Screen (broken when playback rate is set)
+- Kade Engine Results Screen
+- Kade Engine Note Timing (man I feel old)
 - PlayState has `changeNoteSkin` for easy in-game note skin changing
 - Play as Opponent (not implemented for Gameplay Changers yet)
 - Stripped to only have Test song and some characters
-- VSync Option
+- VSync and Pop Up Scor Option
 
 Discord server: https://discord.gg/krFK9WWYHg

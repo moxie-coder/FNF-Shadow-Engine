@@ -17,8 +17,6 @@ import states.TitleState;
 	public var screensaver:Bool = false;
 	#end
 	public var hitboxType:String = "Gradient";
-	public var popUpRating:Bool = true;
-	public var vsync:Bool = false;
 	public var gameOverVibration:Bool = false;
 
 	// end of Mobile and Mobile Controls Releated
@@ -89,6 +87,10 @@ import states.TitleState;
 	public var guitarHeroSustains:Bool = false;
 	public var discordRPC:Bool = true;
 	public var loadingScreen:Bool = true;
+
+	public var popUpRating:Bool = true;
+	public var vsync:Bool = false;
+	public var showNoteTiming:Bool = false;
 }
 
 class ClientPrefs

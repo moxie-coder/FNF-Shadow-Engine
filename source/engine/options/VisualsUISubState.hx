@@ -105,6 +105,10 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 		#end
 
+		var option:Option = new Option('Show Note Timing', 'If checked, a timing of the hitted note will be shown on the screen (in miliseconds)',
+			'showNoteTiming', 'bool');
+		addOption(option);
+
 		var option:Option = new Option('Combo Stacking', "If unchecked, Ratings and Combo won't stack, saving on System Memory and easier to read",
 			'comboStacking', 'bool');
 		addOption(option);
