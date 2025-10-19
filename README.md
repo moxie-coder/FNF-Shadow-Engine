@@ -14,10 +14,9 @@ Ready to be source-modded.
 - Some 0.6.3 Compability
 - Linux ARM Support (FNF on Raspberry Pi baby)
 - Kade Engine Results Screen
-- Kade Engine Note Timing Option (man I feel old)
 - PlayState has `changeNoteSkin` for easy in-game note skin changing
 - Play as Opponent
 - Stripped to only have Test song and some characters
-- VSync and Pop Up Score Option
+- Kade Engine Note Timing (man I feel old), VSync and Pop Up Score Option
 
 Discord server: https://discord.gg/krFK9WWYHg
