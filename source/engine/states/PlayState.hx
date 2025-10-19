@@ -663,11 +663,6 @@ class PlayState extends MusicBeatState
 			}
 		#end
 
-		addMobileControls(false);
-		mobileControls.instance.visible = true;
-		mobileControls.onButtonDown.add(onButtonPress);
-		mobileControls.onButtonUp.add(onButtonRelease);
-
 		startCallback();
 		RecalculateRating();
 
@@ -693,8 +688,17 @@ class PlayState extends MusicBeatState
 		cacheCountdown();
 		cachePopUpScore();
 
+		addMobileControls(false);
+		mobileControls.instance.visible = true;
+		mobileControls.onButtonDown.add(onButtonPress);
+		mobileControls.onButtonUp.add(onButtonRelease);
 		addTouchPad("NONE", "P");
 		addTouchPadCamera(false);
+		mobileControls.instance.forEachAlive((button) ->
+		{
+			if (touchPad.buttonP != null)			
+					button.deadZones.push(touchPad.buttonP);
+		});
 
 		super.create();
 		Paths.clearUnusedMemory();
