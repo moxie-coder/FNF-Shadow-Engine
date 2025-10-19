@@ -113,7 +113,7 @@ jobs:
       - name: Download macOS ARM64 Build
         uses: actions/download-artifact@main
         with:
-          name: macOSBuild-arm64-PNG
+          name: macOSBuild-arm64-S3TC
           path: /home/runner/macOSBuild-arm64
 
       - name: Tar macOS ARM64 Build For Release
@@ -124,7 +124,7 @@ jobs:
       - name: Download macOS x86_64 Build
         uses: actions/download-artifact@main
         with:
-          name: macOSBuild-x86_64-PNG
+          name: macOSBuild-x86_64-S3TC
           path: /home/runner/macOSBuild-x86_64
 
       - name: Tar macOS x86_64 Build For Release
