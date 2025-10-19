@@ -2,8 +2,10 @@ package debug.codename;
 
 import openfl.text.TextField;
 
-class ShadowBuildField extends TextField {
-	public function new() {
+class ShadowBuildField extends TextField
+{
+	public function new()
+	{
 		super();
 		defaultTextFormat = Framerate.textFormat;
 		autoSize = LEFT;

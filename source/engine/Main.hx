@@ -47,10 +47,12 @@ class Main extends Sprite
 	{
 		#if linux
 		// request start game mode
-		if (GamemodeClient.request_start() != 0) {
+		if (GamemodeClient.request_start() != 0)
+		{
 			Sys.println('Failed to request gamemode start: ${GamemodeClient.error_string()}...');
-			//Sys.exit(1);
-		} else
+			// Sys.exit(1);
+		}
+		else
 			Sys.println('Succesfully requested gamemode to start...');
 		#end
 	}
@@ -112,8 +114,9 @@ class Main extends Sprite
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 
-		final funkinGame:FlxGame = new FlxGame(game.width, game.height, #if (mobile && MODS_ALLOWED) !mobile.states.CopyState.checkExistingFiles() ? mobile.states.CopyState : #end game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate,
-			game.framerate, game.skipSplash, game.startFullscreen);
+		final funkinGame:FlxGame = new FlxGame(game.width, game.height,
+			#if (mobile && MODS_ALLOWED) !mobile.states.CopyState.checkExistingFiles() ? mobile.states.CopyState : #end game.initialState,
+			#if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
 
 		@:privateAccess
 		{

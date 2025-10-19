@@ -815,10 +815,13 @@ class DialogueCharacterEditorState extends MusicBeatState
 
 	function loadCharacter()
 	{
-		var jsonFilter:FileFilter = new FileFilter('JSON', 'json');
 		#if mobile
-		// SHADOW TODO
+		var fileDialog = new lime.ui.FileDialog();
+		fileDialog.onOpen.add((file) -> onLoadComplete(file));
+		fileDialog.onCancel.add(() -> onLoadCancel(true));
+		fileDialog.open('json');
 		#else
+		var jsonFilter:FileFilter = new FileFilter('JSON', 'json');
 		_file = new FileReference();
 		_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.addEventListener(Event.CANCEL, onLoadCancel);
@@ -827,13 +830,34 @@ class DialogueCharacterEditorState extends MusicBeatState
 		#end
 	}
 
-	function onLoadComplete(_):Void
+	function onLoadComplete(#if mobile file:haxe.io.Bytes #else _ #end):Void
 	{
+		#if mobile
+		if (file != null && file.length > 0)
+		{
+			var jsonStr:String = file.getString(0, file.length);
+			var loadedChar:DialogueCharacterFile = cast Json.parse(jsonStr);
+			if (loadedChar.dialogue_pos != null) // Make sure it's really a dialogue character
+			{
+				trace("Successfully loaded file.");
+				character.jsonFile = loadedChar;
+				reloadCharacter();
+				reloadAnimationsDropDown();
+				updateCharTypeBox();
+				updateTextBox();
+				daText.resetDialogue();
+				imageInputText.text = character.jsonFile.image;
+				scaleStepper.value = character.jsonFile.scale;
+				xStepper.value = character.jsonFile.position[0];
+				yStepper.value = character.jsonFile.position[1];
+				return;
+			}
+		}
+		#elseif sys
 		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 
-		#if sys
 		var fullPath:String = null;
 		@:privateAccess
 		if (_file.__path != null)
@@ -875,10 +899,12 @@ class DialogueCharacterEditorState extends MusicBeatState
 	 */
 	function onLoadCancel(_):Void
 	{
+		#if !mobile
 		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+		#end
 		trace("Cancelled file loading.");
 	}
 
@@ -887,10 +913,12 @@ class DialogueCharacterEditorState extends MusicBeatState
 	 */
 	function onLoadError(_):Void
 	{
+		#if !mobile
 		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+		#end
 		trace("Problem loading file");
 	}
 

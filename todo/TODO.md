@@ -1,1 +1,0 @@
-- Add File Load support for Editors

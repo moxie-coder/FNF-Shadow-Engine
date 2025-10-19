@@ -334,9 +334,8 @@ class WeekEditorState extends MusicBeatState
 		var isMissing:Bool = true;
 		if (assetName != null && assetName.length > 0)
 		{
-			if (#if MODS_ALLOWED FileSystem.exists(Paths.modsImages('menubackgrounds/menu_' +
-				assetName)) || #end Assets.exists(Paths.getPath('images/menubackgrounds/menu_'
-				+ assetName + '.png', IMAGE), IMAGE))
+			if (#if MODS_ALLOWED FileSystem.exists(Paths.modsImages('menubackgrounds/menu_' + assetName))
+				|| #end Assets.exists(Paths.getPath('images/menubackgrounds/menu_' + assetName + '.png', IMAGE), IMAGE))
 			{
 				bgSprite.loadGraphic(Paths.image('menubackgrounds/menu_' + assetName));
 				isMissing = false;
@@ -358,8 +357,8 @@ class WeekEditorState extends MusicBeatState
 		var isMissing:Bool = true;
 		if (assetName != null && assetName.length > 0)
 		{
-			if (#if MODS_ALLOWED FileSystem.exists(Paths.modsImages('storymenu/' + assetName)) || #end Assets.exists(Paths.getPath('images/storymenu/'
-				+ assetName + '.png', IMAGE), IMAGE))
+			if (#if MODS_ALLOWED FileSystem.exists(Paths.modsImages('storymenu/' + assetName))
+				|| #end Assets.exists(Paths.getPath('images/storymenu/' + assetName + '.png', IMAGE), IMAGE))
 			{
 				weekThing.loadGraphic(Paths.image('storymenu/' + assetName));
 				isMissing = false;
@@ -502,10 +501,13 @@ class WeekEditorState extends MusicBeatState
 
 	public static function loadWeek()
 	{
-		var jsonFilter:FileFilter = new FileFilter('JSON', 'json');
 		#if mobile
-		// SHADOW TODO
+		var fileDialog = new lime.ui.FileDialog();
+		fileDialog.onOpen.add((file) -> onLoadComplete(file));
+		fileDialog.onCancel.add(() -> onLoadCancel(true));
+		fileDialog.open('json');
 		#else
+		var jsonFilter:FileFilter = new FileFilter('JSON', 'json');
 		_file = new FileReference();
 		_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.addEventListener(Event.CANCEL, onLoadCancel);
@@ -517,13 +519,26 @@ class WeekEditorState extends MusicBeatState
 	public static var loadedWeek:WeekFile = null;
 	public static var loadError:Bool = false;
 
-	private static function onLoadComplete(_):Void
+	private static function onLoadComplete(#if mobile file:haxe.io.Bytes #else _ #end):Void
 	{
+		#if mobile
+		if (file != null && file.length > 0)
+		{
+			var jsonStr:String = file.getString(0, file.length);
+			loadedWeek = cast Json.parse(jsonStr);
+			if (loadedWeek.weekCharacters != null && loadedWeek.weekName != null) // Make sure it's really a week
+			{
+				trace("Successfully loaded file.");
+				loadError = false;
+				weekFileName = '';
+				return;
+			}
+		}
+		#elseif sys
 		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 
-		#if sys
 		var fullPath:String = null;
 		@:privateAccess
 		if (_file.__path != null)
@@ -560,10 +575,12 @@ class WeekEditorState extends MusicBeatState
 	 */
 	private static function onLoadCancel(_):Void
 	{
+		#if !mobile
 		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+		#end
 		trace("Cancelled file loading.");
 	}
 
@@ -572,10 +589,12 @@ class WeekEditorState extends MusicBeatState
 	 */
 	private static function onLoadError(_):Void
 	{
+		#if !mobile
 		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+		#end
 		trace("Problem loading file");
 	}
 

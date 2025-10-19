@@ -55,8 +55,8 @@ class VideoManager extends Video
 		#elseif (hxCodec < "3.0.0" && hxCodec)
 		playVideo(path, loop, false);
 		#elseif hxvlc
-        if (loop)
-            options.push(":input-repeat=65535");
+		if (loop)
+			options.push(":input-repeat=65535");
 		load(path, options);
 		new FlxTimer().start(0.001, function(tmr:FlxTimer)
 		{

@@ -593,10 +593,13 @@ class DialogueEditorState extends MusicBeatState
 
 	function loadDialogue()
 	{
-		var jsonFilter:FileFilter = new FileFilter('JSON', 'json');
 		#if mobile
-		// SHADOW TODO
+		var fileDialog = new lime.ui.FileDialog();
+		fileDialog.onOpen.add((file) -> onLoadComplete(file));
+		fileDialog.onCancel.add(() -> onLoadCancel(true));
+		fileDialog.open('json');
 		#else
+		var jsonFilter:FileFilter = new FileFilter('JSON', 'json');
 		_file = new FileReference();
 		_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.addEventListener(Event.CANCEL, onLoadCancel);
@@ -605,13 +608,27 @@ class DialogueEditorState extends MusicBeatState
 		#end
 	}
 
-	function onLoadComplete(_):Void
+	function onLoadComplete(#if mobile file:haxe.io.Bytes #else _ #end):Void
 	{
+		#if mobile
+		if (file != null && file.length > 0)
+		{
+			var jsonStr:String = file.getString(0, file.length);
+			var loadedDialog:DialogueFile = cast Json.parse(jsonStr);
+			if (loadedDialog.dialogue != null && loadedDialog.dialogue.length > 0) // Make sure it's really a dialogue file
+			{
+				trace("Successfully loaded file.");
+				dialogueFile = loadedDialog;
+				changeText();
+				_file = null;
+				return;
+			}
+		}
+		#elseif sys
 		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 
-		#if sys
 		var fullPath:String = null;
 		@:privateAccess
 		if (_file.__path != null)
@@ -645,10 +662,12 @@ class DialogueEditorState extends MusicBeatState
 	 */
 	function onLoadCancel(_):Void
 	{
+		#if !mobile
 		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+		#end
 		trace("Cancelled file loading.");
 	}
 
@@ -657,10 +676,12 @@ class DialogueEditorState extends MusicBeatState
 	 */
 	function onLoadError(_):Void
 	{
+		#if !mobile
 		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+		#end
 		trace("Problem loading file");
 	}
 

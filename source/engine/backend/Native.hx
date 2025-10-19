@@ -104,7 +104,7 @@ class Native
 		');
 		#end
 	}
-	
+
 	#if windows
 	@:functionCode('
 		int darkMode = enable ? 1 : 0;

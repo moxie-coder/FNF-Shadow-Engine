@@ -4,18 +4,21 @@ import openfl.display.Sprite;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 
-class FramerateCounter extends Sprite {
+class FramerateCounter extends Sprite
+{
 	public var fpsNum:TextField;
 	public var fpsLabel:TextField;
 	public var lastFPS:Float = 0;
 
-	public function new() {
+	public function new()
+	{
 		super();
 
 		fpsNum = new TextField();
 		fpsLabel = new TextField();
 
-		for(label in [fpsNum, fpsLabel]) {
+		for (label in [fpsNum, fpsLabel])
+		{
 			label.autoSize = LEFT;
 			label.x = 0;
 			label.y = 0;
@@ -29,8 +32,10 @@ class FramerateCounter extends Sprite {
 
 	public function reload() {}
 
-	public override function __enterFrame(t:Float) {
-		if (alpha <= 0.05) return;
+	public override function __enterFrame(t:Float)
+	{
+		if (alpha <= 0.05)
+			return;
 		super.__enterFrame(t);
 
 		lastFPS = CoolUtil.fpsLerp(lastFPS, FlxG.rawElapsed == 0 ? 0 : (1 / FlxG.rawElapsed), 0.25);
