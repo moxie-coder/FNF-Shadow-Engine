@@ -123,7 +123,7 @@ class OptionsState extends MusicBeatState
 		ClientPrefs.loadPrefs();
 		controls.isInSubstate = false;
 		removeTouchPad();
-		addTouchPad("UP_DOWN", "A_B_X_Y");
+		addTouchPad("UP_DOWN", #if android "A_B_X_Y" #else "A_B_C" #end);
 		persistentUpdate = true;
 	}
 
