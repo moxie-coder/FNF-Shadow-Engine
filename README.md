@@ -7,11 +7,14 @@ Ready to be source-modded.
 ## Differences Between The Original
 - Uses Our Lime and HXCPP forks
 - Uses Latest Haxe
-- Uses CNE FPS Counter
+- Uses CNE FPS Counter and Some Code From P-Slice, Leather Engine (RIP) and [REDACTED]
 - Mobile Support (duh)
+- Applies OpenAL Soft Config For Better Audio
+- Slightly More Accurate FPS
+- Some 0.6.3 Compability
 - Linux ARM Support (FNF on Raspberry Pi baby)
 - Kade Engine Results Screen
-- Kade Engine Note Timing (man I feel old)
+- Kade Engine Note Timing Option (man I feel old)
 - PlayState has `changeNoteSkin` for easy in-game note skin changing
 - Play as Opponent
 - Stripped to only have Test song and some characters
