@@ -171,7 +171,7 @@ class Hitbox extends MobileInputManager implements IMobileControls
 		hint.alpha = 0.00001;
 		//hint.label.alpha = (ClientPrefs.data.hitboxType != "Hidden") ? ClientPrefs.data.controlsAlpha : 0.00001;
 		//hint.canChangeLabelAlpha = false;
-		//hint.label.antialiasing = hint.antialiasing = ClientPrefs.data.antialiasing;
+		/*hint.label.antialiasing =*/ hint.antialiasing = ClientPrefs.data.antialiasing;
 		hint.color = Color;
 		#if FLX_DEBUG
 		hint.ignoreDrawDebug = true;
