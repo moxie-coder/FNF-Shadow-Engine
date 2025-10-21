@@ -117,7 +117,7 @@
 	<!--Include all classes as possible-->
 	<section unless="DCEBUILD">
 		<haxeflag name="-dce" value="no" />
-		<haxeflag name="--macro" value="macros.KeepMacro.addAdditionalClasses()" />
+		<haxeflag name="--macro" value="macros.KeepMacro.keepClasses()" />
 	</section>
 
 	<!-- _________________________________ Custom Icons _______________________________ -->

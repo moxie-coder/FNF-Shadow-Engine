@@ -7,7 +7,7 @@ import haxe.macro.Expr;
 
 class KeepMacro
 {
-	public static function addAdditionalClasses()
+	public static function keepClasses()
 	{
 		for (inc in [
 			// FLIXEL
