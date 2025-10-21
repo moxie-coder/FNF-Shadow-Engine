@@ -78,7 +78,7 @@ class TitleState extends MusicBeatState
 		Highscore.load();
 
 		// IGNORE THIS!!!
-		titleJSON = haxe.Json.parse(Paths.getTextFromFile('images/gfDanceTitle.json'));
+		titleJSON = Json.parse(Paths.getTextFromFile('images/gfDanceTitle.json'), 'images/gfDanceTitle.json'); // this becoming like this as we can't get the path here
 
 		if (!initialized)
 		{

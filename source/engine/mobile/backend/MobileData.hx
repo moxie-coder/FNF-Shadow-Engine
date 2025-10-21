@@ -1,7 +1,6 @@
 package mobile.backend;
 
 import haxe.ds.Map;
-import haxe.Json;
 import haxe.io.Path;
 import openfl.utils.Assets;
 import flixel.util.FlxSave;
@@ -109,7 +108,7 @@ class MobileData
 			{
 				file = Path.join([folder, Path.withoutDirectory(file)]);
 				var str = #if MODS_ALLOWED File.getContent(file) #else Assets.getText(file) #end;
-				var json:TouchButtonsData = cast Json.parse(str);
+				var json:TouchButtonsData = cast Json.parse(str, file);
 				var mapKey:String = Path.withoutDirectory(Path.withoutExtension(fileWithNoLib));
 				map.set(mapKey, json);
 			}

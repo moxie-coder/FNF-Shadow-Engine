@@ -137,7 +137,7 @@ class LuaUtils
 				try
 				{
 					// FunkinLua.luaTrace('getModSetting: Trying to find default value for "$saveTag" in Mod: "$modName"');
-					var parsedJson:Dynamic = haxe.Json.parse(data);
+					var parsedJson:Dynamic = Json.parse(data, path);
 					for (i in 0...parsedJson.length)
 					{
 						var sub:Dynamic = parsedJson[i];

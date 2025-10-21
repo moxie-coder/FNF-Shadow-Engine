@@ -75,6 +75,7 @@ import shaders.flixel.system.FlxShader;
 #else
 import flixel.system.FlxAssets.FlxShader;
 #end
+import haxe.Json;
 
 using StringTools;
 #end

@@ -38,6 +38,7 @@
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
 
 	<classpath name="source/engine" />
+	<classpath name="source/library_shadows" />
 
 	<!-- Assets -->
 	<assets path="assets/embed" embed="true" />

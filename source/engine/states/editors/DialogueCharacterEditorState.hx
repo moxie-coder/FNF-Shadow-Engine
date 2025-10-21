@@ -11,7 +11,6 @@ import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileFilter;
-import haxe.Json;
 import lime.system.Clipboard;
 import objects.TypedAlphabet;
 import cutscenes.DialogueBoxPsych;
@@ -868,7 +867,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 			var rawJson:String = File.getContent(fullPath);
 			if (rawJson != null)
 			{
-				var loadedChar:DialogueCharacterFile = cast Json.parse(rawJson);
+				var loadedChar:DialogueCharacterFile = cast Json.parse(rawJson, fullPath);
 				if (loadedChar.dialogue_pos != null) // Make sure it's really a dialogue character
 				{
 					var cutName:String = _file.name.substr(0, _file.name.length - 5);
@@ -924,7 +923,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 
 	function saveCharacter()
 	{
-		var data:String = haxe.Json.stringify(character.jsonFile, "\t");
+		var data:String = Json.stringify(character.jsonFile, "\t");
 		if (data.length > 0)
 		{
 			var splittedImage:Array<String> = imageInputText.text.trim().split('_');

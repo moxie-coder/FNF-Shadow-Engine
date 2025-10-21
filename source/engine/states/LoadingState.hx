@@ -254,11 +254,11 @@ class LoadingState extends MusicBeatState
 			#if MODS_ALLOWED
 			var moddyFile:String = Paths.modsJson('$folder/preload');
 			if (FileSystem.exists(moddyFile))
-				json = haxe.Json.parse(File.getContent(moddyFile));
+				json = Json.parse(File.getContent(moddyFile), moddyFile);
 			else
-				json = haxe.Json.parse(File.getContent(path));
+				json = Json.parse(File.getContent(path), path);
 			#else
-			json = haxe.Json.parse(Assets.getText(path));
+			json = Json.parse(Assets.getText(path), path);
 			#end
 
 			if (json != null)
@@ -489,9 +489,9 @@ class LoadingState extends MusicBeatState
 		{
 			var path:String = Paths.getPath('characters/$char.json', TEXT, null, true);
 			#if MODS_ALLOWED
-			var character:Dynamic = haxe.Json.parse(File.getContent(path));
+			var character:Dynamic = Json.parse(File.getContent(path), path);
 			#else
-			var character:Dynamic = haxe.Json.parse(Assets.getText(path));
+			var character:Dynamic = Json.parse(Assets.getText(path), path);
 			#end
 
 			imagesToPrepare.push(character.image);

@@ -7,7 +7,6 @@ import flixel.FlxBasic;
 import flixel.graphics.FlxGraphic;
 import openfl.geom.Rectangle;
 import openfl.utils.Assets;
-import haxe.Json;
 import flixel.util.FlxSpriteUtil;
 import objects.AttachedSprite;
 import options.ModSettingsSubState;
@@ -913,7 +912,7 @@ class ModItem extends FlxSpriteGroup
 			try
 			{
 				// trace('trying to load settings: $folder');
-				settings = haxe.Json.parse(data);
+				settings = Json.parse(data, path);
 			}
 			catch (e:Dynamic)
 			{

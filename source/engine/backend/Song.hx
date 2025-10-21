@@ -102,6 +102,7 @@ class Song
 	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
 	{
 		var rawJson = null;
+		var path:String = "";
 
 		var formattedFolder:String = Paths.formatToSongPath(folder);
 		var formattedSong:String = Paths.formatToSongPath(jsonInput);
@@ -109,13 +110,14 @@ class Song
 		var moddyFile:String = Paths.modsJson(formattedFolder + '/' + formattedSong);
 		if (FileSystem.exists(moddyFile))
 		{
+			path = moddyFile;
 			rawJson = File.getContent(moddyFile).trim();
 		}
 		#end
 
 		if (rawJson == null)
 		{
-			var path:String = Paths.json(formattedFolder + '/' + formattedSong);
+			path = Paths.json(formattedFolder + '/' + formattedSong);
 			#if MODS_ALLOWED
 			if (FileSystem.exists(path))
 				rawJson = File.getContent(path).trim();
@@ -146,16 +148,16 @@ class Song
 				daSong = songData.song;
 				daBpm = songData.bpm; */
 
-		var songJson:Dynamic = parseJSONshit(rawJson);
+		var songJson:Dynamic = parseJSONshit(rawJson, path);
 		if (!jsonInput.startsWith('events'))
 			StageData.loadDirectory(songJson);
 		onLoadJson(songJson);
 		return songJson;
 	}
 
-	public static function parseJSONshit(rawJson:String):SwagSong
+	public static function parseJSONshit(rawJson:String, ?file:String):SwagSong
 	{
-		final parsed:Dynamic = haxe.Json.parse(rawJson);
+		final parsed:Dynamic = Json.parse(rawJson, file);
 
 		if (parsed.song != null)
 		{

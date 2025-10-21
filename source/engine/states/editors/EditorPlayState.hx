@@ -1180,6 +1180,6 @@ class EditorPlayState extends MusicBeatSubstate
 		#else
 		var rawJson = OpenFlAssets.getText(path);
 		#end
-		return cast haxe.Json.parse(rawJson);
+		return cast Json.parse(rawJson, path);
 	}
 }

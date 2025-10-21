@@ -182,17 +182,17 @@ class ModSettingsSubState extends BaseOptionsMenu
 		{
 			var modPath:String = ModsMenuState.modsGroup.members[ModsMenuState.curSelectedMod].folder;
 			var settingsPath:String = Paths.mods('$modPath/data/settings.json');
-			var settingsJson:Array<Dynamic> = haxe.Json.parse(File.getContent(settingsPath));
+			var settingsJson:Array<Dynamic> = Json.parse(File.getContent(settingsPath), settingsPath);
 			for (option in settingsJson)
 				option.value = save.get(option.save);
 
 			if (FileSystem.exists(settingsPath))
 				FileSystem.deleteFile(settingsPath);
 
-			File.saveContent(settingsPath, haxe.Json.stringify(settingsJson, '\t'));
+			File.saveContent(settingsPath, Json.stringify(settingsJson, '\t'));
 		}
 		catch (e:Dynamic)
-			trace('exploded: $e');
+			trace('$e');
 
 		FlxG.save.data.modSettings.set(folder, save);
 		FlxG.save.flush();

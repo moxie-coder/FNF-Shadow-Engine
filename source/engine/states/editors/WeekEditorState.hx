@@ -16,7 +16,6 @@ import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileFilter;
 import lime.system.Clipboard;
-import haxe.Json;
 import objects.HealthIcon;
 import objects.MenuCharacter;
 import objects.MenuItem;
@@ -549,7 +548,7 @@ class WeekEditorState extends MusicBeatState
 			var rawJson:String = File.getContent(fullPath);
 			if (rawJson != null)
 			{
-				loadedWeek = cast Json.parse(rawJson);
+				loadedWeek = cast Json.parse(rawJson, fullPath);
 				if (loadedWeek.weekCharacters != null && loadedWeek.weekName != null) // Make sure it's really a week
 				{
 					var cutName:String = _file.name.substr(0, _file.name.length - 5);
@@ -600,7 +599,7 @@ class WeekEditorState extends MusicBeatState
 
 	public static function saveWeek(weekFile:WeekFile)
 	{
-		var data:String = haxe.Json.stringify(weekFile, "\t");
+		var data:String = Json.stringify(weekFile, "\t");
 		if (data.length > 0)
 		{
 			#if mobile

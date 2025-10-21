@@ -99,6 +99,7 @@ class StageData
 		var modPath:String = Paths.modFolders('stages/' + stage + '.json');
 		if (FileSystem.exists(modPath))
 		{
+			path = modPath;
 			rawJson = File.getContent(modPath);
 		}
 		else if (FileSystem.exists(path))
@@ -111,11 +112,8 @@ class StageData
 			rawJson = Assets.getText(path);
 		}
 		#end
-	else
-	{
-		return null;
-	}
-		return cast haxe.Json.parse(rawJson);
+
+		return cast Json.parse(rawJson, path);
 	}
 
 	public static function vanillaSongStage(songName):String

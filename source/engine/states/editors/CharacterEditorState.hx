@@ -1452,7 +1452,7 @@ class CharacterEditorState extends MusicBeatState
 			"_editor_isPlayer": character.isPlayer
 		};
 
-		var data:String = haxe.Json.stringify(json, "\t");
+		var data:String = Json.stringify(json, "\t");
 
 		if (data.length > 0)
 		{

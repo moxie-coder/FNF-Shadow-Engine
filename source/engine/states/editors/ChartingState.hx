@@ -2974,7 +2974,7 @@ class ChartingState extends MusicBeatState
 		#else
 		var rawJson = OpenFlAssets.getText(path);
 		#end
-		return cast haxe.Json.parse(rawJson);
+		return cast Json.parse(rawJson, path);
 	}
 
 	function updateNoteUI():Void
@@ -3498,7 +3498,7 @@ class ChartingState extends MusicBeatState
 
 	function autosaveSong():Void
 	{
-		FlxG.save.data.autosave = haxe.Json.stringify({
+		FlxG.save.data.autosave = Json.stringify({
 			"song": _song
 		});
 		FlxG.save.flush();
@@ -3518,7 +3518,7 @@ class ChartingState extends MusicBeatState
 			"song": _song
 		};
 
-		var data:String = haxe.Json.stringify(json, "\t");
+		var data:String = Json.stringify(json, "\t");
 
 		if ((data != null) && (data.length > 0))
 		{
@@ -3553,7 +3553,7 @@ class ChartingState extends MusicBeatState
 			"song": eventsSong
 		}
 
-		var data:String = haxe.Json.stringify(json, "\t");
+		var data:String = Json.stringify(json, "\t");
 
 		if ((data != null) && (data.length > 0))
 		{

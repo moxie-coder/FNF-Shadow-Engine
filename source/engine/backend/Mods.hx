@@ -166,7 +166,7 @@ class Mods
 				var rawJson:String = Assets.getText(path);
 				#end
 				if (rawJson != null && rawJson.length > 0)
-					return haxe.Json.parse(rawJson);
+					return Json.parse(rawJson, path);
 			}
 			catch (e:Dynamic)
 			{

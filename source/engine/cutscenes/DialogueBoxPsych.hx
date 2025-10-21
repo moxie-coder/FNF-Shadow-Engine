@@ -464,10 +464,10 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		#if MODS_ALLOWED
 		if (FileSystem.exists(path))
 		{
-			return cast haxe.Json.parse(File.getContent(path));
+			return cast Json.parse(File.getContent(path), path);
 		}
 		#end
-		return cast haxe.Json.parse(Assets.getText(path));
+		return cast Json.parse(Assets.getText(path), path);
 	}
 
 	public static function updateBoxOffsets(box:FlxSprite)

@@ -10,7 +10,6 @@ import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileFilter;
-import haxe.Json;
 import objects.MenuCharacter;
 
 class MenuCharacterEditorState extends MusicBeatState
@@ -397,7 +396,7 @@ class MenuCharacterEditorState extends MusicBeatState
 			var rawJson:String = File.getContent(fullPath);
 			if (rawJson != null)
 			{
-				var loadedChar:MenuCharacterFile = cast Json.parse(rawJson);
+				var loadedChar:MenuCharacterFile = cast Json.parse(rawJson, fullPath);
 				if (loadedChar.idle_anim != null && loadedChar.confirm_anim != null) // Make sure it's really a character
 				{
 					var cutName:String = _file.name.substr(0, _file.name.length - 5);
@@ -450,7 +449,7 @@ class MenuCharacterEditorState extends MusicBeatState
 
 	function saveCharacter()
 	{
-		var data:String = haxe.Json.stringify(characterFile, "\t");
+		var data:String = Json.stringify(characterFile, "\t");
 		if (data.length > 0)
 		{
 			var splittedImage:Array<String> = imageInputText.text.trim().split('_');

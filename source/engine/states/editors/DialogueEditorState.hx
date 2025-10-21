@@ -10,7 +10,6 @@ import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileFilter;
-import haxe.Json;
 import objects.TypedAlphabet;
 import cutscenes.DialogueBoxPsych;
 import cutscenes.DialogueCharacter;
@@ -639,7 +638,7 @@ class DialogueEditorState extends MusicBeatState
 			var rawJson:String = File.getContent(fullPath);
 			if (rawJson != null)
 			{
-				var loadedDialog:DialogueFile = cast Json.parse(rawJson);
+				var loadedDialog:DialogueFile = cast Json.parse(rawJson, fullPath);
 				if (loadedDialog.dialogue != null && loadedDialog.dialogue.length > 0) // Make sure it's really a dialogue file
 				{
 					var cutName:String = _file.name.substr(0, _file.name.length - 5);
@@ -687,7 +686,7 @@ class DialogueEditorState extends MusicBeatState
 
 	function saveDialogue()
 	{
-		var data:String = haxe.Json.stringify(dialogueFile, "\t");
+		var data:String = Json.stringify(dialogueFile, "\t");
 		if (data.length > 0)
 		{
 			#if mobile
