@@ -59,12 +59,13 @@ class StrumNote extends FlxSprite
 		this.noteData = leData;
 		super(x, y);
 
+		var skinPostfix:String = Note.getNoteSkinPostfix();
 		var skin:String = if (daTexture != null && daTexture.length > 1) daTexture else Note.defaultNoteSkin;
-		var customSkin:String = skin;
+		var customSkin:String = skin + skinPostfix;
 
-		if (Paths.fileExists('images/$customSkin.${Paths.GPU_IMAGE_EXT}', Paths.getImageAssetType(Paths.GPU_IMAGE_EXT)))
-			skin = customSkin;
-		if (Paths.fileExists('images/$customSkin.${Paths.IMAGE_EXT}', Paths.getImageAssetType(Paths.IMAGE_EXT)))
+		trace(customSkin);
+
+		if (Paths.fileExists('images/$customSkin.${Paths.GPU_IMAGE_EXT}', Paths.getImageAssetType(Paths.GPU_IMAGE_EXT)) || Paths.fileExists('images/$customSkin.${Paths.IMAGE_EXT}', Paths.getImageAssetType(Paths.IMAGE_EXT)))
 			skin = customSkin;
 		else
 			skin = Note.defaultNoteSkin;

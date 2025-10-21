@@ -333,8 +333,6 @@ class Note extends FlxSprite
 
 	var _lastNoteOffX:Float = 0;
 
-	static var _lastValidChecked:String; // optimization
-
 	public var originalHeight:Float = 6;
 	public var correctionOffset:Float = 0; // dont mess with this
 
@@ -367,10 +365,8 @@ class Note extends FlxSprite
 
 		var fullPath:String = 'images/' + path + customSkin;
 
-		if (Paths.fileExists(fullPath + '.${Paths.GPU_IMAGE_EXT}', Paths.getImageAssetType(Paths.GPU_IMAGE_EXT)))
-			_lastValidChecked = customSkin;
-		if (Paths.fileExists(fullPath + '.${Paths.IMAGE_EXT}', Paths.getImageAssetType(Paths.IMAGE_EXT)))
-			_lastValidChecked = customSkin;
+		if (Paths.fileExists(fullPath + '.${Paths.GPU_IMAGE_EXT}', Paths.getImageAssetType(Paths.GPU_IMAGE_EXT)) || Paths.fileExists(fullPath + '.${Paths.IMAGE_EXT}', Paths.getImageAssetType(Paths.IMAGE_EXT)))
+			skin = customSkin;
 		else
 			skinPostfix = '';
 
@@ -495,12 +491,6 @@ class Note extends FlxSprite
 			if (alpha > 0.3)
 				alpha = 0.3;
 		}
-	}
-
-	override public function destroy()
-	{
-		super.destroy();
-		_lastValidChecked = '';
 	}
 
 	public function followStrumNote(myStrum:StrumNote, fakeCrochet:Float, songSpeed:Float = 1)
