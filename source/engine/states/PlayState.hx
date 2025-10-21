@@ -1065,6 +1065,15 @@ class PlayState extends MusicBeatState
 				generateStaticArrows(1, SONG.opponentArrowSkin);
 				generateStaticArrows(0, SONG.playerArrowSkin);
 			}
+
+			if (characterPlayingAsDad && !ClientPrefs.data.middleScroll)
+				for (i in 0...opponentStrums.members.length)
+				{
+					final oppoX:Float = opponentStrums.members[i].x;
+					opponentStrums.members[i].x = playerStrums.members[i].x;
+					playerStrums.members[i].x = oppoX;
+				}
+
 			for (i in 0...playerStrums.length)
 			{
 				setOnScripts('defaultPlayerStrumX' + i, playerStrums.members[i].x);
