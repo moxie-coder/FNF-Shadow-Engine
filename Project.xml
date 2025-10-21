@@ -115,7 +115,10 @@
 	<haxeflag name="--macro" value="include('my.pack')" />
 
 	<!--Include all classes as possible-->
-	<haxeflag name="-dce" value="no" unless="DCEBUILD" />
+	<section unless="DCEBUILD">
+		<haxeflag name="-dce" value="no" />
+		<haxeflag name="--macro" value="macros.KeepMacro.addAdditionalClasses()" />
+	</section>
 
 	<!-- _________________________________ Custom Icons _______________________________ -->
 	
