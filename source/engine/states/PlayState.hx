@@ -1730,6 +1730,7 @@ class PlayState extends MusicBeatState
 		super.openSubState(SubState);
 	}
 
+	public var canResync:Bool = true;
 	override function closeSubState()
 	{
 		stagesFunc(function(stage:BaseStage) stage.closeSubState());
