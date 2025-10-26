@@ -132,7 +132,7 @@ class Project extends HXProject
 		app.path = buildDir;
 
 		sources = SOURCE_FOLDERS;
-	templatePaths.push("templates");
+		templatePaths.push("templates");
 
 		window.width = 1280;
 		window.height = 720;
