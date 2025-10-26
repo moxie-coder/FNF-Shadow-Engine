@@ -1594,6 +1594,8 @@ class ChartingState extends MusicBeatState
 			DiscordClient.changePresence("Chart Editor", StringTools.replace(_song.song, '-', ' '));
 			#end
 		}
+		removeTouchPad();
+		addTouchPad("LEFT_FULL", "CHART_EDITOR");
 		super.closeSubState();
 	}
 
@@ -2033,6 +2035,7 @@ class ChartingState extends MusicBeatState
 				playtesting = true;
 				playtestingTime = Conductor.songPosition;
 				playtestingOnComplete = FlxG.sound.music.onComplete;
+				touchPad.alpha = 0;
 				openSubState(new states.editors.EditorPlayState(playbackSpeed));
 			}
 			else if (FlxG.keys.justPressed.ENTER || touchPad.buttonA.justPressed)
@@ -2186,6 +2189,7 @@ class ChartingState extends MusicBeatState
 				{
 					FlxG.sound.music.pause();
 					updateCurStep();
+					pauseAndSetVocalsTime();
 					var time:Float = FlxG.sound.music.time;
 					var beat:Float = curDecBeat;
 					var snap:Float = quantization / 4;

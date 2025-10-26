@@ -6,6 +6,7 @@ class SustainSplash extends FlxSprite
 	public static var frameRate:Int;
 
 	public var strumNote:StrumNote;
+	public var parentGroup:FlxTypedGroup<SustainSplash>;
 
 	public var destroyTimer:FlxTimer;
 
@@ -114,14 +115,8 @@ class SustainSplash extends FlxSprite
 	{
 		kill();
 
-		if (FlxG.state is PlayState) // yes this is required otherwise it bugs the whole thing
-		{
-			PlayState.instance.grpHoldSplashes.remove(this);
-		}
-		/*
-			destroy();
-			super.destroy();
-		 */
+		if (parentGroup != null)
+			parentGroup.remove(this);
 
 		if (end != null)
 		{

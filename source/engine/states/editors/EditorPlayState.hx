@@ -1050,7 +1050,7 @@ class EditorPlayState extends MusicBeatSubstate
 			}
 			catch (e:Dynamic)
 			{
-				trace('Failed to spawn Hold splash! $e');
+				//trace('Failed to spawn Hold splash! $e');
 			}
 		}
 	}
@@ -1067,11 +1067,12 @@ class EditorPlayState extends MusicBeatSubstate
 		}
 		catch (e:Dynamic)
 		{
-			trace('failed to recycle splash! $e');
+			//trace('failed to recycle splash! $e');
 			splash = new SustainSplash();
 		}
 		splash.setupSusSplash(strumLineNotes.members[end.noteData + (end.mustPress ? 4 : 0)], end, playbackRate);
 		grpHoldSplashes.add(splash);
+		splash.parentGroup = grpHoldSplashes;
 	}
 
 	function spawnNoteSplashOnNote(note:Note)

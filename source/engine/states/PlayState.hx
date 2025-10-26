@@ -3624,6 +3624,7 @@ class PlayState extends MusicBeatState
 			end.noteData + (characterPlayingAsDad ? end.mustPress ? 0 : 4 : end.mustPress ? 4 : 0)
 		], end, playbackRate);
 		grpHoldSplashes.add(splash);
+		splash.parentGroup = grpHoldSplashes;
 	}
 
 	public function spawnNoteSplashOnNote(note:Note)
