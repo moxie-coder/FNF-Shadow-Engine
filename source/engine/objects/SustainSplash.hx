@@ -26,7 +26,7 @@ class SustainSplash extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		if (strumNote != null)
-			this.alpha = ClientPrefs.data.splashAlpha - (1 - strumNote.alpha);
+			this.alpha = strumNote.alpha * ClientPrefs.data.splashAlpha;
 		if (this.x != strumNote.x || this.y != strumNote.y)
 			setPosition(strumNote.x, strumNote.y);
 		/*if (this.angle != strumNote.angle)
