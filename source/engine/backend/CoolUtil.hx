@@ -3,9 +3,6 @@ package backend;
 import flixel.util.FlxSave;
 import openfl.utils.Assets;
 
-#if cpp
-@:cppFileCode('#include <thread>')
-#end
 class CoolUtil
 {
 	public static function quantize(f:Float, snap:Float)
@@ -245,15 +242,5 @@ class CoolUtil
 			rSize /= 1024;
 		}
 		return Std.int(rSize) + ((label <= 1) ? "" : "." + addZeros(Std.string(Std.int((rSize % 1) * 100)), 2)) + sizeLabels[label];
-	}
-
-	#if cpp
-	@:functionCode('
-        return std::thread::hardware_concurrency();
-    ')
-	#end
-	public static function getCPUThreadsCount():Int
-	{
-		return 1;
 	}
 }

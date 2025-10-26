@@ -9,7 +9,7 @@ enum abstract RegistryHive(Int)
 	var HKEY_CURRENT_CONFIG = 0x80000005;
 }
 
-#if windows
+#if (windows && cpp)
 @:cppFileCode('
 #include <windows.h>
 #include <tchar.h>
@@ -19,7 +19,7 @@ enum abstract RegistryHive(Int)
 #end
 class RegistryUtil
 {
-	#if windows
+	#if (windows && cpp)
 	@:functionCode('
 		HKEY hKey;
 		LONG result;
@@ -53,7 +53,7 @@ class RegistryUtil
 		return null;
 	}
 
-	#if windows
+	#if (windows && cpp)
 	@:functionCode('
 		HKEY hKey;
 		LONG result;
@@ -76,7 +76,7 @@ class RegistryUtil
 		return false;
 	}
 
-	#if windows
+	#if (windows && cpp)
 	@:functionCode('
 		HKEY hKey;
 		LONG result;
@@ -100,7 +100,7 @@ class RegistryUtil
 		return false;
 	}
 
-	#if windows
+	#if (windows && cpp)
 	@:functionCode('
 		HKEY hKey;
 		LONG result;

@@ -1,0 +1,46 @@
+{
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"editor.tabSize": 4,
+	"files.associations": {
+		"*.hx": "haxe",
+		"*.hscript": "haxe",
+		"*.hsc": "haxe",
+		"*.hxs": "haxe",
+		"*.hxp": "haxe"
+	},
+  	"lime.projectFile": "project.hxp",
+	"lime.targetConfigurations": [
+		{
+			"label": "Windows (S3TC)",
+			"target": "windows",
+			"args": ["-D", "S3TC"]
+		},
+		{
+			"label": "Linux (S3TC)",
+			"target": "linux",
+			"args": ["-D", "S3TC"]
+		},
+		{
+			"label": "Linux (ASTC)",
+			"target": "linux",
+			"args": ["-D", "ASTC"]
+		},
+		{
+			"label": "MacOS (S3TC)",
+			"target": "macos",
+			"args": ["-D", "S3TC"]
+		},
+		{
+			"label": "Android (ASTC)",
+			"target": "android",
+			"args": ["-D", "ASTC"]
+		},
+		{
+			"label": "iOS (ASTC)",
+			"target": "ios",
+			"args": ["-D", "ASTC"]
+		}
+	],
+	"lime.defaultTargetConfiguration": "Windows (S3TC)"
+}

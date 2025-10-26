@@ -1,0 +1,436 @@
+import haxe.io.Path;
+import hxp.*;
+import lime.tools.*;
+import sys.io.File;
+import sys.FileSystem;
+
+using StringTools;
+
+class Project extends HXProject
+{
+	static final TITLE:String = "Friday Night Funkin': Shadow Engine";
+	static final EXECUTABLE:String = "ShadowEngine";
+	static final VERSION:String = "0.2.1";
+	static final COMPANY:String = "FNF-SE";
+	static final PACKAGE:String = "com.homuhomu833.shadowengine";
+	static final MAIN_CLASS:String = "Main";
+
+	static final PRELOADER:String = "flixel.system.FlxPreloader";
+	static final SOURCE_FOLDERS:Array<String> = ["source/engine", "source/library_shadows"];
+
+	static final MODS_ALLOWED:CompileFlag = CompileFlag.get("MODS_ALLOWED");
+	static final HSCRIPT_ALLOWED:CompileFlag = CompileFlag.get("HSCRIPT_ALLOWED");
+	static final LUA_ALLOWED:CompileFlag = CompileFlag.get("LUA_ALLOWED");
+	static final VIDEOS_ALLOWED:CompileFlag = CompileFlag.get("VIDEOS_ALLOWED");
+	static final DISCORD_ALLOWED:CompileFlag = CompileFlag.get("DISCORD_ALLOWED");
+	static final DCEBUILD:CompileFlag = CompileFlag.get("DCEBUILD");
+
+	public function new():Void
+	{
+		super();
+
+		CompileFlag.project = this;
+
+		haxe.Log.trace = (v:Dynamic, ?info:haxe.PosInfos) ->
+		{
+			if (!isDisplay())
+				Sys.println(v);
+		};
+
+		trace("Configuring project...");
+		doWelcomeHeader();
+		configureApp();
+		configureCompileFlags();
+		configureAssets();
+		configureLibs();
+		configureIcons();
+		trace("Configured project successfully!");
+		trace("Starting build...");
+		trace("");
+	}
+
+	function getHaxeVersion():String {
+		var process = new sys.io.Process("haxe", ["-version"]);
+		var version:String = "";
+
+		try {
+			version = process.stdout.readAll().toString().trim();
+		} catch (e) {}
+
+		process.close();
+		return version;
+	}
+
+	function doWelcomeHeader() {
+		var haxeVersion = getHaxeVersion().trim();
+		var width = 50;
+
+		inline function centerText(text:String, width:Int):String {
+			var innerWidth = width - 2;
+			var padding = Std.int(Math.max(0, Std.int((innerWidth - text.length) / 2)));
+			var left = StringTools.lpad("", " ", padding);
+			var right = StringTools.lpad("", " ", innerWidth - text.length - padding);
+			return "=" + left + text + right + "=";
+		}
+
+		inline function infoLine(label:String, value:String):String {
+			var innerWidth = width - 2;
+			if (label.length == 0) {
+				// no label: center the value
+				var padding = Std.int(Math.max(0, (innerWidth - value.length) / 2));
+				var left = StringTools.lpad("", " ", padding);
+				var right = StringTools.lpad("", " ", innerWidth - value.length - padding);
+				return "=" + left + value + right + "=";
+			} else {
+				var colonPos = Std.int(innerWidth / 2);
+				var labelPart = StringTools.lpad(label, " ", Std.int(Math.max(0, colonPos - 2)));
+				var valuePart = value;
+				var remainingSpace = Std.int(Math.max(0, innerWidth - (labelPart.length + 3 + valuePart.length)));
+				var rightPad = StringTools.lpad("", " ", remainingSpace);
+				return "=" + labelPart + " : " + valuePart + rightPad + "=";
+			}
+		}
+
+		var unicode = #if (target.unicode) true #else false #end;
+		var targetPlatform = isWeb() ? "Web (HTML5)" : (isIOS() ? "iOS" : (isAndroid() ? "Android" : (isWindows() ? "Windows" : (isMac() ? "Mac" : (isLinux() ? "Linux" : "Unknown")))));
+
+		if (isHashLink())
+			targetPlatform = "Hashlink (" + targetPlatform + ")";
+
+		trace('');
+		trace(StringTools.lpad("", "=", width));
+		trace(centerText(TITLE, width));
+		trace(StringTools.lpad("", "=", width));
+		trace(infoLine("Engine Version", 'v${VERSION}'));
+		trace(infoLine("Haxe Version", 'v${haxeVersion}'));
+		trace(StringTools.lpad("", "=", width));
+		trace(infoLine("Target Platform", targetPlatform));
+		trace(infoLine("Build Type", isDebug() ? "Debug" : isFinal() ? "Final" : "Release"));
+		trace(infoLine("Build Date", Date.now().toString()));
+		trace(StringTools.lpad("", "=", width));
+		trace('');
+
+		if (targetPlatform.startsWith("Hashlink") || targetPlatform == "Web (HTML5)" || targetPlatform == "Unknown")
+		{
+			trace('Unsupported platform: ${targetPlatform}');
+			Sys.exit(1);
+		}
+	}
+
+	function configureApp():Void
+	{
+		meta.title = TITLE;
+		meta.version = VERSION;
+		meta.company = COMPANY;
+		meta.packageName = PACKAGE;
+		
+		app.main = MAIN_CLASS;
+		app.file = EXECUTABLE;
+		app.preloader = PRELOADER;
+
+		var buildDir = 'export/${isDebug() ? 'debug' : 'release'}/';
+		app.path = buildDir;
+
+		sources = SOURCE_FOLDERS;
+	templatePaths.push("templates");
+
+		window.width = 1280;
+		window.height = 720;
+		window.background = 0x000000;
+		window.hardware = true;
+		window.vsync = false;
+
+		if (isWeb())
+			window.resizable = true;
+
+		if (isDesktop())
+		{
+			window.orientation = Orientation.LANDSCAPE;
+			window.fullscreen = false;
+			window.resizable = true;
+			window.vsync = false;
+		} else if (isMobile())
+		{
+			window.orientation = Orientation.LANDSCAPE;
+			window.fullscreen = true;
+			window.resizable = false;
+			window.allowShaders = true;
+			window.requireShaders = true;
+			window.allowHighDPI = true;
+		}
+	}
+	
+	function configureCompileFlags()
+	{
+		MODS_ALLOWED.integrate(isDesktop() || isMobile());
+		HSCRIPT_ALLOWED.integrate(isDesktop() || isMobile());
+		LUA_ALLOWED.integrate(isDesktop() || isMobile());
+		VIDEOS_ALLOWED.integrate(isDesktop() || isMobile());
+		DISCORD_ALLOWED.integrate(isDesktop());
+		DCEBUILD.integrate(false);
+
+		setHaxedef("FLX_NO_FOCUS_LOST_SCREEN");
+		if (!isDebug())
+			setHaxedef("FLX_NO_DEBUG");
+		setHaxedef("no-deprecation-warnings");
+		setHaxedef("message.reporting", "pretty");
+		setHaxedef("HXCPP_CHECK_POINTER");
+		setHaxedef("HXCPP_STACK_LINE");
+		setHaxedef("HXCPP_STACK_TRACE");
+		setHaxedef("HXCPP_CATCH_SEGV");
+
+		if (isAndroid() && !isDebug())
+		{
+			keystore = new Keystore();
+			keystore.path = haxe.io.Path.join([Sys.getCwd(), "key.keystore"]);
+			keystore.alias = "fnfse";
+			keystore.password = "fnfshadow";
+			keystore.aliasPassword = "fnfshadow";
+		}
+
+		if (isIOS())
+			config.set("ios.category_type", "public.app-category.music-games");
+		if (isMac())
+			config.set("mac.category_type", "public.app-category.music-games");
+
+		if (isMobile())
+			setHaxedef("SHARE_MOBILE_FILES");
+		setHaxedef("loop_unroll_max_cost", "25");
+		if (isAndroid())
+			setHaxedef("DISABLED_MACRO_SUPERLATIVE");
+
+		addMacroFlag("allowPackage('flash')");
+		addMacroFlag("include('my.pack')");
+
+		if (!DCEBUILD.isEnabled())
+		{
+			addHaxeFlag("-dce no");
+			addMacroFlag("macros.KeepMacro.keepClasses()");
+		}
+
+		if (DISCORD_ALLOWED.isEnabled())
+			setHaxedef("DISCORD_DISABLE_IO_THREAD");
+	}
+
+	function configureAssets()
+	{
+		includeAssetLibrary("default", true, false);
+		addAssetPath("assets/embed", null, true);
+		addAssetPath("assets/fonts", null, true);
+		addAssetPath("assets/shared");
+
+		final textureFormats = ["ASTC", "ETC2", "S3TC", "PNG"];
+		var hasFormat = false;
+
+		for (format in textureFormats)
+			if (defines.exists(format))
+				hasFormat = true;
+
+		if (!hasFormat)
+			setDefine("PNG");
+
+		for (format in textureFormats)
+			if (defines.exists(format))
+				addAssetPath('images-${format.toLowerCase()}', 'assets/shared/images');
+
+		if (isLinux())
+			addAsset("gamemode.ini");
+	}
+
+	function configureLibs()
+	{
+		includeHaxelib("flixel");
+		includeHaxelib("flixel-ui");
+		includeHaxelib("flixel-addons");
+
+		if (LUA_ALLOWED.isEnabled())
+			includeHaxelib("linc_luajit");
+		if (HSCRIPT_ALLOWED.isEnabled())
+			includeHaxelib("SScript");
+		if (VIDEOS_ALLOWED.isEnabled())
+			includeHaxelib("hxvlc");
+		if (DISCORD_ALLOWED.isEnabled())
+			includeHaxelib("hxdiscord_rpc");
+
+		if (isDebug() && isCPP())
+			includeHaxelib("hxcpp-debug-server");
+
+		if (isLinux())
+			includeHaxelib("hxgamemode");
+	}
+
+	function configureIcons()
+	{
+		if (isLinux() || isMac())
+			addIcon("icons/iconOG.png", null, "icon.png");
+		for (size in [16, 32, 64])
+			addIcon('icons/icon${size}.png', size);
+		addIcon("icons/iconOG.png");
+	}
+
+	function includeHaxelib(name:String, version:String = ""):Void
+	{
+		haxelibs.push(new Haxelib(name, version));
+	}
+
+	function addAsset(path:String, ?rename:String, embed:Bool = false):Void
+	{
+		var asset = new Asset(path, rename, null, embed, true);
+		asset.library = "default";
+		assets.push(asset);
+	}
+
+	public function addAssetPath(path:String, ?rename:String, embed:Bool = false):Void
+	{
+		if (path == "") return;
+
+		var targetPath = Path.addTrailingSlash(rename ?? path);
+
+		if (!FileSystem.exists(path))
+			trace('[ERROR] Path "${path}" was not found');
+		else if (!FileSystem.isDirectory(path))
+			trace('[ERROR] Path "${path}" needs to be a directory.');
+
+		for (file in FileSystem.readDirectory(path))
+		{
+			if (FileSystem.isDirectory('${path}/${file}'))
+				addAssetPath('${path}/${file}', '${targetPath}${file}', embed);
+			else
+				addAsset('${path}/${file}', '${targetPath}${file}', embed);
+		}
+	}
+
+	function includeAssetLibrary(name:String, embed:Bool = false, preload:Bool = false):Void
+	{
+    	this.libraries.push(new Library('', name, null, embed, preload, false, ""));
+	}
+
+	inline function addIcon(icon:String, ?size:Int, ?copy:String):Void
+	{
+		if (copy != null) {
+        	var sourceBytes = File.getBytes(icon);
+        	File.saveBytes(app.path + copy, sourceBytes);
+		}
+		else
+			icons.push(new Icon(icon, size));
+	}
+
+	inline function addHaxeFlag(value:String):Void
+		haxeflags.push(value);
+
+	inline function addMacroFlag(value:String):Void
+		addHaxeFlag('--macro ${value}');
+	
+	inline function isDebug():Bool
+		return debug;
+
+	inline function isRelease():Bool
+		return !isDebug();
+
+	inline function isFinal():Bool
+		return targetFlags.exists("final");
+
+	inline function isDisplay():Bool
+		return command == "display";
+
+	inline function isWeb():Bool
+		return platformType == PlatformType.WEB;
+
+	inline function isMobile():Bool
+		return platformType == PlatformType.MOBILE;
+
+	inline function isDesktop():Bool
+		return platformType == PlatformType.DESKTOP;
+
+	inline function isWindows():Bool
+		return target == Platform.WINDOWS;
+
+	inline function isMac():Bool
+		return target == Platform.MAC;
+
+	inline function isLinux():Bool
+		return target == Platform.LINUX;
+
+	inline function isAndroid():Bool
+		return target == Platform.ANDROID;
+
+	inline function isIOS():Bool
+		return target == Platform.IOS;
+
+	inline function isHashLink():Bool
+		return targetFlags.exists("hl");
+
+	inline function isCPP():Bool
+		return defines.exists("cpp");
+
+	public inline function getHaxedef(name:String):Null<Dynamic>
+		return haxedefs.get(name);
+
+	public inline function setHaxedef(name:String, ?value:String):Void
+		haxedefs.set(name, value ?? "");
+
+	public inline function unsetHaxedef(name:String):Void
+		haxedefs.remove(name);
+
+	public inline function getDefine(name:String):Null<Dynamic>
+		return defines.get(name);
+
+  	public inline function setDefine(name:String, ?value:String):Void
+    	defines.set(name, value ?? "");
+
+  	public inline function unsetDefine(name:String):Void
+    	defines.remove(name);
+}
+
+class CompileFlag {
+	public static final INVERSION:String = "NO_";
+	public static var project:Project;
+
+	public static function get(name:String):CompileFlag {
+		return new CompileFlag(name);
+	}
+
+	var name:String;
+	public function new(name:String) {
+		this.name = name;
+	}
+
+	public function enable(stopPropagation:Bool = false):Void
+	{
+		project.setHaxedef(name);
+		project.setDefine(name);
+		if (!stopPropagation)
+			getInverse().disable(true);
+	}
+
+	public function disable(stopPropagation:Bool = false):Void
+	{
+		project.unsetHaxedef(name);
+		project.unsetDefine(name);
+		if (!stopPropagation)
+			getInverse().enable(true);
+	}
+
+	public function integrate(defaultEnabled:Bool = false):Void {
+		var inverse = getInverse();
+
+		if (isEnabled()) inverse.disable(true);
+		else if (inverse.isEnabled()) disable(true);
+		else (defaultEnabled ? enable : disable)(true);
+	}
+	
+	public function isEnabled():Bool {
+		return project.haxedefs.exists(name) || project.defines.exists(name);
+	}
+
+	public function isDisabled():Bool {
+		return getInverse().isEnabled() || !isEnabled();
+	}
+
+	function getInverse():CompileFlag {
+		var inversionName = name;
+		if (!inversionName.startsWith(INVERSION))
+			inversionName = INVERSION + inversionName;
+		return new CompileFlag(inversionName);
+	}
+}
