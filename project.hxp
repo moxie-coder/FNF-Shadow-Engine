@@ -261,8 +261,6 @@ class Project extends HXProject
 
 	function configureIcons()
 	{
-		if (isLinux() || isMac())
-			addIcon("icons/iconOG.png", null, "icon.png");
 		for (size in [16, 32, 64])
 			addIcon('icons/icon${size}.png', size);
 		addIcon("icons/iconOG.png");
@@ -305,15 +303,8 @@ class Project extends HXProject
     	this.libraries.push(new Library('', name, null, embed, preload, false, ""));
 	}
 
-	inline function addIcon(icon:String, ?size:Int, ?copy:String):Void
-	{
-		if (copy != null) {
-        	var sourceBytes = File.getBytes(icon);
-        	File.saveBytes(app.path + copy, sourceBytes);
-		}
-		else
-			icons.push(new Icon(icon, size));
-	}
+	inline function addIcon(icon:String, ?size:Int):Void
+		icons.push(new Icon(icon, size));
 
 	inline function addHaxeFlag(value:String):Void
 		haxeflags.push(value);
