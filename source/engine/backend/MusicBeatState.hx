@@ -645,6 +645,7 @@ class MusicBeatState extends FlxUIState
 	{
 		try
 		{
+			var times:Float = Date.now().getTime();
 			var newScript:HScript = new HScript(null, file);
 			if (newScript.parsingException != null)
 			{
@@ -675,7 +676,7 @@ class MusicBeatState extends FlxUIState
 					trace('failed to initialize tea interp!!! ($file)');
 				}
 				else
-					trace('initialized tea interp successfully: $file');
+					trace('initialized tea interp successfully: $file (${Std.int(Date.now().getTime() - times)}ms)');
 			}
 		}
 		catch (e)

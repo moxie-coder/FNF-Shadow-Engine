@@ -11,6 +11,7 @@ class Mods
 {
 	static public var currentModDirectory:String = '';
 	public static var ignoreModFolders:Array<String> = [
+		'achievements',
 		'characters',
 		'custom_events',
 		'custom_notetypes',
@@ -25,8 +26,7 @@ class Mods
 		'weeks',
 		'fonts',
 		'scripts',
-		'stateScripts',
-		'achievements'
+		'stateScripts'
 	];
 
 	private static var globalMods:Array<String> = [];
