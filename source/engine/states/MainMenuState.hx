@@ -9,7 +9,7 @@ import options.OptionsState;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var shadowEngineVersion:String = Application.current.meta.get('version'); // This is also used for Discord RPC
+	public static var shadowEngineVersion:String = '0.2.7'; // This is also used for Discord RPC
 	public static var psychEngineVersion:String = '0.7.3';
 	public static var curSelected:Int = 0;
 
@@ -80,11 +80,11 @@ class MainMenuState extends MusicBeatState
 			menuItem.screenCenter(X);
 		}
 
-		var shadowVer:FlxText = new FlxText(12, FlxG.height - 64, 0, "Shadow Engine v" + shadowEngineVersion, 12);
+		var shadowVer:FlxText = new FlxText(12, FlxG.height - 44, 0, "Shadow Engine v" + shadowEngineVersion, 12);
 		shadowVer.scrollFactor.set();
 		shadowVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(shadowVer);
-		var psychVer:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
+		var psychVer:FlxText = new FlxText(12, FlxG.height - 24, 0, "Psych Engine v" + psychEngineVersion, 12);
 		psychVer.scrollFactor.set();
 		psychVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(psychVer);

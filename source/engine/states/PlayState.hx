@@ -1656,6 +1656,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var canResync:Bool = true;
+
 	override function closeSubState()
 	{
 		stagesFunc(function(stage:BaseStage) stage.closeSubState());
@@ -1677,8 +1678,7 @@ class PlayState extends MusicBeatState
 			#end
 
 			paused = false;
-			mobileControls.instance.visible = #if !android touchPad.visible = #end
-			true;
+			mobileControls.instance.visible = #if !android touchPad.visible = #end true;
 			resetRPC(startTimer != null && startTimer.finished);
 		}
 		super.closeSubState();
@@ -1727,7 +1727,7 @@ class PlayState extends MusicBeatState
 		if (finishTimer != null)
 			return;
 
-		trace('resynced vocals at ' + Math.floor(Conductor.songPosition));
+		//trace('resynced vocals at ' + Math.floor(Conductor.songPosition));
 
 		FlxG.sound.music.play();
 		#if FLX_PITCH FlxG.sound.music.pitch = playbackRate; #end
@@ -2949,11 +2949,6 @@ class PlayState extends MusicBeatState
 		if (ret == LuaUtils.Function_Stop)
 			return;
 
-		// more accurate hit time for the ratings?
-		var lastTime:Float = Conductor.songPosition;
-		if (Conductor.songPosition >= 0)
-			Conductor.songPosition = FlxG.sound.music.time;
-
 		// obtain notes that the player can hit
 		var plrInputNotes:Array<Note> = notes.members.filter(function(n:Note):Bool
 		{
@@ -2996,9 +2991,6 @@ class PlayState extends MusicBeatState
 		//									- Shadow Mario
 		if (!keysPressed.contains(key))
 			keysPressed.push(key);
-
-		// more accurate hit time for the ratings? part 2 (Now that the calculations are done, go back to the time it was before for not causing a note stutter)
-		Conductor.songPosition = lastTime;
 
 		var spr:StrumNote = playerStrums.members[key];
 		if (strumsBlocked[key] != true && spr != null && spr.animation.curAnim.name != 'confirm')
@@ -3588,6 +3580,15 @@ class PlayState extends MusicBeatState
 
 	override function stepHit()
 	{
+		if (SONG.needsVoices && FlxG.sound.music.time >= -ClientPrefs.data.noteOffset)
+		{
+			final timeSub:Float = Conductor.songPosition - Conductor.offset;
+			final syncTime:Float = 20 * playbackRate;
+			@:privateAccess
+			if (Math.abs(FlxG.sound.music.time - timeSub) > syncTime || Math.abs(vocals.time - timeSub) > syncTime || (opponentVocals._sound != null && opponentVocals.playing && Math.abs(opponentVocals.time - timeSub) > syncTime))
+				resyncVocals();
+		}
+
 		super.stepHit();
 
 		if (curStep == lastStepHit)
