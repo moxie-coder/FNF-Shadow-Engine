@@ -33,6 +33,8 @@ class ControlsSubState extends MusicBeatSubstate
 		[true, 'Accept', 'accept', 'Accept'],
 		[true, 'Back', 'back', 'Back'],
 		[true, 'Pause', 'pause', 'Pause'],
+		[true, 'Fullscreen', 'fullscreen', 'Fullscreen Toggle'],
+		[true, 'FPS Counter', 'fpsCounter', 'FPS Counter Toggle'],
 		[false],
 		[false, 'VOLUME'],
 		[false, 'Mute', 'volume_mute', 'Volume Mute'],
@@ -41,9 +43,7 @@ class ControlsSubState extends MusicBeatSubstate
 		[false],
 		[false, 'DEBUG'],
 		[false, 'Key 1', 'debug_1', 'Debug Key #1'],
-		[false, 'Key 2', 'debug_2', 'Debug Key #2'],
-		[false, 'WINDOW'],
-		[false, 'Fullscreen', 'fullscreen', 'Fullscreen Toggel']
+		[false, 'Key 2', 'debug_2', 'Debug Key #2']
 	];
 	var curOptions:Array<Int>;
 	var curOptionsValid:Array<Int>;

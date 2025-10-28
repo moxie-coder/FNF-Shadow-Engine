@@ -124,6 +124,7 @@ class MainMenuState extends MusicBeatState
 			{
 				selectedSomethin = true;
 				FlxG.sound.play(Paths.sound('cancelMenu'));
+				FlxTransitionableState.skipNextTransOut = true;
 				MusicBeatState.switchState(new TitleState());
 			}
 

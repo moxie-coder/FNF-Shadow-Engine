@@ -63,7 +63,6 @@ class FunkinLua
 
 		this.scriptName = scriptName.trim();
 		var game:Dynamic = FunkinLua.getCurrentMusicState();
-		trace(Type.getClassName(Type.getClass(FunkinLua.getCurrentMusicState())));
 		game.luaArray.push(this);
 
 		var myFolder:Array<String> = this.scriptName.split('/');

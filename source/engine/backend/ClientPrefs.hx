@@ -118,7 +118,8 @@ class ClientPrefs
 		'volume_down' => [NUMPADMINUS, MINUS],
 		'debug_1' => [SEVEN],
 		'debug_2' => [EIGHT],
-		'fullscreen' => [F11]
+		'fullscreen' => [F11],
+		'fpsCounter' => [F3]
 	];
 	public static var gamepadBinds:Map<String, Array<FlxGamepadInputID>> = [
 		'note_up' => [DPAD_UP, Y],
