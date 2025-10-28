@@ -2,16 +2,20 @@ package psychlua;
 
 class TextFunctions
 {
+	private static var game(get, never):Dynamic;
+
+	inline private static function get_game()
+		return FunkinLua.getCurrentMusicState();
+
 	public static function implement(funk:FunkinLua)
 	{
-		var game:Dynamic = FunkinLua.getCurrentMusicState();
 		funk.set("makeLuaText", function(tag:String, text:String, width:Int, x:Float, y:Float)
 		{
 			tag = tag.replace('.', '');
 			LuaUtils.resetTextTag(tag);
 			var leText:FlxText = new FlxText(x, y, width, text, 16);
 			leText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			leText.cameras = [game.camHUD];
+			leText.cameras = [game.camHUD ?? FlxG.camera];
 			leText.scrollFactor.set();
 			leText.borderSize = 2;
 			game.modchartTexts.set(tag, leText);

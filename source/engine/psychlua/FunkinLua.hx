@@ -34,6 +34,11 @@ import mobile.psychlua.Functions;
 
 class FunkinLua
 {
+	private var game(get, never):Dynamic;
+		
+	inline private function get_game()
+		return cast FunkinLua.getCurrentMusicState();
+
 	public var lua:State = null;
 
 	public var camTarget:FlxCamera;
@@ -62,7 +67,6 @@ class FunkinLua
 		// LuaL.dostring(lua, CLENSE);
 
 		this.scriptName = scriptName.trim();
-		var game:Dynamic = FunkinLua.getCurrentMusicState();
 		game.luaArray.push(this);
 
 		var myFolder:Array<String> = this.scriptName.split('/');
@@ -1142,6 +1146,16 @@ class FunkinLua
 			if (spr != null)
 				spr.makeGraphic(width, height, CoolUtil.colorFromString(color));
 		});
+
+		set("makeLuaCamera", function(tag:String, ?ddt:Bool)
+		{
+			if (ddt == null)
+				ddt = false;
+			var camera:FlxCamera = new FlxCamera();
+			camera.bgColor.alpha = 0;
+			//FunkinLua.getCurrentMusicState().addLuaCameraToFlxG(camera, ddt);
+			game.modchartCameras.set(tag, camera);
+		});
 		set("addAnimationByPrefix", function(obj:String, name:String, prefix:String, framerate:Int = 24, loop:Bool = true)
 		{
 			var obj:Dynamic = LuaUtils.getObjectDirectly(obj, false);
@@ -1360,6 +1374,7 @@ class FunkinLua
 		set("setObjectCamera", function(obj:String, camera:String = '')
 		{
 			var real = game.getLuaObject(obj);
+			// SHADOW TDDO: does not work under non-PlayState
 			if (real != null)
 			{
 				real.cameras = [LuaUtils.cameraFromString(camera)];

@@ -31,6 +31,7 @@ class MusicBeatSubstate extends FlxSubState
 	public var modchartSounds:Map<String, FlxSound> = new Map<String, FlxSound>();
 	public var modchartTexts:Map<String, FlxText> = new Map<String, FlxText>();
 	public var modchartSaves:Map<String, FlxSave> = new Map<String, FlxSave>();
+	public var modchartCameras:Map<String, FlxCamera> = new Map<String, FlxCamera>();
 	#end
 
 	#if LUA_ALLOWED
@@ -311,10 +312,10 @@ class MusicBeatSubstate extends FlxSubState
 		#end
 		add(luaDebugGroup);
 		#if LUA_ALLOWED
-		startLuasNamed('substateScripts/' + currentClassName + '.lua');
+		startLuasNamed('substatescripts/' + currentClassName + '.lua');
 		#end
 		#if HSCRIPT_ALLOWED
-		startHScriptsNamed('substateScripts/' + currentClassName + '.hx');
+		startHScriptsNamed('substatescripts/' + currentClassName + '.hx');
 		#end
 		super.create();
 		callOnScripts('onCreatePost');
@@ -448,7 +449,7 @@ class MusicBeatSubstate extends FlxSubState
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 	public function addTextToDebug(text:String, color:FlxColor)
 	{
-		var newText:psychlua.DebugLuaText = luaDebugGroup.recycle(psychlua.DebugLuaText);
+		var newText:psychlua.DebugLuaText = FunkinLua.getCurrentMusicState().luaDebugGroup.recycle(psychlua.DebugLuaText);
 		newText.text = text;
 		newText.color = color;
 		newText.disableTime = 6;
@@ -741,4 +742,7 @@ class MusicBeatSubstate extends FlxSubState
 		}
 		#end
 	}
+
+	public function addLuaCameraToFlxG(cam:FlxCamera, defaultDrawTarget:Bool):Void
+		FlxG.cameras.add(cam, defaultDrawTarget);
 }

@@ -249,15 +249,15 @@ class ReflectionFunctions
 			if (FunkinLua.getCurrentMusicState().variables.exists(objectName))
 			{
 				var obj:Dynamic = FunkinLua.getCurrentMusicState().variables.get(objectName);
-				if (inFront)
-					LuaUtils.getTargetInstance().add(obj);
-				else
+				if (FunkinLua.getCurrentMusicState() is PlayState && !inFront)
 				{
 					if (!PlayState.instance.isDead)
 						PlayState.instance.insert(PlayState.instance.members.indexOf(LuaUtils.getLowestCharacterGroup()), obj);
 					else
 						GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), obj);
 				}
+				else
+					LuaUtils.getTargetInstance().add(obj);
 			}
 			else
 				FunkinLua.luaTrace('addInstance: Can\'t add what doesn\'t exist~ ($objectName)', false, false, FlxColor.RED);

@@ -30,6 +30,7 @@ class MusicBeatState extends FlxUIState
 	public var modchartSounds:Map<String, FlxSound> = new Map<String, FlxSound>();
 	public var modchartTexts:Map<String, FlxText> = new Map<String, FlxText>();
 	public var modchartSaves:Map<String, FlxSave> = new Map<String, FlxSave>();
+	public var modchartCameras:Map<String, FlxCamera> = new Map<String, FlxCamera>();
 	#end
 
 	#if LUA_ALLOWED
@@ -319,10 +320,10 @@ class MusicBeatState extends FlxUIState
 		#end
 
 		#if LUA_ALLOWED
-		startLuasNamed('stateScripts/' + currentClassName + '.lua');
+		startLuasNamed('statescripts/' + currentClassName + '.lua');
 		#end
 		#if HSCRIPT_ALLOWED
-		startHScriptsNamed('stateScripts/' + currentClassName + '.hx');
+		startHScriptsNamed('statescripts/' + currentClassName + '.hx');
 		#end
 
 		super.create();
@@ -855,6 +856,9 @@ class MusicBeatState extends FlxUIState
 		}
 		#end
 	}
+
+	public function addLuaCameraToFlxG(cam:FlxCamera, defaultDrawTarget:Bool):Void
+		FlxG.cameras.add(cam, defaultDrawTarget);
 }
 
 @:bitmap("assets/embed/cursor.png")

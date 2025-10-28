@@ -29,6 +29,8 @@ import objects.Note.EventNote;
 import objects.*;
 import states.stages.objects.*;
 import substates.ResultsScreen;
+import sys.thread.Thread;
+import sys.thread.Mutex;
 
 /**
  * This is where all the Gameplay stuff happens and is managed
@@ -229,6 +231,12 @@ class PlayState extends MusicBeatState
 	// Callbacks for stages
 	public var startCallback:Void->Void = null;
 	public var endCallback:Void->Void = null;
+
+	private var shutdownThread:Bool = false;
+	private var gameFroze:Bool = false;
+	private var requiresSyncing:Bool = false;
+	private var lastCorrectSongPos:Float = -1.0;
+	private var syncMutex:Mutex;
 
 	#if VIDEOS_ALLOWED public var videoSprites:Array<VideoSpriteManager> = []; #end
 
@@ -1305,6 +1313,8 @@ class PlayState extends MusicBeatState
 		#end
 		FunkinLua.getCurrentMusicState().setOnScripts('songLength', songLength);
 		FunkinLua.getCurrentMusicState().callOnScripts('onSongStart');
+
+		runSongSyncThread();
 	}
 
 	var debugNum:Int = 0;
@@ -1680,6 +1690,7 @@ class PlayState extends MusicBeatState
 			paused = false;
 			mobileControls.instance.visible = #if !android touchPad.visible = #end true;
 			resetRPC(startTimer != null && startTimer.finished);
+			runSongSyncThread();
 		}
 		super.closeSubState();
 	}
@@ -1688,6 +1699,8 @@ class PlayState extends MusicBeatState
 	{
 		if (health > 0 && !paused)
 			resetRPC(Conductor.songPosition > 0.0);
+		shutdownThread = false;
+		runSongSyncThread();
 		super.onFocus();
 	}
 
@@ -1697,6 +1710,7 @@ class PlayState extends MusicBeatState
 		if (health > 0 && !paused && autoUpdateRPC)
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 		#end
+		shutdownThread = true;
 		super.onFocusLost();
 	}
 
@@ -2699,7 +2713,7 @@ class PlayState extends MusicBeatState
 	{
 		var noteDiffNoAbs:Float = note.strumTime - Conductor.songPosition + ClientPrefs.data.ratingOffset;
 		var noteDiff:Float = Math.abs(noteDiffNoAbs);
-		vocals.volume = 1;
+		//vocals.volume = 1;
 
 		if (!ClientPrefs.data.comboStacking && comboGroup.members.length > 0)
 		{
@@ -3279,7 +3293,11 @@ class PlayState extends MusicBeatState
 				gf.specialAnim = true;
 			}
 		}
-		vocals.volume = 0;
+
+		if (char == dad)
+			opponentVocals.volume = 0;
+		else
+			vocals.volume = 0;
 	}
 
 	function opponentNoteHit(note:Note):Void
@@ -3296,11 +3314,13 @@ class PlayState extends MusicBeatState
 
 		camZooming = true;
 
-		if (note.noteType == 'Hey!' && dad.animOffsets.exists('hey'))
+		var char:Character = (!characterPlayingAsDad) ? dad : boyfriend;
+
+		if (note.noteType == 'Hey!' && char.animOffsets.exists('hey'))
 		{
-			dad.playAnim('hey', true);
-			dad.specialAnim = true;
-			dad.heyTimer = 0.6;
+			char.playAnim('hey', true);
+			char.specialAnim = true;
+			char.heyTimer = 0.6;
 		}
 		else if (!note.noAnimation)
 		{
@@ -3310,7 +3330,6 @@ class PlayState extends MusicBeatState
 				if (SONG.notes[curSection].altAnim && !SONG.notes[curSection].gfSection)
 					altAnim = '-alt';
 
-			var char:Character = (!characterPlayingAsDad) ? dad : boyfriend;
 			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length - 1, note.noteData)))] + altAnim;
 			if (note.gfNote)
 				char = gf;
@@ -3322,8 +3341,12 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (opponentVocals.length <= 0)
+		@:privateAccess
+		if (char == dad && opponentVocals._sound == null)
+			opponentVocals.volume = 1;
+		else
 			vocals.volume = 1;
+
 		strumPlayAnim(true, Std.int(Math.abs(note.noteData)), Conductor.stepCrochet * 1.25 / 1000 / playbackRate);
 		note.hitByOpponent = true;
 
@@ -3426,7 +3449,11 @@ class PlayState extends MusicBeatState
 		}
 		else
 			strumPlayAnim(false, Std.int(Math.abs(note.noteData)), Conductor.stepCrochet * 1.25 / 1000 / playbackRate);
-		vocals.volume = 1;
+		@:privateAccess
+		if (char == dad && opponentVocals._sound == null)
+			opponentVocals.volume = 1;
+		else
+			vocals.volume = 1;
 		spawnHoldSplashOnNote(note);
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.data.ratingOffset);
 		var array = [note.strumTime, note.sustainLength, note.noteData, noteDiff];
@@ -3573,6 +3600,8 @@ class PlayState extends MusicBeatState
 		@:privateAccess
 		FlxG.game._filters = [];
 		camGame.filters = camHUD.filters = camOther.filters = [];
+		shutdownThread = true;
+		FlxG.signals.preUpdate.remove(checkForResync);
 		super.destroy();
 	}
 
@@ -3909,5 +3938,74 @@ class PlayState extends MusicBeatState
 			}
 		}
 		return "good";
+	}
+
+	function checkForResync()
+	{
+		if (endingSong || paused || shutdownThread)
+			return;
+
+		syncMutex.acquire();
+		try
+		{
+			if (requiresSyncing)
+			{
+				requiresSyncing = false;
+				setSongTime(lastCorrectSongPos);
+			}
+
+			gameFroze = false;
+		}
+		catch (e:Dynamic)
+		{
+			trace('Error during resync: $e');
+		}
+		syncMutex.release();
+	}
+
+	public function runSongSyncThread()
+	{
+		if (syncMutex == null)
+			syncMutex = new Mutex();
+
+		Thread.create(function()
+		{
+			try
+			{
+				while (!endingSong && !paused && !shutdownThread)
+				{
+					syncMutex.acquire();
+					var shouldContinue:Bool = !requiresSyncing;
+					syncMutex.release();
+
+					if (!shouldContinue)
+					{
+						Sys.sleep(0.01);
+						continue;
+					}
+
+					syncMutex.acquire();
+					gameFroze = true;
+					syncMutex.release();
+
+					Sys.sleep(0.25);
+
+					syncMutex.acquire();
+					if (gameFroze && !shutdownThread)
+					{
+						lastCorrectSongPos = Conductor.songPosition;
+						requiresSyncing = true;
+					}
+					syncMutex.release();
+				}
+			}
+			catch (e:Dynamic)
+			{
+				trace('Song sync thread error: $e');
+			}
+		});
+
+		if (!FlxG.signals.preUpdate.has(checkForResync))
+			FlxG.signals.preUpdate.add(checkForResync);
 	}
 }

@@ -339,22 +339,22 @@ class LuaUtils
 
 	public static inline function getTargetInstance()
 	{
-		return PlayState.instance.isDead ? GameOverSubstate.instance : PlayState.instance;
+		return FunkinLua.getCurrentMusicState() is PlayState ? PlayState.instance.isDead ? GameOverSubstate.instance : PlayState.instance : FunkinLua.getCurrentMusicState();
 	}
 
 	public static inline function getLowestCharacterGroup():FlxSpriteGroup
 	{
 		var group:FlxSpriteGroup = PlayState.instance.gfGroup;
-		var pos:Int = FunkinLua.getCurrentMusicState().members.indexOf(group);
+		var pos:Int = PlayState.instance.members.indexOf(group);
 
-		var newPos:Int = FunkinLua.getCurrentMusicState().members.indexOf(PlayState.instance.boyfriendGroup);
+		var newPos:Int = PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup);
 		if (newPos < pos)
 		{
 			group = PlayState.instance.boyfriendGroup;
 			pos = newPos;
 		}
 
-		newPos = FunkinLua.getCurrentMusicState().members.indexOf(FunkinLua.getCurrentMusicState().dadGroup);
+		newPos = PlayState.instance.members.indexOf(PlayState.instance.dadGroup);
 		if (newPos < pos)
 		{
 			group = PlayState.instance.dadGroup;
@@ -656,13 +656,17 @@ class LuaUtils
 
 	public static function cameraFromString(cam:String):FlxCamera
 	{
-		switch (cam.toLowerCase())
-		{
-			case 'camhud' | 'hud':
-				return PlayState.instance.camHUD;
-			case 'camother' | 'other':
-				return PlayState.instance.camOther;
-		}
-		return PlayState.instance.camGame;
+		if (FunkinLua.getCurrentMusicState().modchartCameras.exists(cam))
+			return FunkinLua.getCurrentMusicState().modchartCameras.get(cam);
+		else
+			return switch (cam.toLowerCase())
+			{
+				case 'camhud' | 'hud':
+					PlayState.instance.camHUD;
+				case 'camother' | 'other':
+					PlayState.instance.camOther;
+				default:
+					PlayState.instance.camGame;
+			}
 	}
 }

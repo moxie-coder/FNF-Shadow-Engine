@@ -26,7 +26,8 @@ class Mods
 		'weeks',
 		'fonts',
 		'scripts',
-		'stateScripts'
+		'statescripts',
+		'substatescripts'
 	];
 
 	private static var globalMods:Array<String> = [];
