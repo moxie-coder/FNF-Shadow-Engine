@@ -210,7 +210,7 @@ class ReflectionFunctions
 
 		funk.set("callMethod", function(funcToRun:String, ?args:Array<Dynamic> = null)
 		{
-			return callMethodFromObject(PlayState.instance, funcToRun, parseInstances(args));
+			return callMethodFromObject(FunkinLua.getCurrentMusicState(), funcToRun, parseInstances(args));
 		});
 		funk.set("callMethodFromClass", function(className:String, funcToRun:String, ?args:Array<Dynamic> = null)
 		{
@@ -220,7 +220,7 @@ class ReflectionFunctions
 		funk.set("createInstance", function(variableToSave:String, className:String, ?args:Array<Dynamic> = null)
 		{
 			variableToSave = variableToSave.trim().replace('.', '');
-			if (!PlayState.instance.variables.exists(variableToSave))
+			if (!FunkinLua.getCurrentMusicState().variables.exists(variableToSave))
 			{
 				if (args == null)
 					args = [];
@@ -234,7 +234,7 @@ class ReflectionFunctions
 
 				var obj:Dynamic = Type.createInstance(myType, args);
 				if (obj != null)
-					PlayState.instance.variables.set(variableToSave, obj);
+					FunkinLua.getCurrentMusicState().variables.set(variableToSave, obj);
 				else
 					FunkinLua.luaTrace('createInstance: Failed to create $variableToSave, arguments are possibly wrong.', false, false, FlxColor.RED);
 
@@ -246,9 +246,9 @@ class ReflectionFunctions
 		});
 		funk.set("addInstance", function(objectName:String, ?inFront:Bool = false)
 		{
-			if (PlayState.instance.variables.exists(objectName))
+			if (FunkinLua.getCurrentMusicState().variables.exists(objectName))
 			{
-				var obj:Dynamic = PlayState.instance.variables.get(objectName);
+				var obj:Dynamic = FunkinLua.getCurrentMusicState().variables.get(objectName);
 				if (inFront)
 					LuaUtils.getTargetInstance().add(obj);
 				else
@@ -286,7 +286,7 @@ class ReflectionFunctions
 					var lastIndex:Int = myArg.lastIndexOf('::');
 
 					var split:Array<String> = myArg.split('.');
-					args[i] = (lastIndex > -1) ? Type.resolveClass(myArg.substring(0, lastIndex)) : PlayState.instance;
+					args[i] = (lastIndex > -1) ? Type.resolveClass(myArg.substring(0, lastIndex)) : FunkinLua.getCurrentMusicState();
 					for (j in 0...split.length)
 					{
 						// trace('Op2: ${Type.getClass(args[i])}, ${split[j]}');

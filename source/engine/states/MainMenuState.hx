@@ -9,7 +9,7 @@ import options.OptionsState;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var shadowEngineVersion:String = '0.2.1';
+	public static var shadowEngineVersion:String = '0.2.7';
 	public static var psychEngineVersion:String = '0.7.3'; // This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
@@ -196,6 +196,8 @@ class MainMenuState extends MusicBeatState
 			curSelected = 0;
 		if (curSelected < 0)
 			curSelected = menuItems.length - 1;
+
+		FunkinLua.getCurrentMusicState().callOnScripts('onChangeSelection');
 
 		menuItems.members[curSelected].animation.play('selected');
 		menuItems.members[curSelected].centerOffsets();
