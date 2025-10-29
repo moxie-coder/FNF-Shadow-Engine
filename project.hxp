@@ -103,12 +103,12 @@ class Project extends HXProject
 		trace('');
 		if (ENABLE_ASCII_ART)
 		{
-			var asciiArt = generateAsciiArt("icons/icon64.png", width - 2, 100);
+			//var asciiArt = generateAsciiArt("icons/iconOG.png", width - 2, 100);
+			// hardcoding here as new image fucked things up and I have no solution for now
+			var asciiArt = "11Qm~>Xi{<XtJ~>!?Ou~>_i!>l_+~~]}l| !-fii]!#iLj)-\n11Qm~>Xi{<XtJ~>!?O<~~<<~<<~~~~~~~<<<~<_<]!#iLj)-\n11Qm~>Xi{<XtJ~+~<~<~~~~~~~~~~~~~~~~_1+{_<~^iLj)-\n11Qm~>XiXXXt]<<~~~~~~~~~~~~~~~~~~)]iO-_~+~~iLj)-\n11Qm~>X//<<~~<~~~~~~~~~~~~~~~<[#Lx_+~~~~~_ciLj)-\n11Qm~>{{{~<~~~~~~~~~~~~~~~~~~~~~<~~<~~~~+<iiLj)-\n11Qm~>Xi!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<_iiLj)-\n+}~~~+_<~~~~~~~~~~C@@~~~~~~~~~~~~~~~~~~~I:iiLj)-\n##~~~~~~~~~~~~~~-W$$$*<~~~~~~~~~~~~~~~<_>>iiLj)-\n##[~~<~~~~~~~~~_&@@@@@r~~~~~~~~~~~~~~~~cXuiiQx(-\nttt_-~~~~~~~~~~m@$[~m@t~~~~~~~~~~_<?[[_<~<~~~~[1\n!!!!!><~~~~~~~~*@$B1~+~~~~~~~~~~~~~~~~~~~~+~]OOO\ntttttt<~~O?~~~~@@$Bd?~~~~~~~~~~~~~~~~~~~~~_##OOO\ntttttt~-n~w@L_~~~~~~~~~~~~~~~~~~~~~~~~~~_<###+-1\nlllllllll~<<~~~~~~~~~~~~~~~~~~~~~~~~~_{{<<###+-1\n!!!!!!!!!Y)!-i<~~++~<~<Y0x{><~~>>><~<t}{<<###+-1";
 			var asciiLines = asciiArt.split("\n");
 			for (line in asciiLines)
 			{
-				if (line == '11Qm~>Xi{<XtJ~>!?Ou~>_i!i;<i!!~-;| !-fii]!#iLj)-' || line == 'tttttt~-xX1|_;Xl^``;]I!#0j];I;;wvUOl<t}{<<###+-1')
-					continue; // skipping line that ion like
 				var paddedLine = StringTools.rpad(line, " ", width - 2);
 				trace("=" + paddedLine + "=");
 			}
