@@ -4,6 +4,8 @@ A highly modified Psych Engine 0.7.3.
 
 Ready to be source-modded.
 
+For the lore of this engine see [ORIGIN.md](./ORIGIN.md)
+
 ## Differences Between The Original
 - Uses our [Lime](https://github.com/HomuHomu833-haxelibs/lime) and [HXCPP](https://github.com/HomuHomu833-haxelibs/hxcpp) forks
 - Uses latest Haxe
