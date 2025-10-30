@@ -3294,7 +3294,8 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (char == dad)
+		@:privateAccess
+		if (char == dad && opponentVocals._sound != null)
 			opponentVocals.volume = 0;
 		else
 			vocals.volume = 0;
@@ -3450,7 +3451,7 @@ class PlayState extends MusicBeatState
 		else
 			strumPlayAnim(false, Std.int(Math.abs(note.noteData)), Conductor.stepCrochet * 1.25 / 1000 / playbackRate);
 		@:privateAccess
-		if (char == dad && opponentVocals._sound == null)
+		if (char == dad && opponentVocals._sound != null)
 			opponentVocals.volume = 1;
 		else
 			vocals.volume = 1;
