@@ -698,7 +698,9 @@ class PlayState extends MusicBeatState
 		if (generatedMusic)
 		{
 			vocals.pitch = value;
-			opponentVocals.pitch = value;
+			@:privateAccess
+			if (opponentVocals._sound != null)
+				opponentVocals.pitch = value;
 			FlxG.sound.music.pitch = value;
 
 			var ratio:Float = playbackRate / value; // funny word huh
@@ -1248,7 +1250,9 @@ class PlayState extends MusicBeatState
 
 		FlxG.sound.music.pause();
 		vocals.pause();
-		opponentVocals.pause();
+		@:privateAccess
+		if (opponentVocals._sound != null)
+			opponentVocals.pause();
 
 		FlxG.sound.music.time = time;
 		#if FLX_PITCH FlxG.sound.music.pitch = playbackRate; #end
@@ -1257,14 +1261,20 @@ class PlayState extends MusicBeatState
 		if (Conductor.songPosition <= vocals.length)
 		{
 			vocals.time = time;
-			opponentVocals.time = time;
+			@:privateAccess
+			if (opponentVocals._sound != null)
+				opponentVocals.time = time;
 			#if FLX_PITCH
 			vocals.pitch = playbackRate;
-			opponentVocals.pitch = playbackRate;
+			@:privateAccess
+			if (opponentVocals._sound != null)
+				opponentVocals.pitch = playbackRate;
 			#end
 		}
 		vocals.play();
-		opponentVocals.play();
+		@:privateAccess
+		if (opponentVocals._sound != null)
+			opponentVocals.play();
 		Conductor.songPosition = time;
 	}
 
@@ -1288,7 +1298,9 @@ class PlayState extends MusicBeatState
 		#if FLX_PITCH FlxG.sound.music.pitch = playbackRate; #end
 		FlxG.sound.music.onComplete = () -> finishSong();
 		vocals.play();
-		opponentVocals.play();
+		@:privateAccess
+		if (opponentVocals._sound != null)
+			opponentVocals.play();
 
 		setSongTime(Math.max(0, startOnTime - 500));
 		startOnTime = 0;
@@ -1298,7 +1310,9 @@ class PlayState extends MusicBeatState
 			// trace('Oopsie doopsie! Paused sound');
 			FlxG.sound.music.pause();
 			vocals.pause();
-			opponentVocals.pause();
+			@:privateAccess
+			if (opponentVocals._sound != null)
+				opponentVocals.pause();
 		}
 
 		// Song duration in a float, useful for the time left feature
@@ -1363,10 +1377,14 @@ class PlayState extends MusicBeatState
 
 		#if FLX_PITCH
 		vocals.pitch = playbackRate;
-		opponentVocals.pitch = playbackRate;
+		@:privateAccess
+		if (opponentVocals._sound != null)
+			opponentVocals.pitch = playbackRate;
 		#end
 		FlxG.sound.list.add(vocals);
-		FlxG.sound.list.add(opponentVocals);
+		@:privateAccess
+		if (opponentVocals._sound != null)
+			FlxG.sound.list.add(opponentVocals);
 
 		inst = new FlxSound();
 		try
@@ -1654,7 +1672,9 @@ class PlayState extends MusicBeatState
 			{
 				FlxG.sound.music.pause();
 				vocals.pause();
-				opponentVocals.pause();
+				@:privateAccess
+				if (opponentVocals._sound != null)
+					opponentVocals.pause();
 			}
 			FlxTimer.globalManager.forEach(function(tmr:FlxTimer) if (!tmr.finished)
 				tmr.active = false);
@@ -1747,7 +1767,7 @@ class PlayState extends MusicBeatState
 		#if FLX_PITCH FlxG.sound.music.pitch = playbackRate; #end
 		Conductor.songPosition = FlxG.sound.music.time + Conductor.offset;
 
-		var checkVocals = [vocals, opponentVocals];
+		var checkVocals = @:privateAccess (opponentVocals._sound != null) ? [vocals, opponentVocals] : [vocals];
 		for (voc in checkVocals)
 		{
 			if (FlxG.sound.music.time < vocals.length)
@@ -2044,7 +2064,9 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.sound.music.pause();
 			vocals.pause();
-			opponentVocals.pause();
+			@:privateAccess
+			if (opponentVocals._sound != null)
+				opponentVocals.pause();
 		}
 		if (!cpuControlled)
 		{
@@ -2111,7 +2133,9 @@ class PlayState extends MusicBeatState
 				canPause = false;
 
 				vocals.stop();
-				opponentVocals.stop();
+				@:privateAccess
+				if (opponentVocals._sound != null)
+					opponentVocals.stop();
 				FlxG.sound.music.stop();
 
 				persistentUpdate = false;
@@ -2508,8 +2532,12 @@ class PlayState extends MusicBeatState
 
 		vocals.volume = 0;
 		vocals.pause();
-		opponentVocals.volume = 0;
-		opponentVocals.pause();
+		@:privateAccess
+		if (opponentVocals._sound != null)
+		{
+			opponentVocals.volume = 0;
+			opponentVocals.pause();
+		}
 
 		if (ClientPrefs.data.noteOffset <= 0 || ignoreNoteOffset)
 		{
@@ -3258,7 +3286,9 @@ class PlayState extends MusicBeatState
 		if (instakillOnMiss)
 		{
 			vocals.volume = 0;
-			opponentVocals.volume = 0;
+			@:privateAccess
+			if (opponentVocals._sound != null)
+				opponentVocals.volume = 0;
 			doDeathCheck(true);
 		}
 
