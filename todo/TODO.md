@@ -1,4 +1,4 @@
-- Switch to RuleScript(?)
+- Switch SScript to RuleScript(?)
 - Switch linc_luajit to hxluajit
 - Add hxfmod
 - Add flixel-animate
