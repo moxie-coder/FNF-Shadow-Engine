@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./docs/images/SE_Logo.png" alt="Shadow Engine Logo" width="400" />
+</p>
+
 # Friday Night Funkin' - Shadow Engine
 
 A highly modified Psych Engine 0.7.3.

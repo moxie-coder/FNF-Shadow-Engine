@@ -5,7 +5,7 @@ For a while, it was just a modified PE build, until I started shadowing OpenFL a
 Time passed, and I eventually decided to make the engine public. I thought the name was kind of lame or cringy at first, but it stuck and people in my Discord server actually liked it, which motivated me to keep fixing bugs and improving it.  
 
 After two or three days of development, a couple of people came up with an idea for the icon (accidentally), and it was hilarious but it just fit.  
-<img width="823" height="686" alt="Screenshot 2025-10-29 104433" src="https://github.com/user-attachments/assets/cef58b92-6326-43a0-b1ca-1907c7703b0f" />
+![](./docs/images/iconorigin.png)
 
 I couldn’t believe how well the name and icon matched in the end.
 Huge thanks to;
@@ -18,4 +18,4 @@ for helping make this engine possible, even if it’s gonna get no longer active
 
 and very lastly uhh here's a funny bug in SE before
 
-https://github.com/user-attachments/assets/b95ea2de-7d46-4f60-bf0f-26e860f8a06d
+![](./docs/videos/um.mp4)
