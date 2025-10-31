@@ -59,7 +59,7 @@ class DeprecatedFunctions
 			FunkinLua.luaTrace("luaSpriteAddAnimationByPrefix is deprecated! Use addAnimationByPrefix instead", false, true);
 			if (FunkinLua.getCurrentMusicState().modchartSprites.exists(tag))
 			{
-				var cock:ModchartSprite = FunkinLua.getCurrentMusicState().modchartSprites.get(tag);
+				var cock:ModchartSprite = cast(FunkinLua.getCurrentMusicState().modchartSprites.get(tag), ModchartSprite);
 				cock.animation.addByPrefix(name, prefix, framerate, loop);
 				if (cock.animation.curAnim == null)
 				{
@@ -78,7 +78,7 @@ class DeprecatedFunctions
 				{
 					die.push(Std.parseInt(strIndices[i]));
 				}
-				var pussy:ModchartSprite = FunkinLua.getCurrentMusicState().modchartSprites.get(tag);
+				var pussy:ModchartSprite = cast(FunkinLua.getCurrentMusicState().modchartSprites.get(tag), ModchartSprite);
 				pussy.animation.addByIndices(name, prefix, die, '', framerate, false);
 				if (pussy.animation.curAnim == null)
 				{

@@ -74,7 +74,7 @@ class CustomSubstate extends MusicBeatSubstate
 	{
 		if (instance != null)
 		{
-			var tagObject:FlxObject = FunkinLua.getCurrentMusicState().luaTouchPad;
+			var tagObject:TouchPad = cast(FunkinLua.getCurrentMusicState().luaTouchPad, TouchPad);
 
 			if (tagObject != null)
 			{

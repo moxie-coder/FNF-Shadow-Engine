@@ -213,11 +213,6 @@ class PlayState extends MusicBeatState
 	var detailsPausedText:String = "";
 	#end
 
-	// Achievement shit
-	var keysPressed:Array<Int> = [];
-	var boyfriendIdleTime:Float = 0.0;
-	var boyfriendIdled:Bool = false;
-
 	// Lua shit
 	public static var instance:PlayState;
 
@@ -3028,11 +3023,6 @@ class PlayState extends MusicBeatState
 			FunkinLua.getCurrentMusicState().callOnScripts('onGhostTap', [key]);
 			noteMissPress(key);
 		}
-
-		// Needed for the  "Just the Two of Us" achievement.
-		//									- Shadow Mario
-		if (!keysPressed.contains(key))
-			keysPressed.push(key);
 
 		var spr:StrumNote = playerStrums.members[key];
 		if (strumsBlocked[key] != true && spr != null && spr.animation.curAnim.name != 'confirm')

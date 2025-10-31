@@ -151,7 +151,7 @@ class ExtraFunctions
 		{
 			if (FunkinLua.getCurrentMusicState().modchartSaves.exists(name))
 			{
-				var saveData = FunkinLua.getCurrentMusicState().modchartSaves.get(name).data;
+				var saveData:FlxSave = cast(FunkinLua.getCurrentMusicState().modchartSaves.get(name), FlxSave).data;
 				if (Reflect.hasField(saveData, field))
 					return Reflect.field(saveData, field);
 				else
@@ -164,7 +164,7 @@ class ExtraFunctions
 		{
 			if (FunkinLua.getCurrentMusicState().modchartSaves.exists(name))
 			{
-				Reflect.setField(FunkinLua.getCurrentMusicState().modchartSaves.get(name).data, field, value);
+				Reflect.setField(cast(FunkinLua.getCurrentMusicState().modchartSaves.get(name), FlxSave).data, field, value);
 				return;
 			}
 			FunkinLua.luaTrace('setDataFromSave: Save file not initialized: ' + name, false, false, FlxColor.RED);

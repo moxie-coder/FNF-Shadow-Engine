@@ -89,7 +89,7 @@ class LuaUtils
 			var target:Dynamic = null;
 			if (FunkinLua.getCurrentMusicState().variables.exists(splitProps[0]))
 			{
-				var retVal:Dynamic = FunkinLua.getCurrentMusicState().variables.get(splitProps[0]);
+				var retVal:Dynamic = cast(FunkinLua.getCurrentMusicState().variables.get(splitProps[0]));
 				if (retVal != null)
 					target = retVal;
 			}
@@ -112,7 +112,7 @@ class LuaUtils
 
 		if (FunkinLua.getCurrentMusicState().variables.exists(variable))
 		{
-			var retVal:Dynamic = FunkinLua.getCurrentMusicState().variables.get(variable);
+			var retVal:Dynamic = cast(FunkinLua.getCurrentMusicState().variables.get(variable));
 			if (retVal != null)
 				return retVal;
 		}
@@ -314,7 +314,7 @@ class LuaUtils
 				return FunkinLua.getCurrentMusicState();
 
 			default:
-				var obj:Dynamic = FunkinLua.getCurrentMusicState().getLuaObject(objectName, checkForTextsToo);
+				var obj:Dynamic = cast(FunkinLua.getCurrentMusicState().getLuaObject(objectName, checkForTextsToo));
 				if (obj == null)
 					obj = getVarInArray(getTargetInstance(), objectName, allowMaps);
 				return obj;
@@ -423,7 +423,7 @@ class LuaUtils
 			return;
 		}
 
-		var target:FlxText = FunkinLua.getCurrentMusicState().modchartTexts.get(tag);
+		var target:FlxText = cast(FunkinLua.getCurrentMusicState().modchartTexts.get(tag), FlxText);
 		FunkinLua.getCurrentMusicState().remove(target, true);
 		target.kill();
 		target.destroy();
@@ -439,7 +439,7 @@ class LuaUtils
 			return;
 		}
 
-		var target:ModchartSprite = FunkinLua.getCurrentMusicState().modchartSprites.get(tag);
+		var target:ModchartSprite = cast(FunkinLua.getCurrentMusicState().modchartSprites.get(tag), ModchartSprite);
 		FunkinLua.getCurrentMusicState().remove(target, true);
 		target.kill();
 		target.destroy();
@@ -474,7 +474,7 @@ class LuaUtils
 		#if LUA_ALLOWED
 		if (FunkinLua.getCurrentMusicState().modchartTimers.exists(tag))
 		{
-			var theTimer:FlxTimer = FunkinLua.getCurrentMusicState().modchartTimers.get(tag);
+			var theTimer:FlxTimer = cast(FunkinLua.getCurrentMusicState().modchartTimers.get(tag), FlxTimer);
 			theTimer.cancel();
 			theTimer.destroy();
 			FunkinLua.getCurrentMusicState().modchartTimers.remove(tag);

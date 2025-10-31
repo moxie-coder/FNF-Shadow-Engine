@@ -155,6 +155,386 @@ class FunkinLua
 			set('boyfriendName', PlayState.SONG.player1);
 			set('dadName', PlayState.SONG.player2);
 			set('gfName', PlayState.SONG.gfVersion);
+
+			// Tween shit, but for strums
+			set("noteTweenX", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
+			{
+				LuaUtils.cancelTween(tag);
+				if (note < 0)
+					note = 0;
+				var testicle:StrumNote = cast(game, PlayState).strumLineNotes.members[note % cast(cast(game, PlayState).strumLineNotes.length, Int)];
+
+				if (testicle != null)
+				{
+					cast(game, PlayState).modchartTweens.set(tag, FlxTween.tween(testicle, {x: value}, duration, {
+						ease: LuaUtils.getTweenEaseByString(ease),
+						onComplete: function(twn:FlxTween)
+						{
+							cast(game, PlayState).callOnLuas('onTweenCompleted', [tag]);
+							cast(game, PlayState).modchartTweens.remove(tag);
+						}
+					}));
+				}
+			});
+			set("noteTweenY", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
+			{
+				LuaUtils.cancelTween(tag);
+				if (note < 0)
+					note = 0;
+				var testicle:StrumNote = cast(game, PlayState).strumLineNotes.members[note % cast(cast(game, PlayState).strumLineNotes.length, Int)];
+
+				if (testicle != null)
+				{
+					cast(game, PlayState).modchartTweens.set(tag, FlxTween.tween(testicle, {y: value}, duration, {
+						ease: LuaUtils.getTweenEaseByString(ease),
+						onComplete: function(twn:FlxTween)
+						{
+							cast(game, PlayState).callOnLuas('onTweenCompleted', [tag]);
+							cast(game, PlayState).modchartTweens.remove(tag);
+						}
+					}));
+				}
+			});
+			set("noteTweenAngle", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
+			{
+				LuaUtils.cancelTween(tag);
+				if (note < 0)
+					note = 0;
+				var testicle:StrumNote = cast(game, PlayState).strumLineNotes.members[note % cast(cast(game, PlayState).strumLineNotes.length, Int)];
+
+				if (testicle != null)
+				{
+					cast(game, PlayState).modchartTweens.set(tag, FlxTween.tween(testicle, {angle: value}, duration, {
+						ease: LuaUtils.getTweenEaseByString(ease),
+						onComplete: function(twn:FlxTween)
+						{
+							cast(game, PlayState).callOnLuas('onTweenCompleted', [tag]);
+							cast(game, PlayState).modchartTweens.remove(tag);
+						}
+					}));
+				}
+			});
+			set("noteTweenDirection", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
+			{
+				LuaUtils.cancelTween(tag);
+				if (note < 0)
+					note = 0;
+				var testicle:StrumNote = cast(game, PlayState).strumLineNotes.members[note % cast(cast(game, PlayState).strumLineNotes.length, Int)];
+
+				if (testicle != null)
+				{
+					cast(game, PlayState).modchartTweens.set(tag, FlxTween.tween(testicle, {direction: value}, duration, {
+						ease: LuaUtils.getTweenEaseByString(ease),
+						onComplete: function(twn:FlxTween)
+						{
+							cast(game, PlayState).callOnLuas('onTweenCompleted', [tag]);
+							cast(game, PlayState).modchartTweens.remove(tag);
+						}
+					}));
+				}
+			});
+			set("noteTweenAlpha", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
+			{
+				LuaUtils.cancelTween(tag);
+				if (note < 0)
+					note = 0;
+				var testicle:StrumNote = cast(game, PlayState).strumLineNotes.members[note % cast(cast(game, PlayState).strumLineNotes.length, Int)];
+
+				if (testicle != null)
+				{
+					cast(game, PlayState).modchartTweens.set(tag, FlxTween.tween(testicle, {alpha: value}, duration, {
+						ease: LuaUtils.getTweenEaseByString(ease),
+						onComplete: function(twn:FlxTween)
+						{
+							cast(game, PlayState).callOnLuas('onTweenCompleted', [tag]);
+							cast(game, PlayState).modchartTweens.remove(tag);
+						}
+					}));
+				}
+			});
+
+			// stupid bietch ass functions
+			set("addScore", function(value:Int = 0)
+			{
+				cast(game, PlayState).songScore += value;
+				cast(game, PlayState).RecalculateRating();
+			});
+			set("addMisses", function(value:Int = 0)
+			{
+				cast(game, PlayState).songMisses += value;
+				cast(game, PlayState).RecalculateRating();
+			});
+			set("addHits", function(value:Int = 0)
+			{
+				cast(game, PlayState).songHits += value;
+				cast(game, PlayState).RecalculateRating();
+			});
+			set("setScore", function(value:Int = 0)
+			{
+				cast(game, PlayState).songScore = value;
+				cast(game, PlayState).RecalculateRating();
+			});
+			set("setMisses", function(value:Int = 0)
+			{
+				cast(game, PlayState).songMisses = value;
+				cast(game, PlayState).RecalculateRating();
+			});
+			set("setHits", function(value:Int = 0)
+			{
+				cast(game, PlayState).songHits = value;
+				cast(game, PlayState).RecalculateRating();
+			});
+			set("getScore", function()
+			{
+				return cast(game, PlayState).songScore;
+			});
+			set("getMisses", function()
+			{
+				return cast(game, PlayState).songMisses;
+			});
+			set("getHits", function()
+			{
+				return cast(game, PlayState).songHits;
+			});
+
+			set("setHealth", function(value:Float = 0)
+			{
+				cast(game, PlayState).health = value;
+			});
+			set("addHealth", function(value:Float = 0)
+			{
+				cast(game, PlayState).health += value;
+			});
+			set("getHealth", function()
+			{
+				return cast(game, PlayState).health;
+			});
+
+			// precaching
+			set("addCharacterToList", function(name:String, type:String)
+			{
+				var charType:Int = 0;
+				switch (type.toLowerCase())
+				{
+					case 'dad':
+						charType = 1;
+					case 'gf' | 'girlfriend':
+						charType = 2;
+				}
+				cast(game, PlayState).addCharacterToList(name, charType);
+			});
+
+			// others
+			set("triggerEvent", function(name:String, arg1:Dynamic, arg2:Dynamic)
+			{
+				var value1:String = arg1;
+				var value2:String = arg2;
+				cast(game, PlayState).triggerEvent(name, value1, value2, Conductor.songPosition);
+				// trace('Triggered event: ' + name + ', ' + value1 + ', ' + value2);
+				return true;
+			});
+
+			set("startCountdown", cast(game, PlayState).startCountdown);
+			set("endSong", function()
+			{
+				cast(game, PlayState).KillNotes();
+				cast(game, PlayState).endSong();
+				return true;
+			});
+			set("restartSong", function(?skipTransition:Bool = false)
+			{
+				cast(game, PlayState).persistentUpdate = false;
+				FlxG.camera.followLerp = 0;
+				PauseSubState.restartSong(skipTransition);
+				return true;
+			});
+			set("exitSong", function(?skipTransition:Bool = false)
+			{
+				if (skipTransition)
+				{
+					FlxTransitionableState.skipNextTransIn = true;
+					FlxTransitionableState.skipNextTransOut = true;
+				}
+
+				MusicBeatState.switchState(new states.FreeplayState());
+
+				#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
+
+				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				PlayState.changedDifficulty = false;
+				PlayState.chartingMode = false;
+				cast(game, PlayState).transitioning = true;
+				FlxG.camera.followLerp = 0;
+				Mods.loadTopMod();
+				return true;
+			});
+			set("getSongPosition", function()
+			{
+				return Conductor.songPosition;
+			});
+
+			set("getCharacterX", function(type:String)
+			{
+				switch (type.toLowerCase())
+				{
+					case 'dad' | 'opponent':
+						return cast(game, PlayState).dadGroup.x;
+					case 'gf' | 'girlfriend':
+						return cast(game, PlayState).gfGroup.x;
+					default:
+						return cast(game, PlayState).boyfriendGroup.x;
+				}
+			});
+			set("setCharacterX", function(type:String, value:Float)
+			{
+				switch (type.toLowerCase())
+				{
+					case 'dad' | 'opponent':
+						cast(game, PlayState).dadGroup.x = value;
+					case 'gf' | 'girlfriend':
+						cast(game, PlayState).gfGroup.x = value;
+					default:
+						cast(game, PlayState).boyfriendGroup.x = value;
+				}
+			});
+			set("getCharacterY", function(type:String)
+			{
+				switch (type.toLowerCase())
+				{
+					case 'dad' | 'opponent':
+						return cast(game, PlayState).dadGroup.y;
+					case 'gf' | 'girlfriend':
+						return cast(game, PlayState).gfGroup.y;
+					default:
+						return cast(game, PlayState).boyfriendGroup.y;
+				}
+			});
+			set("setCharacterY", function(type:String, value:Float)
+			{
+				switch (type.toLowerCase())
+				{
+					case 'dad' | 'opponent':
+						cast(game, PlayState).dadGroup.y = value;
+					case 'gf' | 'girlfriend':
+						cast(game, PlayState).gfGroup.y = value;
+					default:
+						cast(game, PlayState).boyfriendGroup.y = value;
+				}
+			});
+			set("cameraSetTarget", function(target:String)
+			{
+				var isDad:Bool = false;
+				if (target == 'dad')
+				{
+					isDad = true;
+				}
+				cast(game, PlayState).moveCamera(isDad);
+				return isDad;
+			});
+			set("setRatingPercent", function(value:Float)
+			{
+				cast(game, PlayState).ratingPercent = value;
+			});
+			set("setRatingName", function(value:String)
+			{
+				cast(game, PlayState).ratingName = value;
+			});
+			set("setRatingFC", function(value:String)
+			{
+				cast(game, PlayState).ratingFC = value;
+			});
+
+			set("characterDance", function(character:String)
+			{
+				switch (character.toLowerCase())
+				{
+					case 'dad':
+						cast(game, PlayState).dad.dance();
+					case 'gf' | 'girlfriend':
+						if (cast(game, PlayState).gf != null)
+							cast(game, PlayState).gf.dance();
+					default:
+						cast(game, PlayState).boyfriend.dance();
+				}
+			});
+
+			set("setHealthBarColors", function(left:String, right:String)
+			{
+				cast(game, PlayState).healthBar.setColors(CoolUtil.colorFromString(left), CoolUtil.colorFromString(right));
+			});
+			set("setTimeBarColors", function(left:String, right:String)
+			{
+				cast(game, PlayState).timeBar.setColors(CoolUtil.colorFromString(left), CoolUtil.colorFromString(right));
+			});
+
+			set("startDialogue", function(dialogueFile:String, music:String = null)
+			{
+				var path:String;
+				#if MODS_ALLOWED
+				path = Paths.modsJson(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
+				if (!FileSystem.exists(path))
+				#end
+				path = Paths.json(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
+
+				luaTrace('startDialogue: Trying to load dialogue: ' + path);
+
+				#if MODS_ALLOWED
+				if (FileSystem.exists(path))
+				#else
+				if (Assets.exists(path))
+				#end
+				{
+					var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
+					if (shit.dialogue.length > 0)
+					{
+						cast(game, PlayState).startDialogue(shit, music);
+						luaTrace('startDialogue: Successfully loaded dialogue', false, false, FlxColor.GREEN);
+						return true;
+					}
+					else
+					{
+						luaTrace('startDialogue: Your dialogue file is badly formatted!', false, false, FlxColor.RED);
+					}
+				}
+			else
+			{
+				luaTrace('startDialogue: Dialogue file not found', false, false, FlxColor.RED);
+				if (cast(game, PlayState).endingSong)
+				{
+					cast(game, PlayState).endSong();
+				}
+				else
+				{
+					cast(game, PlayState).startCountdown();
+				}
+			}
+				return false;
+			});
+			set("startVideo", function(videoFile:String)
+			{
+				#if VIDEOS_ALLOWED
+				if (FileSystem.exists(Paths.video(videoFile)))
+				{
+					cast(game, PlayState).startVideo(videoFile);
+					return true;
+				}
+				else
+				{
+					luaTrace('startVideo: Video file not found: ' + videoFile, false, false, FlxColor.RED);
+				}
+				return false;
+				#else
+				if (cast(game, PlayState).endingSong)
+				{
+					cast(game, PlayState).endSong();
+				}
+				else
+				{
+					cast(game, PlayState).startCountdown();
+				}
+				return true;
+				#end
+			});
 		}
 
 		// Song/Week shit
@@ -630,84 +1010,6 @@ class FunkinLua
 			}
 		});
 
-		// Tween shit, but for strums
-		set("noteTweenX", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
-		{
-			LuaUtils.cancelTween(tag);
-			if (note < 0)
-				note = 0;
-			var testicle:StrumNote = game.strumLineNotes.members[note % cast(game.strumLineNotes.length, Int)];
-
-			if (testicle != null)
-			{
-				game.modchartTweens.set(tag, FlxTween.tween(testicle, {x: value}, duration, {
-					ease: LuaUtils.getTweenEaseByString(ease),
-					onComplete: function(twn:FlxTween)
-					{
-						game.callOnLuas('onTweenCompleted', [tag]);
-						game.modchartTweens.remove(tag);
-					}
-				}));
-			}
-		});
-		set("noteTweenY", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
-		{
-			LuaUtils.cancelTween(tag);
-			if (note < 0)
-				note = 0;
-			var testicle:StrumNote = game.strumLineNotes.members[note % cast(game.strumLineNotes.length,Int)];
-
-			if (testicle != null)
-			{
-				game.modchartTweens.set(tag, FlxTween.tween(testicle, {y: value}, duration, {
-					ease: LuaUtils.getTweenEaseByString(ease),
-					onComplete: function(twn:FlxTween)
-					{
-						game.callOnLuas('onTweenCompleted', [tag]);
-						game.modchartTweens.remove(tag);
-					}
-				}));
-			}
-		});
-		set("noteTweenAngle", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
-		{
-			LuaUtils.cancelTween(tag);
-			if (note < 0)
-				note = 0;
-			var testicle:StrumNote = game.strumLineNotes.members[note %  cast(game.strumLineNotes.length, Int)];
-
-			if (testicle != null)
-			{
-				game.modchartTweens.set(tag, FlxTween.tween(testicle, {angle: value}, duration, {
-					ease: LuaUtils.getTweenEaseByString(ease),
-					onComplete: function(twn:FlxTween)
-					{
-						game.callOnLuas('onTweenCompleted', [tag]);
-						game.modchartTweens.remove(tag);
-					}
-				}));
-			}
-		});
-		set("noteTweenDirection", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
-		{
-			LuaUtils.cancelTween(tag);
-			if (note < 0)
-				note = 0;
-			var testicle:StrumNote = game.strumLineNotes.members[note % cast(game.strumLineNotes.length, Int)];
-
-			if (testicle != null)
-			{
-				game.modchartTweens.set(tag, FlxTween.tween(testicle, {direction: value}, duration, {
-					ease: LuaUtils.getTweenEaseByString(ease),
-					onComplete: function(twn:FlxTween)
-					{
-						game.callOnLuas('onTweenCompleted', [tag]);
-						game.modchartTweens.remove(tag);
-					}
-				}));
-			}
-		});
-
 		set("mouseClicked", function(button:String)
 		{
 			var click:Bool = FlxG.mouse.justPressed;
@@ -744,44 +1046,6 @@ class FunkinLua
 			}
 			return released;
 		});
-		set("noteTweenAngle", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
-		{
-			LuaUtils.cancelTween(tag);
-			if (note < 0)
-				note = 0;
-			var testicle:StrumNote = game.strumLineNotes.members[note % cast(game.strumLineNotes.length, Int)];
-
-			if (testicle != null)
-			{
-				game.modchartTweens.set(tag, FlxTween.tween(testicle, {angle: value}, duration, {
-					ease: LuaUtils.getTweenEaseByString(ease),
-					onComplete: function(twn:FlxTween)
-					{
-						game.callOnLuas('onTweenCompleted', [tag]);
-						game.modchartTweens.remove(tag);
-					}
-				}));
-			}
-		});
-		set("noteTweenAlpha", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
-		{
-			LuaUtils.cancelTween(tag);
-			if (note < 0)
-				note = 0;
-			var testicle:StrumNote = game.strumLineNotes.members[note % cast(game.strumLineNotes.length, Int)];
-
-			if (testicle != null)
-			{
-				game.modchartTweens.set(tag, FlxTween.tween(testicle, {alpha: value}, duration, {
-					ease: LuaUtils.getTweenEaseByString(ease),
-					onComplete: function(twn:FlxTween)
-					{
-						game.callOnLuas('onTweenCompleted', [tag]);
-						game.modchartTweens.remove(tag);
-					}
-				}));
-			}
-		});
 
 		set("cancelTween", LuaUtils.cancelTween);
 		set("runTimer", function(tag:String, time:Float = 1, loops:Int = 1)
@@ -800,82 +1064,13 @@ class FunkinLua
 		});
 		set("cancelTimer", LuaUtils.cancelTimer);
 
-		// stupid bietch ass functions
-		set("addScore", function(value:Int = 0)
-		{
-			game.songScore += value;
-			game.RecalculateRating();
-		});
-		set("addMisses", function(value:Int = 0)
-		{
-			game.songMisses += value;
-			game.RecalculateRating();
-		});
-		set("addHits", function(value:Int = 0)
-		{
-			game.songHits += value;
-			game.RecalculateRating();
-		});
-		set("setScore", function(value:Int = 0)
-		{
-			game.songScore = value;
-			game.RecalculateRating();
-		});
-		set("setMisses", function(value:Int = 0)
-		{
-			game.songMisses = value;
-			game.RecalculateRating();
-		});
-		set("setHits", function(value:Int = 0)
-		{
-			game.songHits = value;
-			game.RecalculateRating();
-		});
-		set("getScore", function()
-		{
-			return game.songScore;
-		});
-		set("getMisses", function()
-		{
-			return game.songMisses;
-		});
-		set("getHits", function()
-		{
-			return game.songHits;
-		});
-
-		set("setHealth", function(value:Float = 0)
-		{
-			game.health = value;
-		});
-		set("addHealth", function(value:Float = 0)
-		{
-			game.health += value;
-		});
-		set("getHealth", function()
-		{
-			return game.health;
-		});
-
 		// Identical functions
 		set("FlxColor", FlxColor.fromString);
 		set("getColorFromName", FlxColor.fromString);
 		set("getColorFromString", FlxColor.fromString);
 		set("getColorFromHex", function(color:String) return FlxColor.fromString('#$color'));
 
-		// precaching
-		set("addCharacterToList", function(name:String, type:String)
-		{
-			var charType:Int = 0;
-			switch (type.toLowerCase())
-			{
-				case 'dad':
-					charType = 1;
-				case 'gf' | 'girlfriend':
-					charType = 2;
-			}
-			game.addCharacterToList(name, charType);
-		});
+		// precaaching
 		set("precacheImage", function(name:String)
 		{
 			Paths.image(name);
@@ -883,113 +1078,6 @@ class FunkinLua
 		set("precacheSound", Paths.sound);
 		set("precacheMusic", Paths.music);
 
-		// others
-		set("triggerEvent", function(name:String, arg1:Dynamic, arg2:Dynamic)
-		{
-			var value1:String = arg1;
-			var value2:String = arg2;
-			game.triggerEvent(name, value1, value2, Conductor.songPosition);
-			// trace('Triggered event: ' + name + ', ' + value1 + ', ' + value2);
-			return true;
-		});
-
-		set("startCountdown", game.startCountdown);
-		set("endSong", function()
-		{
-			game.KillNotes();
-			game.endSong();
-			return true;
-		});
-		set("restartSong", function(?skipTransition:Bool = false)
-		{
-			game.persistentUpdate = false;
-			FlxG.camera.followLerp = 0;
-			PauseSubState.restartSong(skipTransition);
-			return true;
-		});
-		set("exitSong", function(?skipTransition:Bool = false)
-		{
-			if (skipTransition)
-			{
-				FlxTransitionableState.skipNextTransIn = true;
-				FlxTransitionableState.skipNextTransOut = true;
-			}
-
-			MusicBeatState.switchState(new states.FreeplayState());
-
-			#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
-
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-			PlayState.changedDifficulty = false;
-			PlayState.chartingMode = false;
-			game.transitioning = true;
-			FlxG.camera.followLerp = 0;
-			Mods.loadTopMod();
-			return true;
-		});
-		set("getSongPosition", function()
-		{
-			return Conductor.songPosition;
-		});
-
-		set("getCharacterX", function(type:String)
-		{
-			switch (type.toLowerCase())
-			{
-				case 'dad' | 'opponent':
-					return game.dadGroup.x;
-				case 'gf' | 'girlfriend':
-					return game.gfGroup.x;
-				default:
-					return game.boyfriendGroup.x;
-			}
-		});
-		set("setCharacterX", function(type:String, value:Float)
-		{
-			switch (type.toLowerCase())
-			{
-				case 'dad' | 'opponent':
-					game.dadGroup.x = value;
-				case 'gf' | 'girlfriend':
-					game.gfGroup.x = value;
-				default:
-					game.boyfriendGroup.x = value;
-			}
-		});
-		set("getCharacterY", function(type:String)
-		{
-			switch (type.toLowerCase())
-			{
-				case 'dad' | 'opponent':
-					return game.dadGroup.y;
-				case 'gf' | 'girlfriend':
-					return game.gfGroup.y;
-				default:
-					return game.boyfriendGroup.y;
-			}
-		});
-		set("setCharacterY", function(type:String, value:Float)
-		{
-			switch (type.toLowerCase())
-			{
-				case 'dad' | 'opponent':
-					game.dadGroup.y = value;
-				case 'gf' | 'girlfriend':
-					game.gfGroup.y = value;
-				default:
-					game.boyfriendGroup.y = value;
-			}
-		});
-		set("cameraSetTarget", function(target:String)
-		{
-			var isDad:Bool = false;
-			if (target == 'dad')
-			{
-				isDad = true;
-			}
-			game.moveCamera(isDad);
-			return isDad;
-		});
 		set("cameraShake", function(camera:String, intensity:Float, duration:Float)
 		{
 			LuaUtils.cameraFromString(camera).shake(intensity, duration);
@@ -1002,18 +1090,6 @@ class FunkinLua
 		set("cameraFade", function(camera:String, color:String, duration:Float, forced:Bool)
 		{
 			LuaUtils.cameraFromString(camera).fade(CoolUtil.colorFromString(color), duration, false, null, forced);
-		});
-		set("setRatingPercent", function(value:Float)
-		{
-			game.ratingPercent = value;
-		});
-		set("setRatingName", function(value:String)
-		{
-			game.ratingName = value;
-		});
-		set("setRatingFC", function(value:String)
-		{
-			game.ratingFC = value;
 		});
 		set("getMouseX", function(camera:String)
 		{
@@ -1103,19 +1179,6 @@ class FunkinLua
 				return obj.getScreenPosition().y;
 
 			return 0;
-		});
-		set("characterDance", function(character:String)
-		{
-			switch (character.toLowerCase())
-			{
-				case 'dad':
-					game.dad.dance();
-				case 'gf' | 'girlfriend':
-					if (game.gf != null)
-						game.gf.dance();
-				default:
-					game.boyfriend.dance();
-			}
 		});
 
 		set("makeLuaSprite", function(tag:String, ?image:String = null, ?x:Float = 0, ?y:Float = 0)
@@ -1242,9 +1305,9 @@ class FunkinLua
 		{
 			var mySprite:FlxSprite = null;
 			if (game.modchartSprites.exists(tag))
-				mySprite = game.modchartSprites.get(tag);
+				mySprite = cast(game.modchartSprites.get(tag), FlxSprite);
 			else if (game.variables.exists(tag))
-				mySprite = game.variables.get(tag);
+				mySprite = cast(game.variables.get(tag), FlxSprite);
 
 			if (mySprite == null)
 				return false;
@@ -1264,7 +1327,7 @@ class FunkinLua
 		{
 			if (game.getLuaObject(obj) != null)
 			{
-				var shit:FlxSprite = game.getLuaObject(obj);
+				var shit:FlxSprite = cast(game.getLuaObject(obj), FlxSprite);
 				shit.setGraphicSize(x, y);
 				if (updateHitbox)
 					shit.updateHitbox();
@@ -1291,7 +1354,7 @@ class FunkinLua
 		{
 			if (game.getLuaObject(obj) != null)
 			{
-				var shit:FlxSprite = game.getLuaObject(obj);
+				var shit:FlxSprite = cast(game.getLuaObject(obj), FlxSprite);
 				shit.scale.set(x, y);
 				if (updateHitbox)
 					shit.updateHitbox();
@@ -1318,7 +1381,7 @@ class FunkinLua
 		{
 			if (game.getLuaObject(obj) != null)
 			{
-				var shit:FlxSprite = game.getLuaObject(obj);
+				var shit:FlxSprite = cast(game.getLuaObject(obj), FlxSprite);
 				shit.updateHitbox();
 				return;
 			}
@@ -1348,7 +1411,7 @@ class FunkinLua
 				return;
 			}
 
-			var pee:ModchartSprite = game.modchartSprites.get(tag);
+			var pee:ModchartSprite = cast(game.modchartSprites.get(tag), ModchartSprite);
 			LuaUtils.getTargetInstance().remove(pee, true);
 			if (destroy)
 			{
@@ -1361,15 +1424,6 @@ class FunkinLua
 		set("luaSpriteExists", game.modchartSprites.exists);
 		set("luaTextExists", game.modchartTexts.exists);
 		set("luaSoundExists", game.modchartSounds.exists);
-
-		set("setHealthBarColors", function(left:String, right:String)
-		{
-			game.healthBar.setColors(CoolUtil.colorFromString(left), CoolUtil.colorFromString(right));
-		});
-		set("setTimeBarColors", function(left:String, right:String)
-		{
-			game.timeBar.setColors(CoolUtil.colorFromString(left), CoolUtil.colorFromString(right));
-		});
 
 		set("setObjectCamera", function(obj:String, camera:String = '')
 		{
@@ -1421,7 +1475,7 @@ class FunkinLua
 		});
 		set("screenCenter", function(obj:String, pos:String = 'xy')
 		{
-			var spr:FlxSprite = game.getLuaObject(obj);
+			var spr:FlxSprite = cast(game.getLuaObject(obj), FlxSprite);
 
 			if (spr == null)
 			{
@@ -1456,7 +1510,7 @@ class FunkinLua
 			var objectsArray:Array<FlxSprite> = [];
 			for (i in 0...namesArray.length)
 			{
-				var real = game.getLuaObject(namesArray[i]);
+				var real:FlxSprite = cast(game.getLuaObject(namesArray[i]), FlxSprite);
 				if (real != null)
 				{
 					objectsArray.push(real);
@@ -1485,74 +1539,6 @@ class FunkinLua
 			if (spr != null)
 				return spr.pixels.getPixel32(x, y);
 			return FlxColor.BLACK;
-		});
-		set("startDialogue", function(dialogueFile:String, music:String = null)
-		{
-			var path:String;
-			#if MODS_ALLOWED
-			path = Paths.modsJson(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
-			if (!FileSystem.exists(path))
-			#end
-			path = Paths.json(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
-
-			luaTrace('startDialogue: Trying to load dialogue: ' + path);
-
-			#if MODS_ALLOWED
-			if (FileSystem.exists(path))
-			#else
-			if (Assets.exists(path))
-			#end
-			{
-				var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
-				if (shit.dialogue.length > 0)
-				{
-					game.startDialogue(shit, music);
-					luaTrace('startDialogue: Successfully loaded dialogue', false, false, FlxColor.GREEN);
-					return true;
-				}
-				else
-				{
-					luaTrace('startDialogue: Your dialogue file is badly formatted!', false, false, FlxColor.RED);
-				}
-			}
-		else
-		{
-			luaTrace('startDialogue: Dialogue file not found', false, false, FlxColor.RED);
-			if (game.endingSong)
-			{
-				game.endSong();
-			}
-			else
-			{
-				game.startCountdown();
-			}
-		}
-			return false;
-		});
-		set("startVideo", function(videoFile:String)
-		{
-			#if VIDEOS_ALLOWED
-			if (FileSystem.exists(Paths.video(videoFile)))
-			{
-				game.startVideo(videoFile);
-				return true;
-			}
-			else
-			{
-				luaTrace('startVideo: Video file not found: ' + videoFile, false, false, FlxColor.RED);
-			}
-			return false;
-			#else
-			if (game.endingSong)
-			{
-				game.endSong();
-			}
-			else
-			{
-				game.startCountdown();
-			}
-			return true;
-			#end
 		});
 		set("playMusic", function(sound:String, volume:Float = 1, loop:Bool = false)
 		{

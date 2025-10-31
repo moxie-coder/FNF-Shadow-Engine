@@ -449,7 +449,7 @@ class MusicBeatSubstate extends FlxSubState
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 	public function addTextToDebug(text:String, color:FlxColor)
 	{
-		var newText:psychlua.DebugLuaText = FunkinLua.getCurrentMusicState().luaDebugGroup.recycle(psychlua.DebugLuaText);
+		var newText:psychlua.DebugLuaText = luaDebugGroup.recycle(psychlua.DebugLuaText);
 		newText.text = text;
 		newText.color = color;
 		newText.disableTime = 6;

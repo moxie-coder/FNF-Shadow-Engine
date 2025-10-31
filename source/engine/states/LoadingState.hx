@@ -66,17 +66,13 @@ class LoadingState extends MusicBeatState
 			return;
 		}
 
-		add(new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xffcaff4d));
+		add(new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xffafff34));
 
 		var bg = new FlxSprite(0, 0, Paths.image('funkay'));
 		bg.setGraphicSize(0, FlxG.height);
 		bg.updateHitbox();
 		bg.screenCenter();
 		add(bg);
-
-		var bottomBG = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
-		bottomBG.alpha = 0.6;
-		add(bottomBG);
 
 		loadingText = new FlxText(520, 600, 400, 'Now Loading...', 32);
 		loadingText.setFormat(Paths.font("Comfortaa-Bold.ttf"), 32, FlxColor.WHITE, LEFT, OUTLINE_FAST, FlxColor.BLACK);

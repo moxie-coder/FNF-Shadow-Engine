@@ -15,7 +15,7 @@ class TextFunctions
 			LuaUtils.resetTextTag(tag);
 			var leText:FlxText = new FlxText(x, y, width, text, 16);
 			leText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			leText.cameras = [game.camHUD ?? FlxG.camera];
+			leText.cameras = [cast(game, PlayState).camHUD ?? FlxG.camera];
 			leText.scrollFactor.set();
 			leText.borderSize = 2;
 			game.modchartTexts.set(tag, leText);
