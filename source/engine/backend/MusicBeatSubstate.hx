@@ -473,11 +473,11 @@ class MusicBeatSubstate extends FlxSubState
 	{
 		#if LUA_ALLOWED
 		if (modchartSprites.exists(tag))
-			return cast modchartSprites.get(tag);
+			return modchartSprites.get(tag);
 		if (text && modchartTexts.exists(tag))
-			return cast modchartTexts.get(tag);
+			return modchartTexts.get(tag);
 		if (variables.exists(tag))
-			return cast variables.get(tag);
+			return variables.get(tag);
 		#end
 		return null;
 	}
