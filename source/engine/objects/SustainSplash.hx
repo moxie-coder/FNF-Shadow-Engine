@@ -72,7 +72,7 @@ class SustainSplash extends FlxSprite
 
 			clipRect = null;
 
-			final badNotes:Array<String> = ['glitchNote'];
+			final badNotes:Array<String> = ['Hurt Note'];
 			try
 			{
 				if (ClientPrefs.data.splashAlpha != 0
@@ -100,17 +100,15 @@ class SustainSplash extends FlxSprite
 	override function kill():Void
 	{
 		super.kill();
-
 		this.visible = false;
 	}
 
-	/*
-		override function revive():Void
-		{
-		 super.revive();
-		 this.visible = true;
-		}
-	 */
+	/*override function revive():Void
+	{
+		super.revive();
+		this.visible = true;
+	}*/
+
 	public function die(?end:Note = null):Void
 	{
 		kill();
