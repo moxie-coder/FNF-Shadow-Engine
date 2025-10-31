@@ -586,11 +586,11 @@ class MusicBeatState extends FlxUIState
 	{
 		#if LUA_ALLOWED
 		if (modchartSprites.exists(tag))
-			return modchartSprites.get(tag);
+			return cast modchartSprites.get(tag);
 		if (text && modchartTexts.exists(tag))
-			return modchartTexts.get(tag);
+			return cast modchartTexts.get(tag);
 		if (variables.exists(tag))
-			return variables.get(tag);
+			return cast variables.get(tag);
 		#end
 		return null;
 	}
