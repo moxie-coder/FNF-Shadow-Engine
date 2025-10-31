@@ -1373,7 +1373,7 @@ class FunkinLua
 
 		set("setObjectCamera", function(obj:String, camera:String = '')
 		{
-			var real = game.getLuaObject(obj);
+			var real:FlxSprite = cast(game.getLuaObject(obj), FlxSprite);
 			// SHADOW TDDO: does not work under non-PlayState
 			if (real != null)
 			{
