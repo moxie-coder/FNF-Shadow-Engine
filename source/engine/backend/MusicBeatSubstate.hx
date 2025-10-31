@@ -742,7 +742,4 @@ class MusicBeatSubstate extends FlxSubState
 		}
 		#end
 	}
-
-	public function addLuaCameraToFlxG(cam:FlxCamera, defaultDrawTarget:Bool):Void
-		FlxG.cameras.add(cam, defaultDrawTarget);
 }

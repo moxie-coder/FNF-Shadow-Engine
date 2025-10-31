@@ -856,9 +856,6 @@ class MusicBeatState extends FlxUIState
 		}
 		#end
 	}
-
-	public function addLuaCameraToFlxG(cam:FlxCamera, defaultDrawTarget:Bool):Void
-		FlxG.cameras.add(cam, defaultDrawTarget);
 }
 
 @:bitmap("assets/embed/cursor.png")
