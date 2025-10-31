@@ -423,7 +423,7 @@ class LuaUtils
 			return;
 		}
 
-		var target:FlxText = FunkinLua.getCurrentMusicState().modchartTexts.get(tag);
+		var target:FlxText = cast(FunkinLua.getCurrentMusicState().modchartTexts.get(tag), FlxText);
 		FunkinLua.getCurrentMusicState().remove(target, true);
 		target.kill();
 		target.destroy();
@@ -439,7 +439,7 @@ class LuaUtils
 			return;
 		}
 
-		var target:ModchartSprite = FunkinLua.getCurrentMusicState().modchartSprites.get(tag);
+		var target:ModchartSprite = cast(FunkinLua.getCurrentMusicState().modchartSprites.get(tag), ModchartSprite);
 		FunkinLua.getCurrentMusicState().remove(target, true);
 		target.kill();
 		target.destroy();
@@ -474,7 +474,7 @@ class LuaUtils
 		#if LUA_ALLOWED
 		if (FunkinLua.getCurrentMusicState().modchartTimers.exists(tag))
 		{
-			var theTimer:FlxTimer = FunkinLua.getCurrentMusicState().modchartTimers.get(tag);
+			var theTimer:FlxTimer = cast(FunkinLua.getCurrentMusicState().modchartTimers.get(tag), FlxTimer);
 			theTimer.cancel();
 			theTimer.destroy();
 			FunkinLua.getCurrentMusicState().modchartTimers.remove(tag);

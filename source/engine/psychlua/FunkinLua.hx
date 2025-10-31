@@ -1153,7 +1153,7 @@ class FunkinLua
 				ddt = false;
 			var camera:FlxCamera = new FlxCamera();
 			camera.bgColor.alpha = 0;
-			//FunkinLua.getCurrentMusicState().addLuaCameraToFlxG(camera, ddt);
+			FlxG.cameras.add(camera, ddt);
 			game.modchartCameras.set(tag, camera);
 		});
 		set("addAnimationByPrefix", function(obj:String, name:String, prefix:String, framerate:Int = 24, loop:Bool = true)
@@ -1374,7 +1374,6 @@ class FunkinLua
 		set("setObjectCamera", function(obj:String, camera:String = '')
 		{
 			var real:FlxSprite = cast(game.getLuaObject(obj), FlxSprite);
-			// SHADOW TDDO: does not work under non-PlayState
 			if (real != null)
 			{
 				real.cameras = [LuaUtils.cameraFromString(camera)];
@@ -1398,7 +1397,7 @@ class FunkinLua
 		});
 		set("setBlendMode", function(obj:String, blend:String = '')
 		{
-			var real = game.getLuaObject(obj);
+			var real:FlxSprite = cast(game.getLuaObject(obj), FlxSprite);
 			if (real != null)
 			{
 				real.blend = LuaUtils.blendModeFromString(blend);
@@ -2087,10 +2086,10 @@ class FunkinLua
 
 	public static function getCurrentMusicState():Dynamic
 	{
-        final s = FlxG.state;
-        if (s.subState != null && Std.isOfType(s.subState, MusicBeatSubstate))
-            return cast(s.subState, MusicBeatSubstate);
-        return Std.isOfType(s, MusicBeatState) ? cast(s, MusicBeatState) : null;
-    }
+		final s = FlxG.state;
+		if (s.subState != null && Std.isOfType(s.subState, MusicBeatSubstate))
+			return cast(s.subState, MusicBeatSubstate);
+		return Std.isOfType(s, MusicBeatState) ? cast(s, MusicBeatState) : null;
+	}
 }
 #end

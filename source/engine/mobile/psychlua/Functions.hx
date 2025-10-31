@@ -164,7 +164,7 @@ class MobileFunctions
 		funk.set("touchReleased", TouchUtil.released);
 		funk.set("touchPressedObject", function(object:String, ?camera:String):Bool
 		{
-			var obj = FunkinLua.getCurrentMusicState().getLuaObject(object);
+			var obj:FlxSprite = cast(FunkinLua.getCurrentMusicState().getLuaObject(object), FlxSprite);
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
@@ -176,7 +176,7 @@ class MobileFunctions
 
 		funk.set("touchJustPressedObject", function(object:String, ?camera:String):Bool
 		{
-			var obj = FunkinLua.getCurrentMusicState().getLuaObject(object);
+			var obj:FlxSprite = cast(FunkinLua.getCurrentMusicState().getLuaObject(object), FlxSprite);
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
@@ -188,7 +188,7 @@ class MobileFunctions
 
 		funk.set("touchJustReleasedObject", function(object:String, ?camera:String):Bool
 		{
-			var obj = FunkinLua.getCurrentMusicState().getLuaObject(object);
+			var obj:FlxSprite = cast(FunkinLua.getCurrentMusicState().getLuaObject(object), FlxSprite);
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
@@ -200,7 +200,7 @@ class MobileFunctions
 
 		funk.set("touchReleasedObject", function(object:String, ?camera:String):Bool
 		{
-			var obj = FunkinLua.getCurrentMusicState().getLuaObject(object);
+			var obj:FlxSprite = cast(FunkinLua.getCurrentMusicState().getLuaObject(object), FlxSprite);
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
@@ -212,7 +212,7 @@ class MobileFunctions
 
 		funk.set("touchPressedObjectComplex", function(object:String, ?camera:String):Bool
 		{
-			var obj = FunkinLua.getCurrentMusicState().getLuaObject(object);
+			var obj:FlxSprite = cast(FunkinLua.getCurrentMusicState().getLuaObject(object), FlxSprite);
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
@@ -224,7 +224,7 @@ class MobileFunctions
 
 		funk.set("touchJustPressedObjectComplex", function(object:String, ?camera:String):Bool
 		{
-			var obj = FunkinLua.getCurrentMusicState().getLuaObject(object);
+			var obj:FlxSprite = cast(FunkinLua.getCurrentMusicState().getLuaObject(object), FlxSprite);
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
@@ -236,7 +236,7 @@ class MobileFunctions
 
 		funk.set("touchJustReleasedObjectComplex", function(object:String, ?camera:String):Bool
 		{
-			var obj = FunkinLua.getCurrentMusicState().getLuaObject(object);
+			var obj:FlxSprite = cast(FunkinLua.getCurrentMusicState().getLuaObject(object), FlxSprite);
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
@@ -248,7 +248,7 @@ class MobileFunctions
 
 		funk.set("touchReleasedObjectComplex", function(object:String, ?camera:String):Bool
 		{
-			var obj = FunkinLua.getCurrentMusicState().getLuaObject(object);
+			var obj:FlxSprite = cast(FunkinLua.getCurrentMusicState().getLuaObject(object), FlxSprite);
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
@@ -260,7 +260,7 @@ class MobileFunctions
 
 		funk.set("touchOverlapsObject", function(object:String, ?camera:String):Bool
 		{
-			var obj = FunkinLua.getCurrentMusicState().getLuaObject(object);
+			var obj:FlxSprite = cast(FunkinLua.getCurrentMusicState().getLuaObject(object), FlxSprite);
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
@@ -272,7 +272,7 @@ class MobileFunctions
 
 		funk.set("touchOverlapsObjectComplex", function(object:String, ?camera:String):Bool
 		{
-			var obj = FunkinLua.getCurrentMusicState().getLuaObject(object);
+			var obj:FlxSprite = cast(FunkinLua.getCurrentMusicState().getLuaObject(object), FlxSprite);
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
