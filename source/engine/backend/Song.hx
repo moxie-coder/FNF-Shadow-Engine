@@ -24,6 +24,7 @@ typedef SwagSong =
 	@:optional var gameOverLoop:String;
 	@:optional var gameOverEnd:String;
 
+	@:optional var arrowSkin:String;
 	@:optional var playerArrowSkin:String;
 	@:optional var opponentArrowSkin:String;
 	@:optional var splashSkin:String;
@@ -61,6 +62,13 @@ class Song
 		{
 			songJson.gfVersion = songJson.player3;
 			songJson.player3 = null;
+		}
+
+		// backwards compability
+		if (songJson.arrowSkin != null)
+		{
+			songJson.playerArrowSkin = songJson.opponentArrowSkin = songJson.arrowSkin;
+			songJson.arrowSkin == null;
 		}
 
 		if (StringTools.startsWith(songJson.format, 'psych_v1'))

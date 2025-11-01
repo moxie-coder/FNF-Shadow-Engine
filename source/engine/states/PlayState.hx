@@ -427,7 +427,7 @@ class PlayState extends MusicBeatState
 		FunkinLua.getCurrentMusicState().startHScriptsNamed('stages/' + curStage + '.hx');
 		#end
 
-		if (!stageData.hide_girlfriend || !ClientPrefs.data.lowQuality)
+		if (!stageData.hide_girlfriend && !ClientPrefs.data.lowQuality)
 		{
 			if (SONG.gfVersion == null || SONG.gfVersion.length < 1)
 				SONG.gfVersion = 'gf'; // Fix for the Chart Editor

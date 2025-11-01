@@ -51,8 +51,12 @@ class ReflectionFunctions
 			if (classVar == 'ClientPrefs')
 			{
 				classVar = 'backend.ClientPrefs';
+				if (variable == 'globalAntialiasing')
+					variable = 'antialiasing';
 				variable = 'data.' + variable;
 			}
+			else if (classVar == 'Conductor')
+				classVar = 'backend.Conductor';
 			else if (classVar == 'GameOverSubstate')
 				classVar = 'substates.GameOverSubstate';
 
@@ -79,8 +83,12 @@ class ReflectionFunctions
 			if (classVar == 'ClientPrefs')
 			{
 				classVar = 'backend.ClientPrefs';
+				if (variable == 'globalAntialiasing')
+					variable = 'antialiasing';
 				variable = 'data.' + variable;
 			}
+			else if (classVar == 'Conductor')
+				classVar = 'backend.Conductor';
 			else if (classVar == 'GameOverSubstate')
 				classVar = 'substates.GameOverSubstate';
 

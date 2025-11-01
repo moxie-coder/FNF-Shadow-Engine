@@ -166,12 +166,12 @@ class FunkinLua
 
 				if (testicle != null)
 				{
-					cast(game, PlayState).modchartTweens.set(tag, FlxTween.tween(testicle, {x: value}, duration, {
+					game.modchartTweens.set(tag, FlxTween.tween(testicle, {x: value}, duration, {
 						ease: LuaUtils.getTweenEaseByString(ease),
 						onComplete: function(twn:FlxTween)
 						{
-							cast(game, PlayState).callOnLuas('onTweenCompleted', [tag]);
-							cast(game, PlayState).modchartTweens.remove(tag);
+							game.callOnLuas('onTweenCompleted', [tag]);
+							game.modchartTweens.remove(tag);
 						}
 					}));
 				}
@@ -185,12 +185,12 @@ class FunkinLua
 
 				if (testicle != null)
 				{
-					cast(game, PlayState).modchartTweens.set(tag, FlxTween.tween(testicle, {y: value}, duration, {
+					game.modchartTweens.set(tag, FlxTween.tween(testicle, {y: value}, duration, {
 						ease: LuaUtils.getTweenEaseByString(ease),
 						onComplete: function(twn:FlxTween)
 						{
-							cast(game, PlayState).callOnLuas('onTweenCompleted', [tag]);
-							cast(game, PlayState).modchartTweens.remove(tag);
+							game.callOnLuas('onTweenCompleted', [tag]);
+							game.modchartTweens.remove(tag);
 						}
 					}));
 				}
@@ -204,12 +204,12 @@ class FunkinLua
 
 				if (testicle != null)
 				{
-					cast(game, PlayState).modchartTweens.set(tag, FlxTween.tween(testicle, {angle: value}, duration, {
+					game.modchartTweens.set(tag, FlxTween.tween(testicle, {angle: value}, duration, {
 						ease: LuaUtils.getTweenEaseByString(ease),
 						onComplete: function(twn:FlxTween)
 						{
-							cast(game, PlayState).callOnLuas('onTweenCompleted', [tag]);
-							cast(game, PlayState).modchartTweens.remove(tag);
+							game.callOnLuas('onTweenCompleted', [tag]);
+							game.modchartTweens.remove(tag);
 						}
 					}));
 				}
@@ -223,12 +223,12 @@ class FunkinLua
 
 				if (testicle != null)
 				{
-					cast(game, PlayState).modchartTweens.set(tag, FlxTween.tween(testicle, {direction: value}, duration, {
+					game.modchartTweens.set(tag, FlxTween.tween(testicle, {direction: value}, duration, {
 						ease: LuaUtils.getTweenEaseByString(ease),
 						onComplete: function(twn:FlxTween)
 						{
-							cast(game, PlayState).callOnLuas('onTweenCompleted', [tag]);
-							cast(game, PlayState).modchartTweens.remove(tag);
+							game.callOnLuas('onTweenCompleted', [tag]);
+							game.modchartTweens.remove(tag);
 						}
 					}));
 				}
@@ -242,12 +242,12 @@ class FunkinLua
 
 				if (testicle != null)
 				{
-					cast(game, PlayState).modchartTweens.set(tag, FlxTween.tween(testicle, {alpha: value}, duration, {
+					game.modchartTweens.set(tag, FlxTween.tween(testicle, {alpha: value}, duration, {
 						ease: LuaUtils.getTweenEaseByString(ease),
 						onComplete: function(twn:FlxTween)
 						{
-							cast(game, PlayState).callOnLuas('onTweenCompleted', [tag]);
-							cast(game, PlayState).modchartTweens.remove(tag);
+							game.callOnLuas('onTweenCompleted', [tag]);
+							game.modchartTweens.remove(tag);
 						}
 					}));
 				}

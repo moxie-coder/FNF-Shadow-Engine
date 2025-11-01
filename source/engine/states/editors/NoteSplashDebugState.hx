@@ -360,6 +360,8 @@ class NoteSplashDebugState extends MusicBeatState
 	function loadFrames()
 	{
 		texturePath = 'noteSplashes/' + textureName;
+		if (!Paths.fileExists('images/' + texturePath + '.${Paths.IMAGE_EXT}', IMAGE) && !Paths.fileExists('images/' + texturePath + '.${Paths.GPU_IMAGE_EXT}', Paths.getImageAssetType(Paths.GPU_IMAGE_EXT)))
+			texturePath = textureName;
 		splashes.forEachAlive(function(spr:FlxSprite)
 		{
 			spr.frames = Paths.getSparrowAtlas(texturePath);
