@@ -5,6 +5,5 @@
 - Add ShadowLua and Deprecate PsychLua
 - Add V-Slice Results Screen, Freeplay(?), Char Select(?) and Wide Screen Support
 - Add editor for Results Screen and Char Select(?)
-- Add Pixel Hold Splash(?)
 - Add Base Game Files
 - Add our UI for editors
