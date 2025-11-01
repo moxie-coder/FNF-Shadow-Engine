@@ -2871,6 +2871,8 @@ class PlayState extends MusicBeatState
 				noteTimingRating.screenCenter();
 				noteTimingRating.x = placement + ClientPrefs.data.comboOffset[0] + 100;
 				noteTimingRating.y += -ClientPrefs.data.comboOffset[1] - 80 + (comboSpr?.height ?? 0);
+				if (PlayState.isPixelStage)
+					noteTimingRating.y += 60;
 				noteTimingRating.acceleration.y = 600;
 				noteTimingRating.velocity.y -= 150;
 				noteTimingRating.velocity.x += comboSpr?.velocity?.x ?? (FlxG.random.int(1, 10) * playbackRate);

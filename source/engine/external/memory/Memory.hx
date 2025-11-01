@@ -1,56 +1,19 @@
 package external.memory;
 
 #if cpp
-import cpp.SizeT;
-
-/**
- * Memory class to properly get accurate memory counts
- * for the program.
- * @author Leather128 (Haxe) - David Robert Nadeau (Original C Header)
- */
 #if ios
 @:buildXml('<include name="../../../../../../../source/engine/external/memory/build.xml" />')
 #else
 @:buildXml('<include name="../../../../source/engine/external/memory/build.xml" />')
 #end
 @:include("memory.h")
-extern class Memory
+extern #end class Memory
 {
-	/**
-	 * Returns the peak (maximum so far) resident set size (physical
-	 * memory use) measured in bytes, or zero if the value cannot be
-	 * determined on this OS.
-	 */
-	@:native("getPeakRSS")
-	public static function getPeakUsage():SizeT;
-
-	/**
-	 * Returns the current resident set size (physical memory use) measured
-	 * in bytes, or zero if the value cannot be determined on this OS.
-	 */
+	#if cpp
 	@:native("getCurrentRSS")
-	public static function getCurrentUsage():SizeT;
-}
-#else
-
-/**
- * If you are not running on a CPP Platform, the code just will not work properly, sorry!
- * @author Leather128
- */
-class Memory
-{
-	/**
-	 * (Non cpp platform)
-	 * Returns 0.
-	 */
-	public static function getPeakUsage():Float
+	#end
+	public static function getCurrentUsage():#if cpp cpp.SizeT #else Float #end;
+		#if !cpp
 		return 0.0;
-
-	/**
-	 * (Non cpp platform)
-	 * Returns 0.
-	 */
-	public static function getCurrentUsage():Float
-		return 0.0;
+		#end
 }
-#end

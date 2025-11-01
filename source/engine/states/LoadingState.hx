@@ -1,5 +1,6 @@
 package states;
 
+import objects.Bar;
 #if (target.threaded)
 import sys.thread.Thread;
 import sys.thread.Mutex;
@@ -41,10 +42,9 @@ class LoadingState extends MusicBeatState
 	var stopMusic:Bool = false;
 	var dontUpdate:Bool = false;
 
-	var bar:FlxSprite;
+	var bar:Bar;
 	var barWidth:Int = 0;
 	var intendedPercent:Float = 0;
-	var curPercent:Float = 0;
 	var canChangeState:Bool = true;
 
 	var loadingText:FlxText;
@@ -79,17 +79,11 @@ class LoadingState extends MusicBeatState
 		loadingText.borderSize = 2;
 		add(loadingText);
 
-		var bgBar:FlxSprite = new FlxSprite(0, 660).makeGraphic(1, 1, FlxColor.BLACK);
-		bgBar.scale.set(FlxG.width - 300, 25);
-		bgBar.updateHitbox();
-		bgBar.screenCenter(X);
-		add(bgBar);
-
-		bar = new FlxSprite(bgBar.x + 5, bgBar.y + 5).makeGraphic(1, 1, FlxColor.WHITE);
-		bar.scale.set(0, 15);
-		bar.updateHitbox();
+		bar = new Bar(0, 660, 'healthBar', () -> (loaded / loadMax));
+		bar.screenCenter(X);
+		bar.barOffset.set(3, 3);
+		bar.setColors(FlxColor.WHITE, FlxColor.BLACK); // example colors
 		add(bar);
-		barWidth = Std.int(bgBar.width - 10);
 
 		persistentUpdate = true;
 		super.create();
@@ -105,24 +99,13 @@ class LoadingState extends MusicBeatState
 
 		if (!transitioning)
 		{
-			if (canChangeState && !finishedLoading && checkLoaded())
+			if (bar.percent >= 99.99999 && canChangeState && !finishedLoading && checkLoaded())
 			{
 				transitioning = true;
 				onLoad();
 				return;
 			}
 			intendedPercent = loaded / loadMax;
-		}
-
-		if (curPercent != intendedPercent)
-		{
-			if (Math.abs(curPercent - intendedPercent) < 0.001)
-				curPercent = intendedPercent;
-			else
-				curPercent = FlxMath.lerp(intendedPercent, curPercent, Math.exp(-elapsed * 15));
-
-			bar.scale.x = barWidth * curPercent;
-			bar.updateHitbox();
 		}
 
 		timePassed += elapsed;
