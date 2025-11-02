@@ -1,5 +1,4 @@
 - Switch SScript to RuleScript(?)
-- Switch linc_luajit to hxluajit
 - Add hxfmod
 - Add flixel-animate
 - Add ShadowLua and Deprecate PsychLua

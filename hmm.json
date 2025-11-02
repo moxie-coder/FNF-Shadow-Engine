@@ -55,11 +55,11 @@
       "version": "1.3.0"
     },
     {
-      "name": "linc_luajit",
+      "name": "hxluajit",
       "type": "git",
       "dir": null,
       "ref": null,
-      "url": "https://github.com/FNF-SE/linc_luajit"
+      "url": "https://github.com/FNF-SE/hxluajit"
     },
     {
       "name": "hxgamemode",

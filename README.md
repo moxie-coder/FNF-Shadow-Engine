@@ -13,7 +13,7 @@ For the lore of this engine see [ORIGIN.md](./ORIGIN.md).
 ## Differences Between The Original
 - Uses our haxelib forks for backporting and fixing stuff
 - Uses latest Haxe
-- Uses some code from [P-Slice](https://github.com/Psych-Slice/P-Slice), [Leather Engine (RIP)](https://github.com/Vortex2Oblivion/LeatherEngine), [Codename Engine](https://github.com/CodenameCrew/CodenameEngine) and [REDACTED]
+- Uses some code from [P-Slice](https://github.com/Psych-Slice/P-Slice), [Leather Engine (R.I.P.)](https://github.com/Vortex2Oblivion/LeatherEngine), [Codename Engine](https://github.com/CodenameCrew/CodenameEngine) and [REDACTED]
 - Mobile Support (duh)
 - Applies OpenAL Soft Config For better audio
 - Slightly more accurate FPS and less RAM Usage

@@ -4,7 +4,6 @@ import haxe.ds.*;
 import psychlua.FunkinLua.State;
 import hxluajit.Types;
 
-
 /**
  * Some borrowed code from hxluajit-wrapper.
  * @see https://github.com/MAJigsaw77/hxluajit-wrapper/blob/main/hxluajit/wrapper/LuaConverter.hx
@@ -21,9 +20,9 @@ class Convert
 
 		callbacks.set(name, func);
 
-        Lua.pushstring(l, name);
-        Lua.pushcclosure(l, cpp.Callable.fromStaticFunction(handleCallback), 1);
-        Lua.setglobal(l, name);
+		Lua.pushstring(l, name);
+		Lua.pushcclosure(l, cpp.Callable.fromStaticFunction(handleCallback), 1);
+		Lua.setglobal(l, name);
 	}
 
 	public static function removeCallback(l:State, name:String)
@@ -33,8 +32,8 @@ class Convert
 
 		callbacks.remove(name);
 
-        Lua.pushnil(l);
-        Lua.setglobal(l, name);
+		Lua.pushnil(l);
+		Lua.setglobal(l, name);
 	}
 
 	public static function toLua(l:State, v:Dynamic):Bool
@@ -125,9 +124,9 @@ class Convert
 
 		if (status != Lua.OK)
 		{
-    		var error = Lua.tostring(l, -1);
-    		trace('Error calling a function without name: $error');
-    		Lua.pop(l, 1);
+			var error = Lua.tostring(l, -1);
+			trace('Error calling a function without name: $error');
+			Lua.pop(l, 1);
 
 			return [];
 		}

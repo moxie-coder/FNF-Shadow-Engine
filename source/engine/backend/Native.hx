@@ -6,7 +6,7 @@ import lime.system.System;
 import flixel.util.FlxColor;
 
 #if (cpp && windows)
-import debug.codename.backend.RegisteryUtil;
+//import debug.codename.backend.RegistryUtil;
 @:buildXml('
 <target id="haxe">
 	<section if="mingw">

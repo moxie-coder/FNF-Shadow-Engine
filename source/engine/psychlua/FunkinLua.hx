@@ -35,7 +35,7 @@ import mobile.psychlua.Functions;
 class FunkinLua
 {
 	private var game(get, never):Dynamic;
-		
+
 	inline private function get_game()
 		return cast FunkinLua.getCurrentMusicState();
 
@@ -600,7 +600,7 @@ class FunkinLua
 			for (script in cast(game.luaArray, Array<Dynamic>))
 			{
 				final funk:FunkinLua = cast(script, FunkinLua);
-				runningScripts.push(funk.scriptName);	
+				runningScripts.push(funk.scriptName);
 			}
 
 			return runningScripts;
@@ -2079,5 +2079,6 @@ class FunkinLua
 		return Std.isOfType(s, MusicBeatState) ? cast(s, MusicBeatState) : null;
 	}
 }
+
 typedef State = cpp.RawPointer<Lua_State>;
 #end
