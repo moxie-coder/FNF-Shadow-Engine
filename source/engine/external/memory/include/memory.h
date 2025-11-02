@@ -32,7 +32,7 @@ size_t getCurrentRSS(void)
 
     if (task_info(mach_task_self(), TASK_VM_INFO,
                   (task_info_t)&vmInfo, &count) == KERN_SUCCESS) {
-        return (size_t)vmInfo.phys_footprint;
+        return (size_t)vmInfo.internal + (size_t)vmInfo.compressed;
     }
     return (size_t)0L;
 
