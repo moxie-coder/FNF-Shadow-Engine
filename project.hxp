@@ -259,7 +259,7 @@ class Project extends HXProject
 		includeHaxelib("flixel-addons");
 
 		if (LUA_ALLOWED.isEnabled())
-			includeHaxelib("linc_luajit");
+			includeHaxelib("hxluajit");
 		if (HSCRIPT_ALLOWED.isEnabled())
 			includeHaxelib("SScript");
 		if (VIDEOS_ALLOWED.isEnabled())

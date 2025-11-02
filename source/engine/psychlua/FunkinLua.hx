@@ -689,17 +689,18 @@ class FunkinLua
 		{ // returns the global from a script
 			var foundScript:String = findScript(luaFile);
 			if (foundScript != null)
-				for (luaInstance in cast(game.luaArray, Array<Dynamic>))
+				for (_luaInstance in cast(game.luaArray, Array<Dynamic>))
 				{
+					var luaInstance:FunkinLua = cast _luaInstance;
 					final funk:FunkinLua = cast(luaInstance, FunkinLua);
 					if (funk.scriptName == foundScript)
 					{
 						Lua.getglobal(funk.lua, global);
-						if (Lua.isnumber(funk.lua, -1))
+						if (Lua.isnumber(funk.lua, -1) == 1)
 							Lua.pushnumber(lua, Lua.tonumber(funk.lua, -1));
-						else if (Lua.isstring(funk.lua, -1))
+						else if (Lua.isstring(funk.lua, -1) == 1)
 							Lua.pushstring(lua, Lua.tostring(funk.lua, -1));
-						else if (Lua.isboolean(funk.lua, -1))
+						else if (Lua.isboolean(funk.lua, -1) == 1)
 							Lua.pushboolean(lua, Lua.toboolean(funk.lua, -1));
 						else
 							Lua.pushnil(lua);
@@ -809,7 +810,7 @@ class FunkinLua
 			luaTrace('removeLuaScript: Script $luaFile isn\'t running!', false, false, FlxColor.RED);
 			return false;
 		});
-		Lua_helper.add_callback(lua, "removeHScript", function(luaFile:String, ?ignoreAlreadyRunning:Bool = false)
+		set("removeHScript", function(luaFile:String, ?ignoreAlreadyRunning:Bool = false)
 		{
 			#if HSCRIPT_ALLOWED
 			var foundScript:String = findScript(luaFile, '.hx');
@@ -1794,9 +1795,9 @@ class FunkinLua
 			Lua.getglobal(lua, func);
 			var type:Int = Lua.type(lua, -1);
 
-			if (type != Lua.LUA_TFUNCTION)
+			if (type != Lua.TFUNCTION)
 			{
-				if (type > Lua.LUA_TNIL)
+				if (type > Lua.TNIL)
 					luaTrace("ERROR (" + func + "): attempt to call a " + LuaUtils.typeToString(type) + " value", false, false, FlxColor.RED);
 
 				Lua.pop(lua, 1);
@@ -1808,7 +1809,7 @@ class FunkinLua
 			var status:Int = Lua.pcall(lua, args.length, 1, 0);
 
 			// Checks if it's not successful, then show a error.
-			if (status != Lua.LUA_OK)
+			if (status != Lua.OK)
 			{
 				var error:String = getErrorMessage(status);
 				luaTrace("ERROR (" + func + "): " + error, false, false, FlxColor.RED);
@@ -1840,7 +1841,7 @@ class FunkinLua
 
 		if (Type.typeof(data) == TFunction)
 		{
-			Lua_helper.add_callback(lua, variable, data);
+			Convert.addCallback(lua, variable, data);
 			return;
 		}
 
@@ -1956,11 +1957,11 @@ class FunkinLua
 		{
 			switch (status)
 			{
-				case Lua.LUA_ERRRUN:
+				case type if (type == Lua.ERRRUN):
 					return "Runtime Error";
-				case Lua.LUA_ERRMEM:
+				case type if (type == Lua.ERRMEM):
 					return "Memory Allocation Error";
-				case Lua.LUA_ERRERR:
+				case type if (type == Lua.ERRERR):
 					return "Critical Error";
 			}
 			return "Unknown Error";
@@ -1973,7 +1974,7 @@ class FunkinLua
 	public function addLocalCallback(name:String, myFunction:Dynamic)
 	{
 		callbacks.set(name, myFunction);
-		Lua_helper.add_callback(lua, name, null); // just so that it gets called
+		Convert.addCallback(lua, name, null); // just so that it gets called
 	}
 
 	#if !flash
@@ -2078,4 +2079,5 @@ class FunkinLua
 		return Std.isOfType(s, MusicBeatState) ? cast(s, MusicBeatState) : null;
 	}
 }
+typedef State = cpp.RawPointer<Lua_State>;
 #end

@@ -275,7 +275,7 @@ class HScript extends SScript
 			{
 				final funk:FunkinLua = cast(script, FunkinLua);
 				if (funk != null && funk.lua != null && !funk.closed)
-					Lua_helper.add_callback(funk.lua, name, func);
+					Convert.addCallback(funk.lua, name, func);
 			}
 
 			FunkinLua.customFunctions.set(name, func);

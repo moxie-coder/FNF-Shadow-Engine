@@ -637,19 +637,19 @@ class LuaUtils
 		#if LUA_ALLOWED
 		switch (type)
 		{
-			case Lua.LUA_TBOOLEAN:
+			case type if (type == Lua.TBOOLEAN):
 				return "boolean";
-			case Lua.LUA_TNUMBER:
+			case type if (type == Lua.TNUMBER):
 				return "number";
-			case Lua.LUA_TSTRING:
+			case type if (type == Lua.TSTRING):
 				return "string";
-			case Lua.LUA_TTABLE:
+			case type if (type == Lua.TTABLE):
 				return "table";
-			case Lua.LUA_TFUNCTION:
+			case type if (type == Lua.TFUNCTION):
 				return "function";
+			case type if (type <= Lua.TNIL):
+				return "nil";
 		}
-		if (type <= Lua.LUA_TNIL)
-			return "nil";
 		#end
 		return "unknown";
 	}

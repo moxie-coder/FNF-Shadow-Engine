@@ -5,8 +5,8 @@ import backend.Discord;
 #end
 // Psych
 #if LUA_ALLOWED
-import llua.*;
-import llua.Lua;
+import hxluajit.*;
+import hxluajit.Types;
 import psychlua.*;
 #else
 import psychlua.LuaUtils;
