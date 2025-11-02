@@ -15,7 +15,7 @@ class Convert
 	public static function addCallback(l:State, name:String, func:Dynamic)
 	{
 		// PsychLua expects the function to be null for local callbacks, too lazy to do something about that
-		if (!(Type.typeof(func) == TFunction || func == null))
+		if (Type.typeof(func) != TFunction || func == null)
 			return;
 
 		callbacks.set(name, func);
