@@ -144,7 +144,7 @@ class OptionsState extends MusicBeatState
 				changeSelection(1);
 			}
 
-			if ((#if android touchPad.buttonX.justPressed #else touchPad.buttonC.justPressed #end || FlxG.keys.justPressed.CONTROL) && controls.mobileC)
+			if ((#if android touchPad.buttonX.justPressed #else touchPad.buttonC.justPressed #end || FlxG.keys.justPressed.CONTROL))
 			{
 				persistentUpdate = false;
 				openSubState(new MobileControlSelectSubState());

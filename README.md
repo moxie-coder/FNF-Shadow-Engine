@@ -11,7 +11,7 @@ Ready to be source-modded.
 For the lore of this engine see [ORIGIN.md](./ORIGIN.md).
 
 ## Differences Between The Original
-- Uses our [Lime](https://github.com/HomuHomu833-haxelibs/lime) and [HXCPP](https://github.com/HomuHomu833-haxelibs/hxcpp) forks
+- Uses our haxelib forks for backporting and fixing stuff
 - Uses latest Haxe
 - Uses some code from [P-Slice](https://github.com/Psych-Slice/P-Slice), [Leather Engine (RIP)](https://github.com/Vortex2Oblivion/LeatherEngine), [Codename Engine](https://github.com/CodenameCrew/CodenameEngine) and [REDACTED]
 - Mobile Support (duh)

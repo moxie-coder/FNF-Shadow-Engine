@@ -27,12 +27,12 @@ size_t getCurrentRSS(void)
     return (size_t)0L;
 
 #elif defined(__APPLE__) && defined(__MACH__)
-    struct task_vm_info_data_t vmInfo;
+    struct task_vm_info vmInfo;
     mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
 
     if (task_info(mach_task_self(), TASK_VM_INFO,
                   (task_info_t)&vmInfo, &count) == KERN_SUCCESS) {
-        return (size_t)vmInfo.phys_footprint;
+        return (size_t)vmInfo.internal + (size_t)vmInfo.compressed;
     }
     return (size_t)0L;
 
