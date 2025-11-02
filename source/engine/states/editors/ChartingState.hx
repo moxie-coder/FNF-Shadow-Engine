@@ -1858,7 +1858,7 @@ class ChartingState extends MusicBeatState
 		{
 			for (touch in FlxG.touches.list)
 			{
-				if (touch.justPressed)
+				if (touch.justReleased)
 				{
 					if (touch.overlaps(curRenderedNotes))
 					{
