@@ -17,7 +17,7 @@ For the lore of this engine see [ORIGIN.md](./ORIGIN.md).
 - Mobile Support (duh)
 - Applies OpenAL Soft Config For better audio
 - Slightly more accurate FPS and less RAM Usage
-- Some 0.6.3 compability
+- Some 0.6.3 and 1.0 compability
 - Linux ARM support (FNF on Raspberry Pi baby)
 - Kade Engine Results Screen
 - PlayState has `changeNoteSkin` for easy in-game note skin changing
