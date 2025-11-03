@@ -10,6 +10,8 @@ import hxluajit.Types;
 import psychlua.*;
 #else
 import psychlua.LuaUtils;
+import psychlua.FunkinLua;
+import psychlua.ModchartSprite;
 import psychlua.HScript;
 #end
 #if HSCRIPT_ALLOWED

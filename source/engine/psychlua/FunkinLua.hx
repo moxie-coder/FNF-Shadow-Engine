@@ -1,4 +1,4 @@
-#if LUA_ALLOWED
+
 package psychlua;
 
 import backend.WeekData;
@@ -39,7 +39,9 @@ class FunkinLua
 	inline private function get_game()
 		return cast FunkinLua.getCurrentMusicState();
 
+	#if LUA_ALLOWED
 	public var lua:State = null;
+	#end
 
 	public var camTarget:FlxCamera;
 	public var scriptName:String = '';
@@ -1787,6 +1789,7 @@ class FunkinLua
 
 		lastCalledFunction = func;
 		lastCalledScript = this;
+		#if LUA_ALLOWED
 		try
 		{
 			if (lua == null)
@@ -1830,6 +1833,7 @@ class FunkinLua
 		{
 			trace(e);
 		}
+		#end
 		return LuaUtils.Function_Continue;
 	}
 
@@ -1908,6 +1912,7 @@ class FunkinLua
 		if (lastCalledScript == null)
 			return false;
 
+		#if LUA_ALLOWED
 		var lua:State = lastCalledScript.lua;
 		if (lua == null)
 			return false;
@@ -1922,6 +1927,9 @@ class FunkinLua
 			return false;
 		}
 		return (result == 'true');
+		#else
+		return false;
+		#end
 	}
 
 	function findScript(scriptFile:String, ext:String = '.lua')
@@ -1948,6 +1956,7 @@ class FunkinLua
 
 	public function getErrorMessage(status:Int):String
 	{
+		#if LUA_ALLOWED
 		var v:String = Lua.tostring(lua, -1);
 		Lua.pop(lua, 1);
 
@@ -1968,13 +1977,17 @@ class FunkinLua
 		}
 
 		return v;
+		#else
 		return null;
+		#end
 	}
 
 	public function addLocalCallback(name:String, myFunction:Dynamic)
 	{
+		#if LUA_ALLOWED
 		callbacks.set(name, myFunction);
 		Convert.addCallback(lua, name, null); // just so that it gets called
+		#end
 	}
 
 	#if !flash
@@ -2080,5 +2093,6 @@ class FunkinLua
 	}
 }
 
+#if LUA_ALLOWED
 typedef State = cpp.RawPointer<Lua_State>;
 #end

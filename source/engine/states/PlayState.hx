@@ -29,8 +29,10 @@ import objects.Note.EventNote;
 import objects.*;
 import states.stages.objects.*;
 import substates.ResultsScreen;
+#if (target.threaded)
 import sys.thread.Thread;
 import sys.thread.Mutex;
+#end
 
 /**
  * This is where all the Gameplay stuff happens and is managed
@@ -227,11 +229,13 @@ class PlayState extends MusicBeatState
 	public var startCallback:Void->Void = null;
 	public var endCallback:Void->Void = null;
 
+	#if (target.threaded)
 	private var shutdownThread:Bool = false;
 	private var gameFroze:Bool = false;
 	private var requiresSyncing:Bool = false;
 	private var lastCorrectSongPos:Float = -1.0;
 	private var syncMutex:Mutex;
+	#end
 
 	#if VIDEOS_ALLOWED public var videoSprites:Array<VideoSpriteManager> = []; #end
 
@@ -1323,7 +1327,9 @@ class PlayState extends MusicBeatState
 		FunkinLua.getCurrentMusicState().setOnScripts('songLength', songLength);
 		FunkinLua.getCurrentMusicState().callOnScripts('onSongStart');
 
+		#if (target.threaded)
 		runSongSyncThread();
+		#end
 	}
 
 	var debugNum:Int = 0;
@@ -1705,7 +1711,9 @@ class PlayState extends MusicBeatState
 			paused = false;
 			mobileControls.instance.visible = #if !android touchPad.visible = #end true;
 			resetRPC(startTimer != null && startTimer.finished);
+			#if (target.threaded)
 			runSongSyncThread();
+			#end
 		}
 		super.closeSubState();
 	}
@@ -1714,8 +1722,10 @@ class PlayState extends MusicBeatState
 	{
 		if (health > 0 && !paused)
 			resetRPC(Conductor.songPosition > 0.0);
+		#if (target.threaded)
 		shutdownThread = false;
 		runSongSyncThread();
+		#end
 		super.onFocus();
 	}
 
@@ -1725,7 +1735,9 @@ class PlayState extends MusicBeatState
 		if (health > 0 && !paused && autoUpdateRPC)
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 		#end
+		#if (target.threaded)
 		shutdownThread = true;
+		#end
 		super.onFocusLost();
 	}
 
@@ -3623,8 +3635,10 @@ class PlayState extends MusicBeatState
 		@:privateAccess
 		FlxG.game._filters = [];
 		camGame.filters = camHUD.filters = camOther.filters = [];
+		#if (target.threaded)
 		shutdownThread = true;
 		FlxG.signals.preUpdate.remove(checkForResync);
+		#end
 		super.destroy();
 	}
 
@@ -3963,6 +3977,7 @@ class PlayState extends MusicBeatState
 		return "good";
 	}
 
+	#if (target.threaded)
 	function checkForResync()
 	{
 		if (endingSong || paused || shutdownThread)
@@ -4031,4 +4046,5 @@ class PlayState extends MusicBeatState
 		if (!FlxG.signals.preUpdate.has(checkForResync))
 			FlxG.signals.preUpdate.add(checkForResync);
 	}
+	#end
 }

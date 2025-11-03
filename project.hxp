@@ -125,7 +125,7 @@ class Project extends HXProject
 		trace(StringTools.lpad("", "=", width));
 		trace('');
 
-		if (targetPlatform.startsWith("Hashlink") || targetPlatform == "Web (HTML5)" || targetPlatform == "Unknown")
+		if (targetPlatform.startsWith("Hashlink") || targetPlatform == "Unknown")
 		{
 			trace('Unsupported platform: ${targetPlatform}');
 			Sys.exit(1);
@@ -178,10 +178,10 @@ class Project extends HXProject
 	function configureCompileFlags()
 	{
 		MODS_ALLOWED.integrate(isDesktop() || isMobile());
-		HSCRIPT_ALLOWED.integrate(isDesktop() || isMobile());
-		LUA_ALLOWED.integrate(isDesktop() || isMobile());
-		VIDEOS_ALLOWED.integrate(isDesktop() || isMobile());
-		DISCORD_ALLOWED.integrate(isDesktop());
+		HSCRIPT_ALLOWED.integrate(true);
+		LUA_ALLOWED.integrate((isDesktop() && !isHashLink()) || isMobile());
+		VIDEOS_ALLOWED.integrate((isDesktop() && !isHashLink()) || isMobile());
+		DISCORD_ALLOWED.integrate((isDesktop() && !isHashLink()));
 		DCEBUILD.integrate(false);
 
 		setHaxedef("FLX_NO_FOCUS_LOST_SCREEN");

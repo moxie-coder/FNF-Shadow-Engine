@@ -1,5 +1,6 @@
 package psychlua;
 
+#if LUA_ALLOWED
 import haxe.ds.*;
 import psychlua.FunkinLua.State;
 import hxluajit.Types;
@@ -304,3 +305,4 @@ class Convert
 		return 0;
 	}
 }
+#end

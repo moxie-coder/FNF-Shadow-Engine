@@ -23,7 +23,6 @@ class MusicBeatState extends FlxUIState
 	public var instancesExclude:Array<String> = [];
 	#end
 
-	#if LUA_ALLOWED
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
 	public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
@@ -31,7 +30,6 @@ class MusicBeatState extends FlxUIState
 	public var modchartTexts:Map<String, FlxText> = new Map<String, FlxText>();
 	public var modchartSaves:Map<String, FlxSave> = new Map<String, FlxSave>();
 	public var modchartCameras:Map<String, FlxCamera> = new Map<String, FlxCamera>();
-	#end
 
 	#if LUA_ALLOWED
 	public var luaArray:Array<FunkinLua> = [];
@@ -294,7 +292,9 @@ class MusicBeatState extends FlxUIState
 		if (FlxG.mouse.cursor != null && !(FlxG.mouse.cursor.bitmapData is FunkinCursor))
 			FlxG.mouse.load(new FunkinCursor(0, 0));
 
+		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 		currentClassName = Std.string(Type.getClassName(Type.getClass(this))).replace('states.', '').replace('.', '/');
+		#end
 		callOnScripts('onNew');
 		super();
 		callOnScripts('onNewPost');
@@ -634,7 +634,7 @@ class MusicBeatState extends FlxUIState
 		var scriptToLoad:String = Paths.getSharedPath(scriptFile);
 		#end
 
-		if (#if MODS_ALLOWED FileSystem.exists(scriptToLoad) #else Assets.exists(scriptToLoad) #end)
+		if (#if MODS_ALLOWED FileSystem.exists(scriptToLoad) #else openfl.Assets.exists(scriptToLoad) #end)
 		{
 			if (SScript.global.exists(scriptToLoad))
 				return false;

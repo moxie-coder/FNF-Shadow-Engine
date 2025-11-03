@@ -1,5 +1,6 @@
 package psychlua;
 
+#if LUA_ALLOWED
 import hxluajit.Types;
 
 /**
@@ -60,3 +61,4 @@ class LuaFunction
 		}
 	}
 }
+#end

@@ -6,7 +6,9 @@ import lime.utils.Log;
 import android.os.Build;
 import android.os.Build.VERSION;
 #end
+#if sys
 import sys.io.Process;
+#end
 #if cpp
 import cpp.Float64;
 import cpp.UInt64;
@@ -95,6 +97,8 @@ class SystemInfo extends FramerateCategory
 			osInfo += ' ${lcuVersion}';
 		else if (lime.system.System.platformVersion != null && lime.system.System.platformVersion != "")
 			osInfo += ' ${lime.system.System.platformVersion}';
+		#elseif web
+			osInfo = '${lime.system.System.platformLabel}';
 		#else
 		if (lime.system.System.platformLabel != null
 			&& lime.system.System.platformLabel != ""
@@ -136,7 +140,8 @@ class SystemInfo extends FramerateCategory
 		{
 			Log.error('Unable to grab CPU Name: $e');
 		}
-		@:privateAccess if (FlxG.renderTile)
+		@:privateAccess
+		if (FlxG.renderTile)
 		{ // Blit doesn't enable the gpu. Idk if we should fix this
 			if (flixel.FlxG.stage.context3D != null && flixel.FlxG.stage.context3D.gl != null)
 			{

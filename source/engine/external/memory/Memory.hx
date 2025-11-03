@@ -12,7 +12,7 @@ extern #end class Memory
 	#if cpp
 	@:native("getCurrentRSS")
 	#end
-	public static function getCurrentUsage():#if cpp cpp.SizeT #else Float #end;
+	public static function getCurrentUsage():#if cpp cpp.SizeT; #else Float #end
 		#if !cpp
 		return 0.0;
 		#end

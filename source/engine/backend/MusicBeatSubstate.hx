@@ -24,7 +24,6 @@ class MusicBeatSubstate extends FlxSubState
 	public var instancesExclude:Array<String> = [];
 	#end
 
-	#if LUA_ALLOWED
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
 	public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
@@ -32,7 +31,6 @@ class MusicBeatSubstate extends FlxSubState
 	public var modchartTexts:Map<String, FlxText> = new Map<String, FlxText>();
 	public var modchartSaves:Map<String, FlxSave> = new Map<String, FlxSave>();
 	public var modchartCameras:Map<String, FlxCamera> = new Map<String, FlxCamera>();
-	#end
 
 	#if LUA_ALLOWED
 	public var luaArray:Array<FunkinLua> = [];
@@ -290,10 +288,12 @@ class MusicBeatSubstate extends FlxSubState
 	public function new()
 	{
 		instance = this;
+		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 		currentClassName = Std.string(Type.getClassName(Type.getClass(this)))
 			.replace('states.', '')
 			.replace('substates.', '')
 			.replace('.', '/');
+		#end
 		controls.isInSubstate = true;
 		callOnScripts('onNew');
 		super();
@@ -520,7 +520,7 @@ class MusicBeatSubstate extends FlxSubState
 		var scriptToLoad:String = Paths.getSharedPath(scriptFile);
 		#end
 
-		if (#if MODS_ALLOWED FileSystem.exists(scriptToLoad) #else Assets.exists(scriptToLoad) #end)
+		if (#if MODS_ALLOWED FileSystem.exists(scriptToLoad) #else openfl.Assets.exists(scriptToLoad) #end)
 		{
 			if (SScript.global.exists(scriptToLoad))
 				return false;

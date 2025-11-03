@@ -12,7 +12,7 @@ import states.TitleState;
 	public var extraButtons:String = "NONE"; // mobile extra button option
 	public var hitboxPos:Bool = true; // hitbox extra button position option
 	public var dynamicColors:Bool = true; // yes cause its cool -Karim
-	public var controlsAlpha:Float = FlxG.onMobile ? 0.6 : 0;
+	public var controlsAlpha:Float = #if web 0.6 #else FlxG.onMobile ? 0.6 : 0 #end;
 	#if mobile
 	public var screensaver:Bool = false;
 	#end
@@ -119,7 +119,7 @@ class ClientPrefs
 		'debug_1' => [SEVEN],
 		'debug_2' => [EIGHT],
 		'fullscreen' => [F11],
-		'fpsCounter' => [F3]
+		'fpsCounter' => #if web [THREE] #else [F3] #end
 	];
 	public static var gamepadBinds:Map<String, Array<FlxGamepadInputID>> = [
 		'note_up' => [DPAD_UP, Y],
