@@ -214,8 +214,8 @@ class Project extends HXProject
 		if (isAndroid())
 			setHaxedef("DISABLED_MACRO_SUPERLATIVE");
 
-		addMacroFlag("allowPackage('flash')");
-		addMacroFlag("include('my.pack')");
+		//addMacroFlag("allowPackage('flash')");
+		//addMacroFlag("include('my.pack')");
 
 		if (!DCEBUILD.isEnabled())
 		{
