@@ -7,6 +7,12 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 	var antialiasingOption:Int;
 	var boyfriend:Character = null;
 
+	#if mobile
+	final platform:String = "Phones";
+	#else
+	final platform:String = "PCs";
+	#end
+
 	public function new()
 	{
 		title = 'Graphics';
@@ -33,7 +39,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		antialiasingOption = optionsArray.length - 1;
 
 		var option:Option = new Option('Shaders', // Name
-			"If unchecked, disables shaders.\nIt's used for some visual effects, and also CPU intensive for weaker " + Main.platform + ".", // Description
+			"If unchecked, disables shaders.\nIt's used for some visual effects, and also CPU intensive for weaker " + platform + ".", // Description
 			'shaders', 'bool');
 		addOption(option);
 

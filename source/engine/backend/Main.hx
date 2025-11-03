@@ -1,4 +1,4 @@
-package;
+package backend;
 
 import debug.codename.Framerate;
 import flixel.graphics.FlxGraphic;
@@ -32,12 +32,6 @@ class Main extends Sprite
 	};
 
 	public static var fpsVar:Framerate;
-
-	#if mobile
-	public static final platform:String = "Phones";
-	#else
-	public static final platform:String = "PCs";
-	#end
 
 	@:noCompletion
 	private static function __init__():Void

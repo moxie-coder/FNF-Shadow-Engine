@@ -14,9 +14,9 @@ class Project extends HXProject
 	static final VERSION:String = "0.2.7";
 	static final COMPANY:String = "FNF-SE";
 	static final PACKAGE:String = "com.fnfse.shadowengine";
-	static final MAIN_CLASS:String = "Main";
+	static final MAIN_CLASS:String = "backend.Main";
 
-	static final PRELOADER:String = "flixel.system.FlxPreloader";
+	static final PRELOADER:String = "backend.FunkinPreloader";
 	static final SOURCE_FOLDERS:Array<String> = ["source/engine", "source/library_shadows"];
 
 	static final MODS_ALLOWED:CompileFlag = CompileFlag.get("MODS_ALLOWED");
@@ -225,6 +225,9 @@ class Project extends HXProject
 
 		if (DISCORD_ALLOWED.isEnabled())
 			setHaxedef("DISCORD_DISABLE_IO_THREAD");
+
+		if (isMobile() || isWeb())
+			setHaxedef("TOUCH_HERE_TO_PLAY");
 	}
 
 	function configureAssets()

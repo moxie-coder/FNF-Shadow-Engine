@@ -289,9 +289,6 @@ class MusicBeatState extends FlxUIState
 
 	public function new()
 	{
-		if (FlxG.mouse.cursor != null && !(FlxG.mouse.cursor.bitmapData is FunkinCursor))
-			FlxG.mouse.load(new FunkinCursor(0, 0));
-
 		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 		currentClassName = Std.string(Type.getClassName(Type.getClass(this))).replace('states.', '').replace('.', '/');
 		#end
@@ -860,6 +857,3 @@ class MusicBeatState extends FlxUIState
 		#end
 	}
 }
-
-@:bitmap("assets/embed/cursor.png")
-private class FunkinCursor extends openfl.display.BitmapData {}

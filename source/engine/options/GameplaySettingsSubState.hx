@@ -4,6 +4,12 @@ import lime.ui.Haptic;
 
 class GameplaySettingsSubState extends BaseOptionsMenu
 {
+	#if mobile
+	final platform:String = "Phones";
+	#else
+	final platform:String = "PCs";
+	#end
+
 	public function new()
 	{
 		title = 'Gameplay Settings';
@@ -31,7 +37,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.onChange = onChangeAutoPause;
 
 		var option:Option = new Option('Pop Up Score',
-			"If unchecked, hitting notes won't make \"sick\", \"good\".. and combo popups (Useful for low end " + Main.platform + ").", 'popUpRating', 'bool');
+			"If unchecked, hitting notes won't make \"sick\", \"good\".. and combo popups (Useful for low end " + platform + ").", 'popUpRating', 'bool');
 		addOption(option);
 
 		var option:Option = new Option('Disable Reset Button', "If checked, pressing Reset won't do anything.", 'noReset', 'bool');
