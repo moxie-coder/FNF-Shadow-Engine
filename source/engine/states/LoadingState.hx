@@ -79,7 +79,7 @@ class LoadingState extends MusicBeatState
 		loadingText.borderSize = 2;
 		add(loadingText);
 
-		bar = new Bar(0, 660, 'healthBar', () -> (loaded / loadMax));
+		bar = new Bar(0, 660, 'loadingBar', () -> (loaded / loadMax));
 		bar.screenCenter(X);
 		bar.barOffset.set(3, 3);
 		bar.setColors(FlxColor.WHITE, FlxColor.BLACK); // example colors
