@@ -698,19 +698,9 @@ class FunkinLua
 					if (funk.scriptName == foundScript)
 					{
 						Lua.getglobal(funk.lua, global);
-						if (Lua.isnumber(funk.lua, -1) == 1)
-							Lua.pushnumber(lua, Lua.tonumber(funk.lua, -1));
-						else if (Lua.isstring(funk.lua, -1) == 1)
-							Lua.pushstring(lua, Lua.tostring(funk.lua, -1));
-						else if (Lua.isboolean(funk.lua, -1) == 1)
-							Lua.pushboolean(lua, Lua.toboolean(funk.lua, -1));
-						else
-							Lua.pushnil(lua);
-
-						// TODO: table
-
-						Lua.pop(luaInstance.lua, 1); // remove the global
-
+						var value:Dynamic = Convert.fromLua(funk.lua, -1);
+						Lua.pop(funk.lua, 1); // remove the global from funk.lua
+						Convert.toLua(lua, value); // push the value to the current lua state
 						return;
 					}
 				}
