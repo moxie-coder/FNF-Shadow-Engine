@@ -135,6 +135,8 @@ class Project extends HXProject
 	function configureApp():Void
 	{
 		meta.title = TITLE;
+		if (isIOS())
+			meta.title = ~/ /ig.replace(TITLE, "\u2002");
 		meta.version = VERSION;
 		meta.company = COMPANY;
 		meta.packageName = PACKAGE;
