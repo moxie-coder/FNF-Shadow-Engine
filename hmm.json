@@ -68,13 +68,17 @@
     },
     {
       "name": "format",
-      "type": "haxelib",
-      "version": null
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/HomuHomu833-haxelibs/format"
     },
     {
       "name": "hxp",
-      "type": "haxelib",
-      "version": null
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/HomuHomu833-haxelibs/hxp"
     },
     {
       "name": "hxvlc",
