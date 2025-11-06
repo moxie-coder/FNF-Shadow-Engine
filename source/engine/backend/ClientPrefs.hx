@@ -49,7 +49,7 @@ import states.TitleState;
 	];
 
 	public var ghostTapping:Bool = true;
-	public var timeBarType:String = 'None';
+	public var timeBarType:String = 'Time Left';
 	public var scoreZoom:Bool = true;
 	public var noReset:Bool = false;
 	public var healthBarAlpha:Float = 1;
@@ -101,9 +101,9 @@ class ClientPrefs
 	// Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
 		// Key Bind, Name for ControlsSubState
-		'note_up' => [F, UP],
+		'note_up' => [J, UP],
 		'note_left' => [D, LEFT],
-		'note_down' => [J, DOWN],
+		'note_down' => [F, DOWN],
 		'note_right' => [K, RIGHT],
 		'ui_up' => [W, UP],
 		'ui_left' => [A, LEFT],
