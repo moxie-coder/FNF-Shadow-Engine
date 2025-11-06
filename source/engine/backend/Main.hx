@@ -13,6 +13,7 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.system.System as LimeSystem;
 import lime.app.Application;
+import lime.ui.WindowVSyncMode;
 import states.TitleState;
 import openfl.events.KeyboardEvent;
 #if (linux && !debug)
@@ -137,7 +138,7 @@ class Main extends Sprite
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 
-		Application.current.window.vsync = ClientPrefs.data.vsync;
+		FlxG.stage.application.window.setVSyncMode(ClientPrefs.data.vsync ? WindowVSyncMode.ON : WindowVSyncMode.OFF);
 
 		// shader coords fix
 		FlxG.signals.gameResized.add(function(w, h)
